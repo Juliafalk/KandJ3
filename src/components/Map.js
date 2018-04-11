@@ -1,10 +1,10 @@
-//this is the MASTER branch
+//this is the map branch
 
 import React, { Component } from 'react';
 import { AppRegistry, Dimensions, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { Button } from './common';
+import { Button, Input } from './common';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -31,7 +31,8 @@ class Map extends Component {
 
     //JL 11/4: the directionsService will create a route through the points in this.state.coordinates
     this.state = {
-      coordinates: []
+      coordinates: [],
+      distance: ''
     }
 
     this.mapView = null;
@@ -55,8 +56,9 @@ class Map extends Component {
   we then set this.state.coordinates to waypoints and when rendered, the directionService will make a route 
   through these points*/
   routeGenerator = (length) => {
-    waypoints[0]=BaseLocation;
-    const radius = length/2/Math.PI;
+    lengthInMeters = length*1000;
+    waypoints[0] = BaseLocation;
+    const radius = lengthInMeters/2/Math.PI;
     const circlePoints = 5;
     const deg = [];
     const direction = Math.random()*2*Math.PI;  //in radians
@@ -99,7 +101,7 @@ class Map extends Component {
   this will be generically changed when I add an input field for the user to use*/
   render() {
     return (
-      <View>
+      <View style={styles.viewStyle}>
       <MapView
         initialRegion={{
           latitude: LATITUDE,
@@ -142,15 +144,24 @@ class Map extends Component {
           />
         )}
       </MapView>
-      <Button onPress={() => this.routeGenerator(7000)}>Create Route</Button>
+      <Input
+        placeholder="Enter distance..."
+        label="km"
+        value={this.state.distance}
+        onChangeText={userInput => this.setState({ distance: userInput })}
+      />
+      <Button onPress={() => this.routeGenerator(this.state.distance)}>Create Route</Button>
       </View>
     );
   }
 }
 
 const styles = {
+  viewStyle: {
+    height: 580
+  },
   mapStyle: {
-    height: 450
+    height: 470
   }
 }
 
