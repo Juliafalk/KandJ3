@@ -1,8 +1,9 @@
+/*This it the file that calls the StartPage. 
+Later in the progress an if-state could be usefull here, to decide
+if startpage or map should be shown direct (like if the user already is signed in)
+/ JF (11/4)
+*/
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { StackNavigator, SwitchNavigator, TabNavigator } from 'react-navigation';
-import { Header, Button, CardSection } from './components/common';
-import Map from './components/Map';
 import StartPage from './components/StartPage';
 
 
