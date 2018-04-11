@@ -1,4 +1,4 @@
-//this is master branch
+//this is my map branch
 
 import React, { Component } from 'react';
 import { AppRegistry, Dimensions, StyleSheet } from 'react-native';
@@ -19,18 +19,20 @@ class Map extends Component {
   constructor(props) {
     super(props);
 
-    //start and end location
-    //dessa ska alltså egentligen vara samma
-    //positionen ska hämtas med geolocation
+    const startLocation = {
+      
+    }
+
+    // AirBnB's Office, and Apple Park
     this.state = {
       coordinates: [
         {
-          latitude: 59.8392565,
-          longitude: 17.64707450000003,
+          latitude: 37.3317876,
+          longitude: -122.0054812,
         },
         {
-          latitude: 59.85036159999999,
-          longitude: 17.633897100000013,
+          latitude: 37.771707,
+          longitude: -122.4053769,
         },
       ],
     };
@@ -38,6 +40,7 @@ class Map extends Component {
     this.mapView = null;
   }
 
+  /*
   onMapPress = (e) => {
     this.setState({
       coordinates: [
@@ -46,6 +49,8 @@ class Map extends Component {
       ],
     });
   }
+*/
+
 
   render() {
     return (
@@ -90,12 +95,12 @@ class Map extends Component {
           />
         )}
       </MapView>
-      
     );
   }
 }
 
 export default Map; 
+
 
 /*import React, { Component } from 'react';
 import { AppRegistry,StyleSheet, View } from 'react-native';
@@ -104,9 +109,11 @@ import MapViewDirections from 'react-native-maps-directions';
 
 export default class LastTry extends Component {
     render () {
+
         const origin = {latitude: 37.3318456, longitude: -122.0296002};
         const destination = {latitude: 37.771707, longitude: -122.4053769};
         const GOOGLE_MAPS_APIKEY = 'AIzaSyDtLXi70mT6q7gwxSgCGiBdxzGXf1NrfPc';
+
 
         return(
         
@@ -120,6 +127,8 @@ export default class LastTry extends Component {
                 longitudeDelta: 0.0421
             }}
             />
+            
+           
         );
     }
 }
@@ -135,6 +144,7 @@ AppRegistry.registerComponent('LastTry', () => LastTry);
 
 /*import { AppRegistry } from 'react-native';
 import App from './App';
+
 
 AppRegistry.registerComponent('LastTry', () => App);
 */
