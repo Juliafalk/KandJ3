@@ -47,13 +47,13 @@ class Map extends Component {
     });
   }
 
-  //JL 11/4: this is a rather complicated function but I will try to explain it in a simple way
-  //we create a center point of a circle with a radius that is dependent on the length of the route
-  //from the center point we create [circlePoints] number of waypoints in a perfect circle around the center
-  //we add the startpoint [BaseLocation], all the generated waypoint and the endpoint [BaseLocation] to
-  //the array waypoints
-  //we then set this.state.coordinates to waypoints and when rendered, the directionService will make a route 
-  //through these points
+  /*JL 11/4: this is a rather complicated function but I will try to explain it in a simple way
+  we create a center point of a circle with a radius that is dependent on the length of the route
+  from the center point we create [circlePoints] number of waypoints in a perfect circle around the center
+  we add the startpoint [BaseLocation], all the generated waypoint and the endpoint [BaseLocation] to
+  the array waypoints
+  we then set this.state.coordinates to waypoints and when rendered, the directionService will make a route 
+  through these points*/
   routeGenerator = (length) => {
     waypoints[0]=BaseLocation;
     const radius = length/2/Math.PI;
@@ -94,9 +94,9 @@ class Map extends Component {
     });
   }
   
-  //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
-  //right now I give the routeGenerator a static input of 7000m = 7km
-  //this will be generically changed when I add an input field for the user to use
+  /*JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
+  right now I give the routeGenerator a static input of 7000m = 7km
+  this will be generically changed when I add an input field for the user to use*/
   render() {
     return (
       <View>
