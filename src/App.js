@@ -6,7 +6,6 @@ import Map from './components/Map';
 import LoginForm from './components/LoginForm';
 
 
-
 class App extends React.Component {
     static navigationOptions = {
         title: 'Home'

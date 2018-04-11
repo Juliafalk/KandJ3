@@ -17,16 +17,18 @@ class Map extends Component {
   constructor(props) {
     super(props);
 
-    // AirBnB's Office, and Apple Park
+    //start and end location
+    //dessa ska alltså egentligen vara samma
+    //positionen ska hämtas med geolocation
     this.state = {
       coordinates: [
         {
-          latitude: 37.3317876,
-          longitude: -122.0054812,
+          latitude: 59.8392565,
+          longitude: 17.64707450000003,
         },
         {
-          latitude: 37.771707,
-          longitude: -122.4053769,
+          latitude: 59.85036159999999,
+          longitude: 17.633897100000013,
         },
       ],
     };
@@ -86,12 +88,12 @@ class Map extends Component {
           />
         )}
       </MapView>
+      
     );
   }
 }
 
 export default Map; 
-
 
 /*import React, { Component } from 'react';
 import { AppRegistry,StyleSheet, View } from 'react-native';
@@ -100,11 +102,9 @@ import MapViewDirections from 'react-native-maps-directions';
 
 export default class LastTry extends Component {
     render () {
-
         const origin = {latitude: 37.3318456, longitude: -122.0296002};
         const destination = {latitude: 37.771707, longitude: -122.4053769};
         const GOOGLE_MAPS_APIKEY = 'AIzaSyDtLXi70mT6q7gwxSgCGiBdxzGXf1NrfPc';
-
 
         return(
         
@@ -118,8 +118,6 @@ export default class LastTry extends Component {
                 longitudeDelta: 0.0421
             }}
             />
-            
-           
         );
     }
 }
@@ -135,7 +133,6 @@ AppRegistry.registerComponent('LastTry', () => LastTry);
 
 /*import { AppRegistry } from 'react-native';
 import App from './App';
-
 
 AppRegistry.registerComponent('LastTry', () => App);
 */

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { StackNavigator, SwitchNavigator, TabNavigator } from 'react-navigation';
-import { Header } from './common'
 //import firebase from 'firebase';
-import { Button, Card, CardSection } from './common';
+import { Button, Card, CardSection, Header } from './common';
 import Map from './Map';
 
 
@@ -77,11 +76,14 @@ class TheMap extends React.Component {
             <Card>
             <Map />
             </Card>
+            <Button onPress={this.findWaypoints}>Create route</Button>
             </View>
-            
-            
         );
     }
+
+    findWaypoints = () => {
+        
+      }
 }
 
 export default SwitchNavigator({
