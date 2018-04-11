@@ -7,23 +7,23 @@ import Map from './Map';
 import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
 
-class StartPage extends React.Component {
+class StartPage extends Component {
     static navigationOptions = {
         title: 'Home'
     };
     render() {
         return (
-        <View>
-            <Header headerText="runRouter" />
-                <CardSection>
-                    <Button onPress={this.Login}> Login </Button> 
-                </CardSection>
-                <CardSection>
-                    <Button onPress={this.CreateAccount}> Create a new account </Button>
-                </CardSection>
-                <CardSection>
-                    <Button onPress={this.SeeMap}> See the map :) </Button>
-                </CardSection>
+            <View>
+                <Header headerText="runRouter" />
+                    <CardSection>
+                        <Button onPress={this.Login}> Login </Button> 
+                    </CardSection>
+                    <CardSection>
+                        <Button onPress={this.CreateAccount}> Create a new account </Button>
+                    </CardSection>
+                    <CardSection>
+                        <Button onPress={this.SeeMap}> See the map :) </Button>
+                    </CardSection>
             </View>
         );
     }
@@ -77,18 +77,11 @@ class TheMap extends React.Component {
     render () {
         return (
             <View>
-                <Header headerText="Here should be a map" />
-            <Card>
-            <Map />
-            </Card>
-            <Button onPress={this.findWaypoints}>Create route</Button>
+                <Header headerText="There should be a map" />
+                <Map />
             </View>
         );
     }
-
-    findWaypoints = () => {
-        alert('karta');
-      }
 }
 
 export default SwitchNavigator({
