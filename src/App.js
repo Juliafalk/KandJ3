@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { StackNavigator, SwitchNavigator, TabNavigator } from 'react-navigation';
 import { Header, Button, CardSection } from './components/common';
 import Map from './components/Map';
-import LoginForm from './components/LoginForm';
+import StartPage from './components/StartPage';
 
 
 
@@ -12,7 +12,7 @@ class App extends React.Component {
         title: 'Home'
     };
     render() {
-        return <LoginForm />;
+        return <StartPage />;
     }
 }
 export default App;
