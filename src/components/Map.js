@@ -1,5 +1,3 @@
-//this is the map branch
-
 import React, { Component } from 'react';
 import { AppRegistry, Dimensions, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
@@ -59,7 +57,7 @@ class Map extends Component {
   through these points*/
   routeGenerator(length) {
     lengthInMeters = length*1000;
-    console.log(lengthInMeters)
+    lengthInMeters = lengthInMeters*0.8; //to compensate since the generated route is 'always' longer t
     waypoints[0] = BaseLocation;
     const radius = lengthInMeters/2/Math.PI;
     const circlePoints = 5;
@@ -67,7 +65,7 @@ class Map extends Component {
     const direction = Math.random()*2*Math.PI;  //in radians
     //Locate the point that is radius meters away from the Base Location in the direction chosen.
     //length assumed in meters, and then deltas in degrees.
-    var dx = radius*Math.cos(direction);
+    var dx = radius*Math.cos(direction); //convert the direction from radians to degrees
     var dy = radius*Math.sin(direction);
     var delta_lat = dy/110540;
     var delta_lng = dx/(111320*Math.cos(BaseLocation.latitude*Math.PI/180));
@@ -93,7 +91,7 @@ class Map extends Component {
         waypoints[i] = nextCoord;
     }
     waypoints[circlePoints+1] = BaseLocation;
-    console.log('turen blir lite för lång')
+    //console.log('turen blir lite för lång')
 
     this.setState({
       coordinates: waypoints
@@ -106,7 +104,7 @@ class Map extends Component {
   render() {
    
     return (
-      <View style={styles.viewStyle}>
+      <View style={styles.containerStyle}>
       <MapView
         initialRegion={{
           latitude: LATITUDE,
@@ -136,7 +134,7 @@ class Map extends Component {
             }}
             
             onReady={(result) => {
-              console.log('hello')
+              //console.log(result)
               console.log(result.distance)
               this.mapView.fitToCoordinates(result.coordinates, {
                 edgePadding: {
@@ -144,14 +142,12 @@ class Map extends Component {
                   bottom: (height / 20),
                   left: (width / 20),
                   top: (height / 20),
-                  
                 }
               });
             }}
             onError={(errorMessage) => {
               // console.log('GOT AN ERROR');
             }}
-            
           />
         )}
        
@@ -170,7 +166,7 @@ class Map extends Component {
 }
 
 const styles = {
-  viewStyle: {
+  containerStyle: {
     height: 580
   },
   mapStyle: {

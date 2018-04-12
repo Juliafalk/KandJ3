@@ -34,10 +34,7 @@ class App extends React.Component {
             } else {
                 this.setState({ loggedIn: false });
             }
-
         });
-        
-        
     }
 
     renderContent() {
@@ -50,6 +47,7 @@ class App extends React.Component {
                 return <Spinner size="large" />;
         }
     }
+
     render()  {
         return(
             <View>
@@ -59,3 +57,4 @@ class App extends React.Component {
     }
 }
 export default App;
+.3
