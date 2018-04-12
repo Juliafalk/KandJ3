@@ -100,7 +100,7 @@ class CreateAccount extends React.Component {
                     </MyCardSection>
     
                     <MyCardSection>
-                        <InputLogin
+                        <MyInputLogin
                         placeholder="password, min 6 characters"
                         label="Password: "
                         secureTextEntry={true}
