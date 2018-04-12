@@ -6,15 +6,15 @@ import { Button, Input } from './common';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE = 59.85090049999999;
-const LONGITUDE = 17.630009299999983;
+const LATITUDE = 56.6479;
+const LONGITUDE = 12.7336;
 const LATITUDE_DELTA = 0.0922; //JL 11/4: I don't know what this is, probably something to convert lat,lng to distance?
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 //JL 11/4: later: retrieve baselocation with google maps geolocation
 const BaseLocation = {
-  latitude: 59.85090049999999, //use variable LATITUDE from above
-  longitude: 17.630009299999983 //use variable LONGITUDE from above
+  latitude: LATITUDE, //use variable LATITUDE from above
+  longitude: LONGITUDE //use variable LONGITUDE from above
 }
 
 //JL 11/4: the points the route should go through (including start and end point)

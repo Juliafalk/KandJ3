@@ -1,44 +1,11 @@
 /*This page should include LoginForm, i.e. it is for the user to login. 
-Probaly this file will be placed on a card.
-So far this file does not contains so much, therefore I leave the rest
-of the code uncommented / JF (11/4) */
-
-/*import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { Input, Button } from 'native-base';
-
-class LoginPage extends React.Component {
-    render () {
-        return (
-        <View>
-            <Text> Empty LoginPage now </Text>
-            <Button full light><Text>Hej</Text></Button>
-        </View>
-        );
-    }
-}
-
-
-export default LoginPage; 
-*/
-
+The Loginpage is placed on an card in App.js
+The user can use/ JF (12/4) */
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import firebase from 'firebase';
 import { Card, CardSection, Spinner, InputLogin } from './common';
 import { Button } from 'native-base';
-
-//loading - a booleand, when true = user attempot to log in
-//loading is false cause by default, we are not loading anything.. 
-//When pressed log in, we want to update state to true.
-//Want to show button or spinner??
-
-//renderButton - either show the button or the spinner
-//if (this.state.loading) by default means true.
-//Have to be called from render. 
-
-//onLoginSuccress() när användare lyckas logga in. 
-//clear out error message, clean out the form and loading = false. 
 
 class LoginPage extends Component { 
     state = { email: '', password: '', error: '', loading: false };
@@ -50,12 +17,9 @@ class LoginPage extends Component {
          
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(this.onLoginSuccess.bind(this)) //need to bind, passing of to promise, dont know the context = need to bind. 
-            .catch(() => {
-                firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
-                    .then(this.onLoginSuccess.bind(this))
-                    .catch(this.onLoginFailed.bind(this));
-                    
-        }); 
+            .catch(this.onLoginFailed.bind(this));
+            //    firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
+            //        .then(this.onLoginSuccess.bind(this))
     }
 
     onLoginFailed() {
