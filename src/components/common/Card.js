@@ -27,11 +27,11 @@ const styles = {
         padding: 5,
         marginRight: 10, 
         marginTop: 20,
-        width: '94%',
-        height: '70%',
         justifyContent: 'center',
         flexDirection: 'column',
         alignItems: 'center',
+        //height: null,
+        //width: null
     }, 
     textStyle: {
         fontSize: 20,

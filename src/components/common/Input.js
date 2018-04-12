@@ -1,5 +1,4 @@
-//För att kunna hantera input från användaren.
-
+//För att kunna hantera input från användaren vid distans av rutt 
 import React from 'react';
 import { Text, TextInput, View } from 'react-native';
 

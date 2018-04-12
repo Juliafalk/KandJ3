@@ -100,6 +100,7 @@ class Map extends Component {
   right now I give the routeGenerator a static input of 7000m = 7km
   this will be generically changed when I add an input field for the user to use*/
   render() {
+   
     return (
       <View style={styles.viewStyle}>
       <MapView
@@ -124,16 +125,20 @@ class Map extends Component {
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={3}
             strokeColor="hotpink"
+            
             onStart={(params) => {
               //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
             }}
+            
             onReady={(result) => {
+              console.log('hello')
               this.mapView.fitToCoordinates(result.coordinates, {
                 edgePadding: {
                   right: (width / 20),
                   bottom: (height / 20),
                   left: (width / 20),
                   top: (height / 20),
+                  
                 }
               });
             }}
@@ -143,6 +148,7 @@ class Map extends Component {
             
           />
         )}
+       
       </MapView>
       <Input
         placeholder="Enter distance..."
@@ -154,6 +160,7 @@ class Map extends Component {
       </View>
     );
   }
+ 
 }
 
 const styles = {
