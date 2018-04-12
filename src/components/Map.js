@@ -44,6 +44,7 @@ class Map extends Component {
   }
 
   render() {
+   
     return (
       <MapView
         initialRegion={{
@@ -67,16 +68,20 @@ class Map extends Component {
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={3}
             strokeColor="hotpink"
+            
             onStart={(params) => {
               console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
             }}
+            
             onReady={(result) => {
+              console.log('hello')
               this.mapView.fitToCoordinates(result.coordinates, {
                 edgePadding: {
                   right: (width / 20),
                   bottom: (height / 20),
                   left: (width / 20),
                   top: (height / 20),
+                  
                 }
               });
             }}
@@ -85,9 +90,12 @@ class Map extends Component {
             }}
           />
         )}
+       
       </MapView>
+       
     );
   }
+ 
 }
 
 export default Map; 

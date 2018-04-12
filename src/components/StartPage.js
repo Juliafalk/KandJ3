@@ -19,13 +19,11 @@ class StartPage extends React.Component {
         return (
         <View>
             <Header headerText="runRouter" />
-                <CardSection>
-                    <Button onPress={this.Login}> Login </Button> 
-                </CardSection>
-                <CardSection>
+        <LoginPage />
+                <CardSection style={{ flex: 1}}>
                     <Button onPress={this.CreateAccount}> Create a new account </Button>
                 </CardSection>
-                <CardSection>
+                <CardSection style={{ flex: 1}}>
                     <Button onPress={this.SeeMap}> See the map :) </Button>
                 </CardSection>
             </View>
