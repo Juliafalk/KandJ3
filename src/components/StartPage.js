@@ -51,15 +51,13 @@ class Login extends React.Component {
     static navigationOptions = {
         title: 'Login'
     };
-
-
-render() {
-    return(
-        <View>
-            <LoginPage />
-        </View>
-    );
-}
+    render() {
+        return(
+            <View>
+                <LoginPage />
+            </View>
+        );
+    }
 }
 
 //This class returns the CreateAccount Screens / JF (11/4)
@@ -84,11 +82,10 @@ class TheMap extends React.Component {
     static navigationOptions = {
         title: 'MapView'
     };
-
     render () {
         return (
             <View>
-                <Header headerText="There should be a map" />
+                <Header headerText="Happy running <3" />
                 <Map /> 
             </View> 
         );

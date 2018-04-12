@@ -6,7 +6,6 @@ if startpage or map should be shown direct (like if the user already is signed i
 import React, { Component } from 'react';
 import StartPage from './components/StartPage';
 
-
 class App extends React.Component {
     static navigationOptions = {
         title: 'Home'
