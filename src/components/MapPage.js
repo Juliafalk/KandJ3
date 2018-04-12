@@ -6,7 +6,9 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import firebase from 'firebase';
 import Map from './Map';
-import { Button, Header } from './common';
+import { MyButton, MyHeader } from './common';
+import { Icon, Button, Container, Header, Content, Left, Title, Body, Right, Footer, FooterTab } from 'native-base';
+
 
 class MapPage extends React.Component {
     
@@ -19,16 +21,24 @@ class MapPage extends React.Component {
         console.log(this.state)
         return (
         <View>
-            <Header headerText="Happy running <3" />
+                    <Header>
+                        <Left>
+                            <Icon name='ios-menu'/>
+                        </Left>
+                        <Body>
+                            <Title>Happy Running!</Title>
+                        </Body>
+                    <Right />
+                    </Header>
             <View style={{
             height: '80%',
             paddingBottom: 10}}>
             <Map />
             </View>
             <View style={{ height: '7%'}}>
-            <Button onPress={this.onButtonPress.bind(this)}>
+            <MyButton onPress={this.onButtonPress.bind(this)}>
                 <Text>Log out</Text>
-            </Button>
+            </MyButton>
             </View>
         </View>
         );

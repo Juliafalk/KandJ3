@@ -3,12 +3,12 @@ Also it is good for us to be able to work on diffrent files like Login, CreateAc
 The code navigates to correst pages with SwitchNavigator. / JF (11/4)
 */
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
-import { Button, CardSection, Header } from './common';
+import MapPage from './MapPage'; 
+import { MyButton, MyCard, MyCardSection, MyHeader } from './common';
 import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
-import MapPage from './MapPage'; 
 
 //This is the first page / JF (11/4)
 class StartPage extends React.Component {
@@ -18,14 +18,14 @@ class StartPage extends React.Component {
     render() {
         return (
         <View>
-            <Header headerText="runRouter" />
+            <MyHeader headerText="runRouter" />
                 <LoginPage />
-                <CardSection>
-                    <Button onPress={this.CreateAccount}> Create a new account </Button>
-                </CardSection>
-                <CardSection style={{ flex: 1}}>
-                    <Button onPress={this.SeeMap}> See the map :) </Button>
-                </CardSection>
+                <MyCardSection>
+                    <MyButton onPress={this.CreateAccount}> Create a new account </MyButton>
+                </MyCardSection>
+                <MyCardSection style={{ flex: 1}}>
+                    <MyButton onPress={this.SeeMap}> See the map :) </MyButton>
+                </MyCardSection>
             </View>
         );
     }

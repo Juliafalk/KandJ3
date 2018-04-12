@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 
 //Could use the textStyle around the {props.children}, however
 //this does not work with CardSection.js something abouth height and widht
-const Card = (props) => {
+const MyCard = (props) => {
     return (
         <View style={styles.containerStyle}>
         {props.children} 
@@ -42,4 +42,4 @@ const styles = {
     }
 };
 
-export { Card };
+export { MyCard };

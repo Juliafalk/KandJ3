@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
 //onPress from AlbumDetalied, passed from album...
-const Button = ({ onPress, children }) => {
+const MyButton = ({ onPress, children }) => {
     return (
         <TouchableOpacity onPress={(onPress)} style={styles.buttonStyle}>
         <Text style={styles.textStyle}>
@@ -32,4 +32,4 @@ const styles = {
     }
 };
 
-export { Button };
+export { MyButton };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { AppRegistry, Dimensions, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { Button, Input } from './common';
+import { MyButton, MyInput } from './common';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -152,13 +152,15 @@ class Map extends Component {
         )}
        
       </MapView>
-      <Input
+      
+      <MyInput
         placeholder="Enter distance..."
         label="km"
         value={this.state.distance}
         onChangeText={userInput => this.setState({ distance: userInput })}
       />
-      <Button onPress={() => this.routeGenerator(this.state.distance)}>Create Route</Button>
+      <MyButton onPress={() => this.routeGenerator(this.state.distance)}>Create Route</MyButton>
+    
       </View>
     );
   }

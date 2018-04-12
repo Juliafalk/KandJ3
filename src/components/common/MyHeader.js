@@ -6,7 +6,7 @@ import { Text, View } from 'react-native';
 // Make component
 // props-object, what we want to display as header, i.e. "rubrik"
 
-const Header = (props) => {
+const MyHeader = (props) => {
     const { textStyle } = styles;
     return (
         <View style={styles.viewStyle}> 
@@ -36,4 +36,4 @@ const styles = {
 };
 
 // Make the component available
-export { Header };
+export { MyHeader };

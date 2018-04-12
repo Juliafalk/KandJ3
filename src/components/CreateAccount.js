@@ -6,7 +6,7 @@ and the GoBack function / JF (11/4) */
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
-import { Button, Card, CardSection, Header, InputLogin, Spinner } from './common';
+import { MyButton, MyCard, MyCardSection, MyHeader, MyInputLogin, MySpinner } from './common';
 import StartPage from './StartPage';
 import firebase from 'firebase';
 
@@ -57,13 +57,13 @@ class CreateAccount extends React.Component {
 
     renderButton() {
         if (this.state.loading) {
-            return <Spinner size="small" />
+            return <MySpinner size="small" />
         }
 
         return (
-            <Button onPress={this.onButtonPress.bind(this)}>
+            <MyButton onPress={this.onButtonPress.bind(this)}>
                 <Text>Create Account</Text>
-            </Button>
+            </MyButton>
         );
          
     }
@@ -71,35 +71,35 @@ class CreateAccount extends React.Component {
     render () {
             return (
                 <View>
-                <Header headerText="Create Account" />
-                <Card>
-                    <CardSection>
-                        <InputLogin 
+                <MyHeader headerText="Create Account" />
+                <MyCard>
+                    <MyCardSection>
+                        <MyInputLogin 
                         placeholder="Enter name"
                         label="Name:"
                         value={this.state.name}
                         onChangeText={name => this.setState({ name })}/>
-                    </CardSection>
+                    </MyCardSection>
 
                                     
-                     <CardSection>
-                        <InputLogin 
+                     <MyCardSection>
+                        <MyInputLogin 
                         placeholder="Age, ex. 22"
                         label="Age:"
                         value={this.state.age}
                         onChangeText={age => this.setState({ age })}/>
-                    </CardSection>
+                    </MyCardSection>
 
-                    <CardSection>
-                        <InputLogin
+                    <MyCardSection>
+                        <MyInputLogin
                         placeholder="user@gmail.com"
                         label="Email:"
                         value={this.state.email}
                         onChangeText={email => this.setState({ email })}
                         />
-                    </CardSection>
+                    </MyCardSection>
     
-                    <CardSection>
+                    <MyCardSection>
                         <InputLogin
                         placeholder="password, min 6 characters"
                         label="Password: "
@@ -107,27 +107,27 @@ class CreateAccount extends React.Component {
                         value={this.state.password}
                         onChangeText={password => this.setState({ password })}
                         />
-                    </CardSection>
+                    </MyCardSection>
 
-                    <CardSection>
-                        <InputLogin
+                    <MyCardSection>
+                        <MyInputLogin
                         placeholder="repeat password"
                         label="Password: "
                         secureTextEntry={true}
                         value={this.state.repPassword}
                         onChangeText={repPassword => this.setState({ repPassword })}
                         />
-                    </CardSection>
+                    </MyCardSection>
                     
     
-                    <CardSection>
+                    <MyCardSection>
                         {this.renderButton()}
-                    </CardSection>
+                    </MyCardSection>
 
-                    <CardSection>
-                        <Button onPress={this.GoBack}>Go back</Button>
-                    </CardSection>
-                </Card>
+                    <MyCardSection>
+                        <MyButton onPress={this.GoBack}>Go back</MyButton>
+                    </MyCardSection>
+                </MyCard>
             </View>
             );
         };

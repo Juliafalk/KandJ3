@@ -4,7 +4,7 @@ The user can use/ JF (12/4) */
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import firebase from 'firebase';
-import { Card, CardSection, Spinner, InputLogin } from './common';
+import { MyCard, MyCardSection, MySpinner, MyInputLogin } from './common';
 import { Button } from 'native-base';
 
 class LoginPage extends Component { 
@@ -40,7 +40,7 @@ class LoginPage extends Component {
 
     renderButton() {
         if (this.state.loading) {
-            return <Spinner size="small" />
+            return <MySpinner size="small" />
         }
 
         return (
@@ -53,35 +53,35 @@ class LoginPage extends Component {
 
     render() {
         return (
-            <Card>
-                <CardSection>
-                    <InputLogin
+            <MyCard>
+                <MyCardSection>
+                    <MyInputLogin
                     placeholder="user@gmail.com"
                     label="Email:"
                     value={this.state.email}
                     onChangeText={email => this.setState({ email })}
                     />
-                </CardSection>
+                </MyCardSection>
 
-                <CardSection>
-                    <InputLogin
+                <MyCardSection>
+                    <MyInputLogin
                     placeholder="password"
                     label="Password: "
                     secureTextEntry={true}
                     value={this.state.password}
                     onChangeText={password => this.setState({ password })}
                     />
-                </CardSection>
+                </MyCardSection>
 
                 <Text style={styles.errorTextStyle}>
                     {this.state.error}
                 </Text>
 
-                <CardSection>
+                <MyCardSection>
                     {this.renderButton()}
-                </CardSection>
+                </MyCardSection>
 
-            </Card>
+            </MyCard>
         );
     };
 };
