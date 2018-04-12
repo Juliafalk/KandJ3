@@ -22,6 +22,8 @@ const BaseLocation = {
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
 
+const routeResult = [];
+
 const GOOGLE_MAPS_APIKEY = 'AIzaSyDtLXi70mT6q7gwxSgCGiBdxzGXf1NrfPc';
 
 class Map extends Component {
@@ -55,8 +57,9 @@ class Map extends Component {
   the array waypoints
   we then set this.state.coordinates to waypoints and when rendered, the directionService will make a route 
   through these points*/
-  routeGenerator = (length) => {
+  routeGenerator(length) {
     lengthInMeters = length*1000;
+    console.log(lengthInMeters)
     waypoints[0] = BaseLocation;
     const radius = lengthInMeters/2/Math.PI;
     const circlePoints = 5;
@@ -90,6 +93,7 @@ class Map extends Component {
         waypoints[i] = nextCoord;
     }
     waypoints[circlePoints+1] = BaseLocation;
+    console.log('turen blir lite för lång')
 
     this.setState({
       coordinates: waypoints
@@ -122,6 +126,7 @@ class Map extends Component {
             origin={this.state.coordinates[0]}
             waypoints={ (this.state.coordinates.length > 2) ? this.state.coordinates.slice(1, -1): null}
             destination={this.state.coordinates[this.state.coordinates.length-1]}
+            mode={'walking'}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={3}
             strokeColor="hotpink"
@@ -132,6 +137,7 @@ class Map extends Component {
             
             onReady={(result) => {
               console.log('hello')
+              console.log(result.distance)
               this.mapView.fitToCoordinates(result.coordinates, {
                 edgePadding: {
                   right: (width / 20),
