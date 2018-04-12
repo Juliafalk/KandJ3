@@ -25,7 +25,7 @@ export default LoginPage;
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import firebase from 'firebase';
-import { Card, CardSection, Spinner, InputLogin } from './common';
+import { MyCard, MyCardSection, Spinner, InputLogin } from './common';
 import { Button } from 'native-base';
 
 //loading - a booleand, when true = user attempot to log in
@@ -89,17 +89,17 @@ class LoginPage extends Component {
 
     render() {
         return (
-            <Card>
-                <CardSection>
+            <MyCard>
+                <MyCardSection>
                     <InputLogin
                     placeholder="user@gmail.com"
                     label="Email:"
                     value={this.state.email}
                     onChangeText={email => this.setState({ email })}
                     />
-                </CardSection>
+                </MyCardSection>
 
-                <CardSection>
+                <MyCardSection>
                     <InputLogin
                     placeholder="password"
                     label="Password: "
@@ -107,17 +107,17 @@ class LoginPage extends Component {
                     value={this.state.password}
                     onChangeText={password => this.setState({ password })}
                     />
-                </CardSection>
+                </MyCardSection>
 
                 <Text style={styles.errorTextStyle}>
                     {this.state.error}
                 </Text>
 
-                <CardSection>
+                <MyCardSection>
                     {this.renderButton()}
-                </CardSection>
+                </MyCardSection>
 
-            </Card>
+            </MyCard>
         );
     };
 };

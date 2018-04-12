@@ -6,7 +6,7 @@ and the GoBack function / JF (11/4) */
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
-import { Button, Card, CardSection, Header } from './common';
+import { MyButton, MyCard, MyCardSection, MyHeader } from './common';
 import StartPage from './StartPage'
 
 class CreateAccount extends React.Component {
@@ -14,11 +14,11 @@ class CreateAccount extends React.Component {
     render () {
         return (
         <View>
-            <Header headerText="Create Account" />
+            <MyHeader headerText="Create Account" />
             <Text>Create a new account</Text>
-            <CardSection>
-                <Button onPress={this.GoBack}>Go back</Button>
-            </CardSection>
+            <MyCardSection>
+                <MyButton onPress={this.GoBack}>Go back</MyButton>
+            </MyCardSection>
         </View>
         );
     }

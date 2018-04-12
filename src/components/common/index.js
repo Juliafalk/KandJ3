@@ -1,9 +1,9 @@
 //För att kunna exportera alla filer i common-folder
-export * from './Button';
-export * from './Card';
-export * from './CardSection';
+export * from './MyButton';
+export * from './MyCard';
+export * from './MyCardSection';
 export * from './Icons';
-export * from './Header';
+export * from './MyHeader';
 export * from './Input';
 export * from './Spinner';
 export * from './InputLogin';

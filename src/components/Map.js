@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { AppRegistry, Dimensions, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { Button, Input } from './common';
+import { MyButton, Input } from './common';
+import { Icon, Button, Container, Header, Content, Left, Title, Body, Right, Footer, FooterTab } from 'native-base';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -103,6 +104,15 @@ class Map extends Component {
    
     return (
       <View style={styles.viewStyle}>
+        <Header>
+            <Left>
+                <Icon name='ios-menu'/>
+            </Left>
+          <Body>
+            <Title>Happy Running!</Title>
+          </Body>
+          <Right />
+        </Header>
       <MapView
         initialRegion={{
           latitude: LATITUDE,
@@ -150,13 +160,15 @@ class Map extends Component {
         )}
        
       </MapView>
+      
       <Input
         placeholder="Enter distance..."
         label="km"
         value={this.state.distance}
         onChangeText={userInput => this.setState({ distance: userInput })}
       />
-      <Button onPress={() => this.routeGenerator(this.state.distance)}>Create Route</Button>
+      <MyButton onPress={() => this.routeGenerator(this.state.distance)}>Create Route</MyButton>
+    
       </View>
     );
   }
@@ -165,7 +177,7 @@ class Map extends Component {
 
 const styles = {
   viewStyle: {
-    height: 580
+    height: 650
   },
   mapStyle: {
     height: 470
