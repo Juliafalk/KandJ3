@@ -167,10 +167,10 @@ class Map extends Component {
 
 const styles = {
   containerStyle: {
-    height: 580
+    height: '100%'
   },
   mapStyle: {
-    height: 470
+    height: '85%'
   }
 }
 

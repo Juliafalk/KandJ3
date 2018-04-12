@@ -4,11 +4,10 @@ if startpage or map should be shown direct (like if the user already is signed i
 / JF (11/4)
 */
 import React, { Component } from 'react';
-import StartPage from './components/StartPage';
-import Map from './components/Map';
-import { Card } from './components/common';
+import { View } from 'react-native';
 import firebase from 'firebase';
-import { View } from 'react-native'; 
+import StartPage from './components/StartPage';
+import MapPage from './components/MapPage';
 
 class App extends React.Component {
 
@@ -40,7 +39,7 @@ class App extends React.Component {
     renderContent() {
         switch(this.state.loggedIn) {
             case true:
-                return <Map />;
+                return <MapPage />;
             case false:
                 return <StartPage />;
             default:
@@ -51,10 +50,9 @@ class App extends React.Component {
     render()  {
         return(
             <View>
-            {this.renderContent()}
-            </View>
-        );    
+           {this.renderContent()};    
+           </View>
+        );
     }
 }
 export default App;
-.3

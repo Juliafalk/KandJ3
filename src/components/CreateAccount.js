@@ -18,7 +18,6 @@ class CreateAccount extends React.Component {
         const { email, password } = this.state;
 
         this.setState({ error: '', loading: true,  });
-
         if (this.state.password == this.state.repPassword){
             console.log('same pass')
             console.log(password)
@@ -34,7 +33,6 @@ class CreateAccount extends React.Component {
         }
     }
 
-
     onCreateAccountSuccess() {
         console.log('created an account?')
          this.setState({
@@ -48,7 +46,6 @@ class CreateAccount extends React.Component {
        });
     }
     
-
     onCreateAccountFailed() {
         console.log('failed to create account')
         this.setState({

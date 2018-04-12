@@ -5,10 +5,10 @@ The code navigates to correst pages with SwitchNavigator. / JF (11/4)
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
-import { Button, Card, CardSection, Header } from './common';
-import Map from './Map';
+import { Button, CardSection, Header } from './common';
 import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
+import MapPage from './MapPage'; 
 
 //This is the first page / JF (11/4)
 class StartPage extends React.Component {
@@ -83,8 +83,7 @@ class TheMap extends React.Component {
     render () {
         return (
             <View>
-                <Header headerText="Happy running <3" />
-                <Map /> 
+                <MapPage /> 
             </View> 
         );
     }
