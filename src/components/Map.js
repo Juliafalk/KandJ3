@@ -140,7 +140,6 @@ class Map extends Component {
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
-   
     return (
       <View style={styles.containerStyle}>
         <MapView
