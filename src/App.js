@@ -61,6 +61,7 @@ class App extends React.Component {
     }
 }
 
+//layout on sidemenu/ JG 13/4 
 const CustomDrawerContentComponent = (props) => (
     <Container>
         <Header style={{ height: 200, backgroundColor: 'white' }}>
@@ -76,6 +77,8 @@ const CustomDrawerContentComponent = (props) => (
     </Container>
 )
 
+/*Sidemenu with directions to which page if clicking on an option
+InitialRouteName is which page to start on when calling MyApp/JG 13/4 */
 const MyApp = DrawerNavigator({
 
     Map: {
@@ -101,6 +104,7 @@ const MyApp = DrawerNavigator({
 
 export default App;
 
+//style for the side menu/ JG 13/4
 styles = StyleSheet.create({
     container: {
         flex: 1,
