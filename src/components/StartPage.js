@@ -123,9 +123,6 @@ const styles = {
     seeMapStyle: {
         backgroundColor: '#fff'
     },
-  
-
-  
 }
 
 //Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)

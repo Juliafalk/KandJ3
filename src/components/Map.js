@@ -152,9 +152,7 @@ class Map extends Component {
           ref={c => this.mapView = c}
           onPress={this.onMapPress}
         >
-          {this.state.wayPoints.map((coordinate, index) =>
-            <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
-          )}
+      
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
@@ -198,6 +196,15 @@ class Map extends Component {
     );
   }
 }
+
+/*
+  //to add markers at the coords for the waypoints insert this at row ish 155
+  //inbetween the <MapView/> and <MapViewDirections/>
+
+  {this.state.wayPoints.map((coordinate, index) =>
+    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
+  )}
+*/
 
 const styles = {
   containerStyle: {
