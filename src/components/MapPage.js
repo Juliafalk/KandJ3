@@ -23,10 +23,11 @@ class MapPage extends React.Component {
         <View>
                     <Header>
                         <Left>
-                            <Icon name='ios-menu'/>
+                            <Icon name='ios-menu' onPress={() =>
+                        this.props.navigation.navigate('DrawerOpen')}/>
                         </Left>
                         <Body>
-                            <Title>Happy Running!</Title>
+                            <Title>Map</Title>
                         </Body>
                     <Right />
                     </Header>
