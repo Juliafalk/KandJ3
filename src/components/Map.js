@@ -39,7 +39,7 @@ class Map extends Component {
     this.mapView = null;
   }
 
-  watchID: ?number = null
+  watchID: ?number = null //JL 13/4: from tutorial, red marked but it works!
 
   //JL 13/4: retrieves the user's location and sets it as the initialPosition
   componentDidMount() {
