@@ -7,14 +7,13 @@ import { View, TouchableOpacity, Text, StyleSheet, Image  } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
 import MapPage from './MapPage'; 
 import { MyCard, MyCardSection} from './common';
-import { Button, Icon } from 'native-base';
 import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
 import LogPage from './LogPage';
 import FavoritePage from './FavoritePage';
 import SettingsScreen from './SettingsScreen';
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import { Container, Content, Header, Body, Icon } from 'native-base';
+import { Container, Content, Header, Body, Button, Icon } from 'native-base';
 
 //This is the first page / JF (11/4)
 //Map button will not be visible later. 
