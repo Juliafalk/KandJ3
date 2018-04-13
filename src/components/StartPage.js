@@ -3,13 +3,17 @@ Also it is good for us to be able to work on diffrent files like Login, CreateAc
 The code navigates to correst pages with SwitchNavigator. / JF (11/4)
 */
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Image  } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
 import MapPage from './MapPage'; 
 import { MyCard, MyCardSection} from './common';
-import { Button, Icon } from 'native-base';
 import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
+import LogPage from './LogPage';
+import FavoritePage from './FavoritePage';
+import SettingsScreen from './SettingsScreen';
+import { DrawerNavigator, DrawerItems } from 'react-navigation';
+import { Container, Content, Header, Body, Button, Icon } from 'native-base';
 
 //This is the first page / JF (11/4)
 //Map button will not be visible later. 
@@ -97,9 +101,9 @@ class TheMap extends React.Component {
     };
     render () {
         return (
-            <View>
-                <MapPage /> 
-            </View> 
+            <Container>
+                <MyApp /> 
+            </Container> 
         );
     }
 };
@@ -125,7 +129,46 @@ const styles = {
     seeMapStyle: {
         backgroundColor: '#fff'
     },
-}
+};
+
+const CustomDrawerContentComponent = (props) => (
+    <Container>
+        <Header style={{ height: 200, backgroundColor: 'white' }}>
+            <Body>
+                <Image
+                style={otherStyles.drawerImage}
+                source={require('./Runit_logo.png')}/>
+            </Body>
+        </Header>
+        <Content>
+            <DrawerItems {...props}/>
+        </Content>
+    </Container>
+);
+
+const MyApp = DrawerNavigator({
+
+    Map: {
+        screen: MapPage
+    },
+    Log: {
+        screen: LogPage
+    },
+    Favorites: {
+        screen: FavoritePage
+    },
+    Settings: {
+        screen: SettingsScreen
+    },
+}, {
+    initialRouteName: 'Map',
+    contentComponent: CustomDrawerContentComponent,
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle' 
+    
+});
+
 
 //Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)
 export default SwitchNavigator({
@@ -134,3 +177,18 @@ export default SwitchNavigator({
     CreateAccount: { screen: CreateAccountScreen },
     MapView: {screen: TheMap}
 });
+
+otherStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    drawerImage: {
+        height: 150,
+        width: 150,
+        borderRadius: 75
+    }
+})
+
