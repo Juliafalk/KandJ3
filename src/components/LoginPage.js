@@ -2,10 +2,10 @@
 The Loginpage is placed on an card in App.js
 The user can use/ JF (12/4) */
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import firebase from 'firebase';
 import { MyCard, MyCardSection, MySpinner, MyInputLogin } from './common';
-import { Button } from 'native-base';
+import { Button, Body, Icon, Left} from 'native-base';
 
 class LoginPage extends Component { 
     state = { email: '', password: '', error: '', loading: false };
@@ -18,8 +18,7 @@ class LoginPage extends Component {
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(this.onLoginSuccess.bind(this)) //need to bind, passing of to promise, dont know the context = need to bind. 
             .catch(this.onLoginFailed.bind(this));
-            //    firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
-            //        .then(this.onLoginSuccess.bind(this))
+
     }
 
     onLoginFailed() {
@@ -44,9 +43,11 @@ class LoginPage extends Component {
         }
 
         return (
-            <Button style={styles.loginButton} onPress={this.onButtonPress.bind(this)}>
-                <Text style={styles.loginButtonText}>Log in</Text>
-            </Button>
+            <View style={{flex: 1, justifyContent: 'center'}}>
+                <Button block style={styles.loginButton} onPress={this.onButtonPress.bind(this)}> 
+                    <Text style={styles.loginButtonText}>Login </Text>  
+                </Button>
+            </View>
         );
          
     }
@@ -56,20 +57,24 @@ class LoginPage extends Component {
             <MyCard>
                 <MyCardSection>
                     <MyInputLogin
+                    style={{alignSelf: 'center'}}
                     placeholder="user@gmail.com"
-                    label="Email:"
                     value={this.state.email}
                     onChangeText={email => this.setState({ email })}
+                    iconType={"FontAwesome"} 
+                    iconName={'user-o'} 
                     />
                 </MyCardSection>
-
+               
                 <MyCardSection>
                     <MyInputLogin
                     placeholder="password"
-                    label="Password: "
                     secureTextEntry={true}
                     value={this.state.password}
                     onChangeText={password => this.setState({ password })}
+                    iconType={"Entypo"} 
+                    iconName={'key'} 
+                    //Vill vi ha nyckel?? / JF (13/4)
                     />
                 </MyCardSection>
 
@@ -80,7 +85,6 @@ class LoginPage extends Component {
                 <MyCardSection>
                     {this.renderButton()}
                 </MyCardSection>
-
             </MyCard>
         );
     };
@@ -90,25 +94,21 @@ const styles = {
     errorTextStyle: {
         fontSize: 20,
         alignSelf: 'center',
-        color: 'red'
+        color: '#a80000',
+        fontFamily: 'GillSans-SemiBold'
     },
     loginButton: {
         backgroundColor: '#3a88e8',
-        width: '100%'
-    },
-    //Denna text ska centreras sen, vet ej hur man gör
-    loginButtonText: {
-        //flexDirection: 'row',
+        width: '40%',
         alignSelf: 'center',
-        flex: 1,
-        justifyContent: 'center',
-        fontSize: 20, 
-        fontWeight: '600',
-        //paddingTop: 10,
-        paddingBottom: 10,
+        
+    },
+    loginButtonText: {
         color: 'white',
-        marginLeft: 10
+        fontSize: 20,
+        fontFamily: 'GillSans-Light',
     }
+
 }
 
 //Error message will only be seen if something goes wrong

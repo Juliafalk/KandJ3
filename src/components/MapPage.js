@@ -21,15 +21,15 @@ class MapPage extends React.Component {
         console.log(this.state)
         return (
         <View>
-                    <Header>
-                        <Left>
-                            <Icon name='ios-menu'/>
-                        </Left>
-                        <Body>
-                            <Title>Happy Running!</Title>
-                        </Body>
-                    <Right />
-                    </Header>
+            <Header>
+                <Left>
+                    <Icon name='ios-menu'/>
+                </Left>
+                <Body>
+                    <Title>Happy Running!</Title>
+                </Body>
+                <Right />
+            </Header>
             <View style={{
             height: '80%',
             paddingBottom: 10}}>
