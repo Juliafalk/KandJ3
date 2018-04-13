@@ -3,30 +3,44 @@ Also it is good for us to be able to work on diffrent files like Login, CreateAc
 The code navigates to correst pages with SwitchNavigator. / JF (11/4)
 */
 import React, { Component } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
 import MapPage from './MapPage'; 
-import { MyButton, MyCard, MyCardSection, MyHeader } from './common';
+import { MyCard, MyCardSection} from './common';
+import { Button, Icon } from 'native-base';
 import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
 
 //This is the first page / JF (11/4)
+//Map button will not be visible later. 
 class StartPage extends React.Component {
     static navigationOptions = {
         title: 'Home'
     };
     render() {
         return (
-        <View>
-            <MyHeader headerText="runRouter" />
-                <LoginPage />
-                <MyCardSection>
-                    <MyButton onPress={this.CreateAccount}> Create a new account </MyButton>
-                </MyCardSection>
-                <MyCardSection style={{ flex: 1}}>
-                    <MyButton onPress={this.SeeMap}> See the map :) </MyButton>
-                </MyCardSection>
-            </View>
+        <View style={{justifyContent: 'center', height: '100%'}}>
+            <MyCardSection>
+                <Icon type="Foundation" name='map' style={{fontSize: 100}}/>
+            </MyCardSection>
+                
+            <LoginPage />
+                
+            <MyCardSection>
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <Text style={styles.orText}>Or.. </Text>
+                    <Button block style={styles.createAccountStyle} onPress={this.CreateAccount}> 
+                        <Text style={styles.createAccountText}>Create a new account</Text>
+                    </Button> 
+                </View>
+            </MyCardSection>
+
+            <MyCardSection style={{ flex: 1}}>
+                <Button block style={styles.seeMapStyle}onPress={this.SeeMap}> 
+                    <Text>See the map </Text>
+                </Button>
+            </MyCardSection>
+        </View>
         );
     }
 
@@ -56,7 +70,7 @@ class Login extends React.Component {
             </View>
         );
     }
-}
+};
 
 //This class returns the CreateAccount Screens / JF (11/4)
 class CreateAccountScreen extends React.Component {
@@ -70,7 +84,7 @@ class CreateAccountScreen extends React.Component {
             </View>
         );
     }
-}
+};
 
 /*This class resturns the map. 
 So far the map is placed on card, because some stylingsproblems.
@@ -87,6 +101,31 @@ class TheMap extends React.Component {
             </View> 
         );
     }
+};
+
+const styles = {
+    orText: {
+        alignSelf: 'center',
+        fontSize: 17,
+        fontFamily: 'GillSans-LightItalic',
+        
+    },
+    createAccountStyle: {
+        backgroundColor: '#fcfcfc',
+        alignSelf: 'center',
+        width: '60%'
+    },
+    createAccountText: {
+        fontSize: 18,
+        fontFamily: 'GillSans-Light',
+        textDecorationLine: 'underline'
+    },
+    seeMapStyle: {
+        backgroundColor: '#fff'
+    },
+  
+
+  
 }
 
 //Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)
