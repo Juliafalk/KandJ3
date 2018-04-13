@@ -108,6 +108,7 @@ const styles = {
         alignSelf: 'center',
         fontSize: 17,
         fontFamily: 'GillSans-LightItalic',
+        marginBottom: 10,
         
     },
     createAccountStyle: {

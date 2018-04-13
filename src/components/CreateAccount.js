@@ -6,7 +6,8 @@ and the GoBack function / JF (11/4) */
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
-import { MyButton, MyCard, MyCardSection, MyHeader, MyInputLogin, MySpinner } from './common';
+import { Button, Icon, Header, Left, Right, Body, Title } from 'native-base';
+import { MyCard, MyCardSection, MyHeader, MyInputLogin, MyInputCreateAccount, MySpinner } from './common';
 import StartPage from './StartPage';
 import firebase from 'firebase';
 
@@ -61,9 +62,9 @@ class CreateAccount extends React.Component {
         }
 
         return (
-            <MyButton onPress={this.onButtonPress.bind(this)}>
-                <Text>Create Account</Text>
-            </MyButton>
+                <Button block style={styles.createAccountButton} onPress={this.onButtonPress.bind(this)}>
+                    <Text style={styles.createAccountButtonText}>Create Account</Text>
+                </Button>
         );
          
     }
@@ -71,10 +72,17 @@ class CreateAccount extends React.Component {
     render () {
             return (
                 <View>
-                <MyHeader headerText="Create Account" />
+                <Header style={styles.headerStyle}>
+                <Body>
+                    <Text style={styles.headerStyleText}>Create your account</Text>
+                </Body>
+                </Header>
+                <View style={{justifyContent: 'center', height: '88%'}}>
+                <Icon type="FontAwesome" name="user-plus" style={styles.iconStyle} />
                 <MyCard>
                     <MyCardSection>
-                        <MyInputLogin 
+                        <MyInputCreateAccount 
+                        label="Name: "
                         placeholder="Enter name"
                         label="Name:"
                         value={this.state.name}
@@ -82,8 +90,8 @@ class CreateAccount extends React.Component {
                     </MyCardSection>
 
                                     
-                     <MyCardSection>
-                        <MyInputLogin 
+                    <MyCardSection>
+                        <MyInputCreateAccount 
                         placeholder="Age, ex. 22"
                         label="Age:"
                         value={this.state.age}
@@ -91,7 +99,7 @@ class CreateAccount extends React.Component {
                     </MyCardSection>
 
                     <MyCardSection>
-                        <MyInputLogin
+                        <MyInputCreateAccount 
                         placeholder="user@gmail.com"
                         label="Email:"
                         value={this.state.email}
@@ -100,7 +108,7 @@ class CreateAccount extends React.Component {
                     </MyCardSection>
     
                     <MyCardSection>
-                        <MyInputLogin
+                        <MyInputCreateAccount 
                         placeholder="password, min 6 characters"
                         label="Password: "
                         secureTextEntry={true}
@@ -110,7 +118,7 @@ class CreateAccount extends React.Component {
                     </MyCardSection>
 
                     <MyCardSection>
-                        <MyInputLogin
+                        <MyInputCreateAccount 
                         placeholder="repeat password"
                         label="Password: "
                         secureTextEntry={true}
@@ -124,10 +132,14 @@ class CreateAccount extends React.Component {
                     </MyCardSection>
 
                     <MyCardSection>
-                        <MyButton onPress={this.GoBack}>Go back</MyButton>
+                        <Button block style={styles.goBackButton} onPress={this.GoBack}>
+                        <Icon type="Ionicons" name="ios-arrow-back" style={{color:'black', fontSize: 15}}/> 
+                            <Text style={styles.goBackButtonText}>Go back</Text>
+                        </Button>
                     </MyCardSection>
                 </MyCard>
-            </View>
+                </View>
+                </View>
             );
         };
 
@@ -145,6 +157,45 @@ class GoBackStartPage extends React.Component {
         return (
         <StartPage />
         );
+    }
+}
+
+const styles = {
+    headerStyle: {
+        height: 80
+
+    },
+    headerStyleText: {
+        fontFamily: 'GillSans',
+        fontSize: 35,
+    },
+    iconStyle: {
+        fontSize: 60,
+        color: '#eaeaea',
+        alignSelf: 'center'
+    },
+    createAccountButton: { 
+        backgroundColor: '#65bc58',
+        width: '50%',
+        alignSelf: 'center',
+    },
+    createAccountButtonText: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'GillSans-Light',
+        
+    },
+    goBackButton: {
+        backgroundColor: '#fcfcfc',
+        alignSelf: 'center',
+        width: '40%',
+    },
+    goBackButtonText: {
+        fontFamily: 'GillSans',
+        fontSize: 18,
+        //To center the button text
+        //Rember to change the margin if the icon size is changed. 
+        marginRight: 15
     }
 }
 

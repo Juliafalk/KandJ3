@@ -100,8 +100,7 @@ const styles = {
     loginButton: {
         backgroundColor: '#3a88e8',
         width: '40%',
-        alignSelf: 'center',
-        
+        alignSelf: 'center',    
     },
     loginButtonText: {
         color: 'white',
