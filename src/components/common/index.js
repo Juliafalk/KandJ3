@@ -7,3 +7,4 @@ export * from './MyHeader';
 export * from './MyInput';
 export * from './MySpinner';
 export * from './MyInputLogin';
+export * from './MyInputCreateAccount'
