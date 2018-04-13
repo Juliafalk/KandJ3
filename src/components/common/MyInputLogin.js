@@ -1,12 +1,17 @@
 import React from 'react';
 import { View, Text, TextInput } from 'react-native';
+import { Icon } from 'native-base';
 
-const MyInputLogin = ({ label, value, onChangeText, placeholder, secureTextEntry }) => {
-    const { inputStyle, labelStyle, containerStyle } = styles;
+const MyInputLogin = ({ value, onChangeText, placeholder, secureTextEntry, iconType, iconName }) => {
+    const { inputStyle, containerStyle, iconStyle } = styles;
 
     return (
         <View style={containerStyle}>
-            <Text style={labelStyle}>{label}</Text>
+            <Icon 
+            type={iconType}
+            name={iconName}
+            style={iconStyle}
+            />
             <TextInput
             secureTextEntry={secureTextEntry}
             placeholder={placeholder}
@@ -21,24 +26,30 @@ const MyInputLogin = ({ label, value, onChangeText, placeholder, secureTextEntry
 
 const styles = {  
     inputStyle: {
-        backgroundColor: '#fff',
-        paddingRight: 5,
-        paddingLeft: 5,
+        backgroundColor: '#ededed',
+        //To get the text in the center, because of the icon
+        //Remeber to change the margin if you change the iconStyle / JF (13/4)
+        marginRight: 25*1.1 + 5,
+        padding: 5,
         fontSize: 16,
         lineHeight: 23,
-        flex: 2.5,
-        borderRadius: 5
-    },
-    labelStyle: {
-        fontSize: 16,
-        paddingLeft: 5, 
-        flex: 1
+        width: '60%',
+        borderRadius: 5,
+        height: 40,
+        alignItems: 'center',
+
     },
     containerStyle: {
-        height: 40,
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center', 
+    },
+    iconStyle: {
+        marginTop: 5, 
+        marginRight: 5,
+        fontSize: 25,
+        width: 25*1.1
     }   
     };
 

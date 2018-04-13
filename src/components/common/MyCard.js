@@ -14,14 +14,6 @@ const MyCard = (props) => {
 
 const styles = {
     containerStyle: {
-        borderWidth: 1, 
-        borderRadius: 5, 
-        borderColor: '#fff',
-        //borderBottomWidth: 0,
-        shadowColor: '#53607c',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 6, 
         elevation: 1,
         marginLeft: 10,
         padding: 5,
@@ -30,8 +22,6 @@ const styles = {
         justifyContent: 'center',
         flexDirection: 'column',
         alignItems: 'center',
-        //height: null,
-        //width: null
     }, 
     textStyle: {
         fontSize: 20,

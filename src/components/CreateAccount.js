@@ -119,7 +119,6 @@ class CreateAccount extends React.Component {
                         />
                     </MyCardSection>
                     
-    
                     <MyCardSection>
                         {this.renderButton()}
                     </MyCardSection>
