@@ -1,26 +1,19 @@
 import React, { Component } from 'react';
-import { AppRegistry, Dimensions, StyleSheet, View } from 'react-native';
+import { 
+  AppRegistry, 
+  Dimensions, 
+  View } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Button, Input } from './common';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE = 59.85090049999999;
-const LONGITUDE = 17.630009299999983;
-const LATITUDE_DELTA = 0.0922; //JL 11/4: I don't know what this is, probably something to convert lat,lng to distance?
+const LATITUDE_DELTA = 0.0922; //JL 13/4: 'the angle in which you're viewing', a universal value
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
-//JL 11/4: later: retrieve baselocation with google maps geolocation
-const BaseLocation = {
-  latitude: 59.85090049999999, //use variable LATITUDE from above
-  longitude: 17.630009299999983 //use variable LONGITUDE from above
-}
 
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
-
-const routeResult = [];
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyDtLXi70mT6q7gwxSgCGiBdxzGXf1NrfPc';
 
@@ -28,21 +21,69 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
-
-    //JL 11/4: the directionsService will create a route through the points in this.state.coordinates
     this.state = {
-      coordinates: [],
-      distance: ''
+      initialPosition: {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0
+      },
+      markerPosition: {
+        latitude: 0,
+        longitude: 0
+      },
+      wayPoints: [],
+      wantedDistance: ''
     }
 
     this.mapView = null;
   }
 
+  watchID: ?number = null
+
+  //JL 13/4: retrieves the user's location and sets it as the initialPosition
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition((position) => {
+      var lat = parseFloat(position.coords.latitude)
+      var long = parseFloat(position.coords.longitude)
+
+      var initialRegion = {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      }
+
+      this.setState({initialPosition: initialRegion})
+      this.setState({markerPosition: initialRegion})
+    }, (error) => alert(JSON.stringify(error)),
+    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
+
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      var lat = parseFloat(position.coords.latitude)
+      var long = parseFloat(position.coords.longitude)
+    
+      var lastRegion = {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      }
+
+      this.setState({initialPosition: lastRegion})
+      this.setState({markerPosition: lastRegion})
+    })
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID)
+  }
+
   //JL 11/4: press on the map and add another point that the route will go through
   onMapPress = (e) => {
     this.setState({
-      coordinates: [
-        ...this.state.coordinates,
+      wayPoints: [
+        ...this.state.wayPoints,
         e.nativeEvent.coordinate,
       ],
     });
@@ -51,27 +92,27 @@ class Map extends Component {
   /*JL 11/4: this is a rather complicated function but I will try to explain it in a simple way
   we create a center point of a circle with a radius that is dependent on the length of the route
   from the center point we create [circlePoints] number of waypoints in a perfect circle around the center
-  we add the startpoint [BaseLocation], all the generated waypoint and the endpoint [BaseLocation] to
+  we add the startpoint [this.state.initialPosition], all the generated waypoint and the endpoint [this.state.initialPosition] to
   the array waypoints
-  we then set this.state.coordinates to waypoints and when rendered, the directionService will make a route 
+  we then set this.state.wayPoints to waypoints and when rendered, the directionService will make a route 
   through these points*/
   routeGenerator(length) {
     lengthInMeters = length*1000;
-    lengthInMeters = lengthInMeters*0.8; //to compensate since the generated route is 'always' longer t
-    waypoints[0] = BaseLocation;
+    lengthInMeters = lengthInMeters*0.8; //only takes 80% of the input to compensate, since the generated route is almost 'always' too long
+    waypoints[0] = this.state.initialPosition;
+    var circlePoints = 4;
     const radius = lengthInMeters/2/Math.PI;
-    const circlePoints = 5;
     const deg = [];
     const direction = Math.random()*2*Math.PI;  //in radians
-    //Locate the point that is radius meters away from the Base Location in the direction chosen.
+    //Locate the point that is radius meters away from the initialPosition in the direction chosen.
     //length assumed in meters, and then deltas in degrees.
     var dx = radius*Math.cos(direction); //convert the direction from radians to degrees
     var dy = radius*Math.sin(direction);
-    var delta_lat = dy/110540;
-    var delta_lng = dx/(111320*Math.cos(BaseLocation.latitude*Math.PI/180));
+    var delta_lat = dy/110540; //not sure about the numbers 110540 and 111320, but hey ho it works!
+    var delta_lng = dx/(111320*Math.cos(this.state.initialPosition.latitude*Math.PI/180));
     const center = {
-      latitude: BaseLocation.latitude+delta_lat,
-      longitude: BaseLocation.longitude+delta_lng
+      latitude: this.state.initialPosition.latitude+delta_lat,
+      longitude: this.state.initialPosition.longitude+delta_lng
     }
     //Find circlePoints other points to use
     //First, call the initial direction direction+180, since we are looking in the opposite direction.
@@ -90,40 +131,36 @@ class Map extends Component {
         }
         waypoints[i] = nextCoord;
     }
-    waypoints[circlePoints+1] = BaseLocation;
-    //console.log('turen blir lite för lång')
+    waypoints[circlePoints+1] = this.state.initialPosition;
 
     this.setState({
-      coordinates: waypoints
+      wayPoints: waypoints
     });
   }
   
-  /*JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
-  right now I give the routeGenerator a static input of 7000m = 7km
-  this will be generically changed when I add an input field for the user to use*/
+  //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
    
     return (
       <View style={styles.containerStyle}>
       <MapView
-        initialRegion={{
-          latitude: LATITUDE,
-          longitude: LONGITUDE,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        }}
+        provider={"google"}
+        showsUserLocation
+        showsMyLocationButton
+        showsCompass
+        region={this.state.initialPosition}
         style={styles.mapStyle}
         ref={c => this.mapView = c}
         onPress={this.onMapPress}
       >
-        {this.state.coordinates.map((coordinate, index) =>
+        {this.state.wayPoints.map((coordinate, index) =>
           <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
         )}
-        {(this.state.coordinates.length >= 2) && (
+        {(this.state.wayPoints.length >= 2) && (
           <MapViewDirections
-            origin={this.state.coordinates[0]}
-            waypoints={ (this.state.coordinates.length > 2) ? this.state.coordinates.slice(1, -1): null}
-            destination={this.state.coordinates[this.state.coordinates.length-1]}
+            origin={this.state.wayPoints[0]}
+            waypoints={ (this.state.wayPoints.length > 2) ? this.state.wayPoints.slice(1, -1): null}
+            destination={this.state.wayPoints[this.state.wayPoints.length-1]}
             mode={'walking'}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={3}
@@ -134,14 +171,13 @@ class Map extends Component {
             }}
             
             onReady={(result) => {
-              //console.log(result)
-              console.log(result.distance)
+              console.log('total_distance: ' + result.distance)
               this.mapView.fitToCoordinates(result.coordinates, {
                 edgePadding: {
-                  right: (width / 20),
-                  bottom: (height / 20),
-                  left: (width / 20),
-                  top: (height / 20),
+                  right: (width / 15),
+                  bottom: (height / 15),
+                  left: (width / 15),
+                  top: (height / 15),
                 }
               });
             }}
@@ -150,19 +186,17 @@ class Map extends Component {
             }}
           />
         )}
-       
       </MapView>
       <Input
         placeholder="Enter distance..."
         label="km"
-        value={this.state.distance}
-        onChangeText={userInput => this.setState({ distance: userInput })}
+        value={this.state.wantedDistance}
+        onChangeText={userInput => this.setState({ wantedDistance: userInput })}
       />
-      <Button onPress={() => this.routeGenerator(this.state.distance)}>Create Route</Button>
+      <Button onPress={() => this.routeGenerator(this.state.wantedDistance)}>Create Route</Button>
       </View>
     );
   }
- 
 }
 
 const styles = {
