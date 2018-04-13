@@ -4,10 +4,15 @@ if startpage or map should be shown direct (like if the user already is signed i
 / JF (11/4)
 */
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import firebase from 'firebase';
 import StartPage from './components/StartPage';
 import MapPage from './components/MapPage';
+import LogPage from './components/LogPage';
+import FavoritePage from './components/FavoritePage';
+import SettingsScreen from './components/SettingsScreen';
+import { DrawerNavigator, DrawerItems } from 'react-navigation';
+import { Container, Content, Header, Body, Icon } from 'native-base';
 
 class App extends React.Component {
 
@@ -39,7 +44,7 @@ class App extends React.Component {
     renderContent() {
         switch(this.state.loggedIn) {
             case true:
-                return <MapPage />;
+                return <MyApp />;
             case false:
                 return <StartPage />;
             default:
@@ -49,10 +54,63 @@ class App extends React.Component {
 
     render()  {
         return(
-            <View>
+            <Container>
            {this.renderContent()};    
-           </View>
+           </Container>
         );
     }
 }
+
+const CustomDrawerContentComponent = (props) => (
+    <Container>
+        <Header style={{ height: 200, backgroundColor: 'white' }}>
+            <Body>
+                <Image
+                style={styles.drawerImage}
+                source={require('./components/Runit_logo.png')}/>
+            </Body>
+        </Header>
+        <Content>
+            <DrawerItems {...props}/>
+        </Content>
+    </Container>
+)
+
+const MyApp = DrawerNavigator({
+
+    Map: {
+        screen: MapPage
+    },
+    Log: {
+        screen: LogPage
+    },
+    Favorites: {
+        screen: FavoritePage
+    },
+    Settings: {
+        screen: SettingsScreen
+    },
+}, {
+    initialRouteName: 'Map',
+    contentComponent: CustomDrawerContentComponent,
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle' 
+    
+})
+
 export default App;
+
+styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    drawerImage: {
+        height: 150,
+        width: 150,
+        borderRadius: 75
+    }
+})
