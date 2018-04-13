@@ -19,6 +19,7 @@ class StartPage extends React.Component {
     };
     render() {
         return (
+        
         <View style={{justifyContent: 'center', height: '100%'}}>
             <MyCardSection>
                 <Icon type="Foundation" name='map' style={{fontSize: 100}}/>

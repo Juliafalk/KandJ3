@@ -4,14 +4,15 @@ if startpage or map should be shown direct (like if the user already is signed i
 / JF (11/4)
 */
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, ImageBackground } from 'react-native';
 import firebase from 'firebase';
 import StartPage from './components/StartPage';
 import MapPage from './components/MapPage';
+import WaitingPage from './components/WaitingPage';
 
 class App extends React.Component {
 
-    state = { loggedIn: false };
+    state = { loggedIn: null };
 
     componentWillMount() {
         firebase.initializeApp({
@@ -36,14 +37,21 @@ class App extends React.Component {
         });
     }
 
+    componentDidMount () {
+        console.log('didMount')
+        console.log(this.state)
+    }
+
     renderContent() {
+        console.log('content')
+        console.log(this.state.loggedIn)
         switch(this.state.loggedIn) {
             case true:
                 return <MapPage />;
             case false:
                 return <StartPage />;
             default:
-                return <Spinner size="large" />;
+                return <WaitingPage />;
         }
     }
 
