@@ -14,6 +14,7 @@ import FavoritePage from './FavoritePage';
 import SettingsScreen from './SettingsScreen';
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
 import { Container, Content, Header, Body, Button, Icon } from 'native-base';
+//JL: should add an index file to reduce imports
 
 //This is the first page / JF (11/4)
 //Map button will not be visible later. 
@@ -33,17 +34,13 @@ class StartPage extends React.Component {
                 
             <MyCardSection>
                 <View style={{flex: 1, justifyContent: 'center'}}>
-                    <Text style={styles.orText}>Or.. </Text>
                     <Button block style={styles.createAccountStyle} onPress={this.CreateAccount}> 
-                        <Text style={styles.createAccountText}>Create a new account</Text>
+                        <Text style={styles.createAccountText}>Create account</Text>
                     </Button> 
+                    <Button block style={styles.seeMapStyle}onPress={this.SeeMap}> 
+                        <Text>See the map</Text>
+                    </Button>
                 </View>
-            </MyCardSection>
-
-            <MyCardSection style={{ flex: 1}}>
-                <Button block style={styles.seeMapStyle}onPress={this.SeeMap}> 
-                    <Text>See the map </Text>
-                </Button>
             </MyCardSection>
         </View>
         );
@@ -109,13 +106,6 @@ class TheMap extends React.Component {
 };
 
 const styles = {
-    orText: {
-        alignSelf: 'center',
-        fontSize: 17,
-        fontFamily: 'GillSans-LightItalic',
-        marginBottom: 10,
-        
-    },
     createAccountStyle: {
         backgroundColor: '#fcfcfc',
         alignSelf: 'center',

@@ -26,7 +26,9 @@ class Map extends Component {
     this.state = {
       initialPosition: {
         latitude: LATITUDE,
-        longitude: LONGITUDE
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
       },
       wayPoints: [],
       wantedDistance: ''
@@ -100,17 +102,14 @@ class Map extends Component {
       <View style={styles.containerStyle}>
         <MapView
           provider={"google"}
-          showsUserLocation
+          showsUserLocation={true}
           showsMyLocationButton
           showsCompass
-          initialPosition={this.state.initialPosition}
+          initialRegion={this.state.initialPosition}
           style={styles.mapStyle}
           ref={c => this.mapView = c}
-          onPress={this.onMapPress}
-        >
-          {this.state.wayPoints.map((coordinate, index) =>
-        <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
-      )}
+          onPress={this.onMapPress}>
+          
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
@@ -124,7 +123,6 @@ class Map extends Component {
               onStart={(params) => {
                 //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
               }}
-              
               onReady={(result) => {
                 console.log('total_distance: ' + result.distance)
                 this.mapView.fitToCoordinates(result.coordinates, {
@@ -142,7 +140,6 @@ class Map extends Component {
             />
           )}
         </MapView>
-        
         <MyInput
           placeholder="Enter distance..."
           label="km"

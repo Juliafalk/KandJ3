@@ -18,7 +18,6 @@ class LoginPage extends Component {
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(this.onLoginSuccess.bind(this)) //need to bind, passing of to promise, dont know the context = need to bind. 
             .catch(this.onLoginFailed.bind(this));
-
     }
 
     onLoginFailed() {
