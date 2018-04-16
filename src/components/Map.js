@@ -28,12 +28,15 @@ class Map extends Component {
     super(props);
 
     this.state = {
+      //intialPosition - to generate routes, it is the start position / JF (16/4)
       initialPosition: {
       latitude: LATITUDE,
       longitude: LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
     },
+    //initialPositionMarker - to place the marker at the initialPosition, 
+    //ev. could be same as initialPosition / JF (16/4)
     initialPositionMarker: {
       latitude: LATITUDE,
       longitude: LONGITUDE,
@@ -41,6 +44,13 @@ class Map extends Component {
       longitudeDelta: LONGITUDE_DELTA
     },
 
+    //currentPosition - to update the users current position / JF (16/4)
+    currentPosition: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      },
       wayPoints: [],
       wantedDistance: '',
       createRoute: true,
@@ -53,7 +63,8 @@ class Map extends Component {
   
   componentDidMount() {
       navigator.geolocation.getCurrentPosition((position) => {
-      
+     
+      // Here set all the positions, given by the devices current position. 
      this.setState({ initialPosition: {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude, 
@@ -65,7 +76,13 @@ class Map extends Component {
         longitude: position.coords.longitude,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
-      }
+      },
+      currentPosition: {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      },
         //wayPoints: [],
         //wantedDistance: ''
       });   
@@ -81,6 +98,13 @@ class Map extends Component {
               longitude: position.coords.longitude,
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
+          },
+          
+          currentPosition: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
           }
           
         });
@@ -167,22 +191,20 @@ class Map extends Component {
       })
     }
   }
+
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
 
     return (
       <View style={styles.containerStyle}>
-
-      
-
         <MapView
           provider={"google"}
           showsUserLocation={true}
           followUserLocation={true}
-          region={this.state.initialPosition}
-          onRegionChange={ initialPosition => this.setState({initialPosition}) }
-          onRegionChangeComplete={ initialPosition => this.setState({initialPosition}) }
+          region={this.state.currentPosition}
+          onRegionChange={ currentPosition => this.setState({currentPosition}) }
+          onRegionChangeComplete={ currentPosition => this.setState({currentPosition}) }
           showsMyLocationButton
           showsCompass
           style={styles.mapStyle}
