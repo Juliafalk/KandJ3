@@ -81,13 +81,8 @@ class Map extends Component {
               longitude: position.coords.longitude,
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
-          },
-          initialPositionMarker: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
           }
+          
         });
     }
   );
