@@ -42,7 +42,9 @@ class Map extends Component {
     },
 
       wayPoints: [],
-      wantedDistance: ''
+      wantedDistance: '',
+      createRoute: true,
+      startButton: true
     }
     this.mapView = null;  
   }
@@ -155,6 +157,21 @@ class Map extends Component {
       wayPoints: waypoints
     });
   }
+
+  changeDistance(userInput) {
+    console.log(userInput)
+    if (userInput === '') {
+      this.setState({
+        createRoute: true,
+        startButton: true
+      })
+    } 
+    else {
+      this.setState({
+        createRoute: false,
+      })
+    }
+  }
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
@@ -215,21 +232,26 @@ class Map extends Component {
               keyboardType='decimal-pad'
               style={styles.textInputStyle}
               value={this.state.wantedDistance}
-              onChangeText={userInput => this.setState({ wantedDistance: userInput })}
+              onChangeText={userInput => {this.setState({
+                wantedDistance: userInput
+              }), this.changeDistance(userInput)}}
             />
             <Text style={styles.textStyle}>km</Text>
           </View>
           <Button 
             style={styles.createRouteButtonStyle}
-            onPress={() => this.routeGenerator(this.state.wantedDistance)}>
+            disabled={this.state.createRoute}
+            onPress={() => {this.routeGenerator(this.state.wantedDistance), 
+            this.setState({ startButton: false })}}>
               <Text style={styles.buttonTextStyle}>Create Route</Text>
           </Button>
         </View>
         <Button 
           block
           success
+          disabled={this.state.startButton}
           style={styles.startButtonStyle}
-          onPress={() => this.routeGenerator(this.state.wantedDistance)}>
+          onPress={() => alert('Happy running, I will soon time your run!')}>
             <Text style={styles.buttonTextStyle}>Start</Text>
         </Button>
       </View>
