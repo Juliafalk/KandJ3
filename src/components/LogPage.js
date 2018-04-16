@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Scrollview, Alert } from 'react-native';
 import { cardBody, Icon, Button, Container, Header, Content, Left, Body, Title, Right, CardItem, Card } from 'native-base';
 import Moment from 'react-moment';
 
-
+var dt= new Date();
 
 class LogPage extends Component { 
 
@@ -37,8 +37,8 @@ class LogPage extends Component {
                 </Header>
                  <Content>
                     <Card>
-                        <CardItem header>
-                            <Text style={styles.labelStyle}>Todays Date</Text>
+                        <CardItem header bordered style={{ backgroundColor: 'lightgray'}}>
+                            <Text style={styles.labelStyle}>Your run on..(todays date)..</Text>
                         </CardItem>
                         <CardItem>
                             <Button onPress={this.ShowCurrentDate}> 
@@ -70,14 +70,7 @@ const styles = {
         fontSize: 17,
         paddingLeft: 1, 
         flex: 1,
-        fontFamily: 'GillSans',
-    },
-    containerStyle: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center', 
-        padding: 1
+        fontWeight: 'bold', 
     },
 };
 
