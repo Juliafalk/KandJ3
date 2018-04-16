@@ -7,8 +7,6 @@ import {
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Button, Text } from 'native-base';
-import { MyButton, MyInput } from './common';
-
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
