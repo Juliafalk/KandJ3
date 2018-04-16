@@ -20,16 +20,16 @@ class MapPage extends React.Component {
         console.log(this.state)
         return (
         <View>
-                    <Header>
-                        <Left>
-                            <Icon name='ios-menu' onPress={() =>
-                        this.props.navigation.navigate('DrawerOpen')}/>
-                        </Left>
-                        <Body>
-                            <Title>Map</Title>
-                        </Body>
-                    <Right />
-                    </Header>
+            <Header>
+                <Left>
+                <Icon name='ios-menu' onPress={() =>
+                this.props.navigation.navigate('DrawerOpen')}/>
+                </Left>
+                <Body>
+                    <Title>Map</Title>
+                </Body>
+                <Right />
+                </Header>
             <View style={{
                 height: '80%',
                 paddingBottom: 10
