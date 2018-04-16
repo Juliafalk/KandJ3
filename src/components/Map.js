@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { 
-  AppRegistry, 
   Dimensions, 
-  View } from 'react-native';
+  View,
+  TextInput
+} from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { MyButton, MyInput } from './common';
+import { Button, Text } from 'native-base';
 
 
 const { width, height } = Dimensions.get('window');
@@ -96,6 +97,7 @@ class Map extends Component {
   we then set this.state.wayPoints to waypoints and when rendered, the directionService will make a route 
   through these points*/
   routeGenerator(length) {
+
     lengthInMeters = length*1000;
     lengthInMeters = lengthInMeters*0.8; //only takes 80% of the input to compensate, since the generated route is almost 'always' too long
     waypoints[0] = this.state.initialPosition;
@@ -139,6 +141,7 @@ class Map extends Component {
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
+
     return (
       <View style={styles.containerStyle}>
         <MapView
@@ -150,7 +153,9 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
           onPress={this.onMapPress}>
-          
+
+          <MapView.Marker coordinate={this.state.initialPosition} />
+
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
@@ -181,20 +186,36 @@ class Map extends Component {
             />
           )}
         </MapView>
-        <MyInput
-          placeholder="Enter distance..."
-          label="km"
-          value={this.state.wantedDistance}
-          onChangeText={userInput => this.setState({ wantedDistance: userInput })}
-        />
-        <MyButton onPress={() => this.routeGenerator(this.state.wantedDistance)}>Create Route</MyButton>
+        <View style={styles.createRouteContainerStyle}>
+          <View style={styles.inputContainerStyle}>
+            <TextInput
+              keyboardType='decimal-pad'
+              style={styles.textInputStyle}
+              value={this.state.wantedDistance}
+              onChangeText={userInput => this.setState({ wantedDistance: userInput })}
+            />
+            <Text style={styles.textStyle}>km</Text>
+          </View>
+          <Button 
+            style={styles.createRouteButtonStyle}
+            onPress={() => this.routeGenerator(this.state.wantedDistance)}>
+              <Text style={styles.buttonTextStyle}>Create Route</Text>
+          </Button>
+        </View>
+        <Button 
+          block
+          success
+          style={styles.startButtonStyle}
+          onPress={() => this.routeGenerator(this.state.wantedDistance)}>
+            <Text style={styles.buttonTextStyle}>Start</Text>
+        </Button>
       </View>
     );
   }
 }
 
 /*
-  //to add markers at the coords for the waypoints insert this at row ish 155
+  //to add markers at the coords for the waypoints insert this at row ish 113
   //inbetween the <MapView/> and <MapViewDirections/>
 
   {this.state.wayPoints.map((coordinate, index) =>
@@ -204,10 +225,43 @@ class Map extends Component {
 
 const styles = {
   containerStyle: {
-    height: '100%'
+    height: '94%'
   },
   mapStyle: {
-    height: '85%'
+    height: '79%'
+  },
+  createRouteContainerStyle: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  inputContainerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  textInputStyle: {
+    width: '30%',
+    textAlign: 'center',
+    marginRight: 5,
+    borderWidth: 1,
+    borderRadius: 5
+  },
+  textStyle: {
+    fontSize: 25
+  },
+  createRouteButtonStyle: {
+    width: '30%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonTextStyle: {
+    color: 'white',
+    fontSize: 13
+  },
+  startButtonStyle: {
+    margin: 10,
+    marginBottom: 50
   }
 }
 
