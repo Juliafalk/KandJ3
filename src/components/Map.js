@@ -7,17 +7,18 @@ import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { MyButton, MyInput } from './common';
 
+
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE = 59.3415145;
 const LONGITUDE = 18.064416400000027;
 const LATITUDE_DELTA = 0.0922; //JL 13/4: 'the angle in which you're viewing', a universal value
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO; //används ej 
 
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
 
-const GOOGLE_MAPS_APIKEY = 'AIzaSyDtLXi70mT6q7gwxSgCGiBdxzGXf1NrfPc';
+const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 
 class Map extends Component {
 
@@ -25,14 +26,60 @@ class Map extends Component {
     super(props);
     this.state = {
       initialPosition: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0
+      },
+      markerPosition: {
+        latitude: 0,
+        longitude: 0
       },
       wayPoints: [],
       wantedDistance: ''
     }
 
     this.mapView = null;
+  }
+
+  watchID: ?number = null //JL 13/4: from tutorial, red marked but it works!
+
+  //JL 13/4: retrieves the user's location and sets it as the initialPosition
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition((position) => {
+      var lat = parseFloat(position.coords.latitude)
+      var long = parseFloat(position.coords.longitude)
+
+      var initialRegion = {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      }
+
+      this.setState({initialPosition: initialRegion})
+      this.setState({markerPosition: initialRegion})
+    }, (error) => alert(JSON.stringify(error)),
+    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
+
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      var lat = parseFloat(position.coords.latitude)
+      var long = parseFloat(position.coords.longitude)
+    
+      var lastRegion = {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      }
+
+      this.setState({initialPosition: lastRegion})
+      this.setState({markerPosition: lastRegion})
+    })
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID)
   }
 
   //JL 11/4: press on the map and add another point that the route will go through
@@ -103,14 +150,12 @@ class Map extends Component {
           showsUserLocation
           showsMyLocationButton
           showsCompass
-          initialPosition={this.state.initialPosition}
+          region={this.state.initialPosition}
           style={styles.mapStyle}
           ref={c => this.mapView = c}
           onPress={this.onMapPress}
         >
-          {this.state.wayPoints.map((coordinate, index) =>
-        <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
-      )}
+      
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
