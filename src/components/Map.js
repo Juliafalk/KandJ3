@@ -184,10 +184,10 @@ class Map extends Component {
 
 const styles = {
   containerStyle: {
-    height: '100%'
+    height: '94%'
   },
   mapStyle: {
-    height: '100%'
+    height: '79%'
   },
   createRouteContainerStyle: {
     marginTop: 10,
@@ -219,7 +219,8 @@ const styles = {
     fontSize: 13
   },
   startButtonStyle: {
-    margin: 10
+    margin: 10,
+    marginBottom: 50
   }
 }
 
