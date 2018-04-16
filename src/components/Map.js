@@ -6,14 +6,14 @@ import {
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { MyButton, MyInput } from './common';
-
+//import { resolve } from 'dns';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE = 59.3415145;
-const LONGITUDE = 18.064416400000027;
+const LATITUDE = 0;
+const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.0922; //JL 13/4: 'the angle in which you're viewing', a universal value
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO; //används ej 
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
@@ -24,57 +24,54 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       initialPosition: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
-      },
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    },
+
       wayPoints: [],
       wantedDistance: ''
     }
-
-    this.mapView = null;
+    this.mapView = null;  
   }
-
-  watchID: ?number = null //JL 13/4: from tutorial, red marked but it works!
-
+  watchID: ?number = null; //JL 13/4: from tutorial, red marked but it works!
   //JL 13/4: retrieves the user's location and sets it as the initialPosition
+  
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition((position) => {
-      var lat = parseFloat(position.coords.latitude)
-      var long = parseFloat(position.coords.longitude)
-
-      var initialRegion = {
-        latitude: lat,
-        longitude: long,
+      navigator.geolocation.getCurrentPosition((position) => {
+      
+     this.setState({ initialPosition: {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude, 
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
-      }
-
-      this.setState({initialPosition: initialRegion})
-      this.setState({markerPosition: initialRegion})
+      },
+        //wayPoints: [],
+        //wantedDistance: ''
+      });    
     }, (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
 
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      var lat = parseFloat(position.coords.latitude)
-      var long = parseFloat(position.coords.longitude)
-    
-      var lastRegion = {
-        latitude: lat,
-        longitude: long,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
-      }
-
-      this.setState({initialPosition: lastRegion})
-      this.setState({markerPosition: lastRegion})
-    })
+    this.watchID = navigator.geolocation.watchPosition(
+      position => {
+        this.setState({
+          initialPosition: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+          }
+        });
+    }
+  );
   }
 
   componentWillUnmount() {
+    console.log(this.wacthID)
     navigator.geolocation.clearWatch(this.watchID)
   }
 
@@ -144,13 +141,18 @@ class Map extends Component {
         <MapView
           provider={"google"}
           showsUserLocation={true}
+          followUserLocation={true}
+          region={this.state.initialPosition}
+          onRegionChange={ initialPosition => this.setState({initialPosition}) }
+          onRegionChangeComplete={ initialPosition => this.setState({initialPosition}) }
           showsMyLocationButton
           showsCompass
-          initialRegion={this.state.initialPosition}
           style={styles.mapStyle}
           ref={c => this.mapView = c}
-          onPress={this.onMapPress}>
-          
+          onPress={this.onMapPress}
+          >
+
+    
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
