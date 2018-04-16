@@ -36,14 +36,22 @@ class MapPage extends React.Component {
             }}>
             <Map />
             </View>
-            <View style={{ height: '7%'}}>
-                <MyButton onPress={this.onButtonPress.bind(this)}>
-                    <Text>Log out</Text>
-                </MyButton>
-            </View>
+
         </View>
         );
     }
 }
 
 export default MapPage;
+
+
+//the log out button should be on the side menu
+/*
+
+                <View style={{ height: '7%'}}>
+                <MyButton onPress={this.onButtonPress.bind(this)}>
+                    <Text>Log out</Text>
+                </MyButton>
+            </View>
+
+*/
