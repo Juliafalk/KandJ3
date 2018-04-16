@@ -7,35 +7,90 @@ import {
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Button, Text } from 'native-base';
+import { MyButton, MyInput } from './common';
+
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE = 59.3415145;
-const LONGITUDE = 18.064416400000027;
-const LATITUDE_DELTA = 0.0922; //JL 13/4: 'the angle in which you're viewing', a universal value
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const LATITUDE = 0;
+const LONGITUDE = 0;
+const LATITUDE_DELTA = 0.00922; //JL 13/4: 'the angle in which you're viewing', a universal value
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO*0.1;
 
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
 
-const GOOGLE_MAPS_APIKEY = 'AIzaSyDtLXi70mT6q7gwxSgCGiBdxzGXf1NrfPc';
+const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 
 class Map extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       initialPosition: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    },
+    initialPositionMarker: {
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    },
+
+      wayPoints: [],
+      wantedDistance: '',
+      createRoute: true,
+      startButton: true
+    }
+    this.mapView = null;  
+  }
+  watchID: ?number = null; //JL 13/4: from tutorial, red marked but it works!
+  //JL 13/4: retrieves the user's location and sets it as the initialPosition
+  
+  componentDidMount() {
+      navigator.geolocation.getCurrentPosition((position) => {
+      
+     this.setState({ initialPosition: {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude, 
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
-      },
-      wayPoints: [],
-      wantedDistance: ''
-    }
+      }, 
+      initialPositionMarker: {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      }
+        //wayPoints: [],
+        //wantedDistance: ''
+      });   
+      
+    }, (error) => alert(JSON.stringify(error)),
+    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
 
-    this.mapView = null;
+    this.watchID = navigator.geolocation.watchPosition(
+      position => {
+        this.setState({
+          initialPosition: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+          }
+          
+        });
+    }
+  );
+  }
+
+  componentWillUnmount() {
+    console.log(this.wacthID)
+    navigator.geolocation.clearWatch(this.watchID)
   }
 
   //JL 11/4: press on the map and add another point that the route will go through
@@ -97,23 +152,44 @@ class Map extends Component {
       wayPoints: waypoints
     });
   }
+
+  changeDistance(userInput) {
+    console.log(userInput)
+    if (userInput === '') {
+      this.setState({
+        createRoute: true,
+        startButton: true
+      })
+    } 
+    else {
+      this.setState({
+        createRoute: false,
+      })
+    }
+  }
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
 
     return (
       <View style={styles.containerStyle}>
+
+      
+
         <MapView
           provider={"google"}
           showsUserLocation={true}
+          followUserLocation={true}
+          region={this.state.initialPosition}
+          onRegionChange={ initialPosition => this.setState({initialPosition}) }
+          onRegionChangeComplete={ initialPosition => this.setState({initialPosition}) }
           showsMyLocationButton
           showsCompass
-          initialRegion={this.state.initialPosition}
           style={styles.mapStyle}
           ref={c => this.mapView = c}
           onPress={this.onMapPress}>
 
-          <MapView.Marker coordinate={this.state.initialPosition} />
+          <MapView.Marker coordinate={this.state.initialPositionMarker} />
 
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
@@ -151,21 +227,26 @@ class Map extends Component {
               keyboardType='decimal-pad'
               style={styles.textInputStyle}
               value={this.state.wantedDistance}
-              onChangeText={userInput => this.setState({ wantedDistance: userInput })}
+              onChangeText={userInput => {this.setState({
+                wantedDistance: userInput
+              }), this.changeDistance(userInput)}}
             />
             <Text style={styles.textStyle}>km</Text>
           </View>
           <Button 
             style={styles.createRouteButtonStyle}
-            onPress={() => this.routeGenerator(this.state.wantedDistance)}>
+            disabled={this.state.createRoute}
+            onPress={() => {this.routeGenerator(this.state.wantedDistance), 
+            this.setState({ startButton: false })}}>
               <Text style={styles.buttonTextStyle}>Create Route</Text>
           </Button>
         </View>
         <Button 
           block
           success
+          disabled={this.state.startButton}
           style={styles.startButtonStyle}
-          onPress={() => this.routeGenerator(this.state.wantedDistance)}>
+          onPress={() => alert('Happy running, I will soon time your run!')}>
             <Text style={styles.buttonTextStyle}>Start</Text>
         </Button>
       </View>
@@ -184,10 +265,10 @@ class Map extends Component {
 
 const styles = {
   containerStyle: {
-    height: '100%'
+    height: '94%'
   },
   mapStyle: {
-    height: '100%'
+    height: '79%'
   },
   createRouteContainerStyle: {
     marginTop: 10,
@@ -219,7 +300,8 @@ const styles = {
     fontSize: 13
   },
   startButtonStyle: {
-    margin: 10
+    margin: 10,
+    marginBottom: 50
   }
 }
 

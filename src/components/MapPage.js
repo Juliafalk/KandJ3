@@ -17,26 +17,21 @@ class MapPage extends React.Component {
     }
     
     render() {
-        console.log(this.state)
         return (
         <View>
-                    <Header>
-                        <Left>
-                            <Icon name='ios-menu' onPress={() =>
+            <Header>
+                <Left>
+                    <Icon name='ios-menu' onPress={() =>
                         this.props.navigation.navigate('DrawerOpen')}/>
-                        </Left>
-                        <Body>
-                            <Title>Map</Title>
-                        </Body>
-                    <Right />
-                    </Header>
-            <View style={{
-                height: '80%',
-                paddingBottom: 10
-            }}>
-            <Map />
+                </Left>
+                <Body>
+                    <Title>Map</Title>
+                </Body>
+                <Right />
+            </Header>
+            <View>
+                <Map />
             </View>
-
         </View>
         );
     }
@@ -45,7 +40,7 @@ class MapPage extends React.Component {
 export default MapPage;
 
 
-//the log out button should be on the side menu
+//this log out button should be on the side menu
 /*
 
                 <View style={{ height: '7%'}}>

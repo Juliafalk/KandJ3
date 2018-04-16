@@ -3,10 +3,12 @@ Also it is good for us to be able to work on diffrent files like Login, CreateAc
 The code navigates to correst pages with SwitchNavigator. / JF (11/4)
 */
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Image  } from 'react-native';
+import firebase from 'firebase';
 import { SwitchNavigator } from 'react-navigation';
 import MapPage from './MapPage'; 
 import { MyCard, MyCardSection} from './common';
+//import MyApp from './MyApp';
 import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
 import LogPage from './LogPage';
@@ -100,7 +102,7 @@ class TheMap extends React.Component {
         return (
             <Container>
                 <MyApp /> 
-            </Container> 
+            </Container>
         );
     }
 };
@@ -137,8 +139,10 @@ const CustomDrawerContentComponent = (props) => (
     </Container>
 );
 
+
 /*Sidemenu with directions to which page if clicking on an option
 InitialRouteName is which page to start on when calling MyApp/JG 13/4 */
+
 const MyApp = DrawerNavigator({
 
     Map: {
@@ -171,6 +175,7 @@ export default SwitchNavigator({
     MapView: {screen: TheMap}
 });
 
+
 otherStyles = StyleSheet.create({
     container: {
         flex: 1,
@@ -184,4 +189,3 @@ otherStyles = StyleSheet.create({
         borderRadius: 75
     }
 })
-
