@@ -74,7 +74,7 @@ const CustomDrawerContentComponent = (props) => (
         <Header style={{ height: 200, backgroundColor: 'white' }}>
             <Body>
                 <Image
-                style={styles.drawerImage}
+                style={otherStyles.drawerImage}
                 source={require('./components/Runit_logo.png')}/>
             </Body>
         </Header>
