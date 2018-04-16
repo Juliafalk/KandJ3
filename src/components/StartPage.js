@@ -3,7 +3,7 @@ Also it is good for us to be able to work on diffrent files like Login, CreateAc
 The code navigates to correst pages with SwitchNavigator. / JF (11/4)
 */
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image  } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
 import MapPage from './MapPage'; 
 import { MyCard, MyCardSection} from './common';
