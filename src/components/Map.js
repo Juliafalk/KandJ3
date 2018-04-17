@@ -158,6 +158,7 @@ class Map extends Component {
       latitude: this.state.initialPosition.latitude+delta_lat,
       longitude: this.state.initialPosition.longitude+delta_lng
     }
+   
     //Find circlePoints other points to use
     //First, call the initial direction direction+180, since we are looking in the opposite direction.
     deg[0] = direction + Math.PI;
@@ -174,6 +175,7 @@ class Map extends Component {
           longitude: center.longitude+delta_lng
         }
         waypoints[i] = nextCoord;
+        console.log('nextCoord' + nextCoord )
     }
     waypoints[circlePoints+1] = this.state.initialPosition;
 
@@ -248,6 +250,8 @@ class Map extends Component {
           ref={c => this.mapView = c}
           onPress={this.onMapPress}>
 
+          <MapView.Marker coordinate={this.state.initialPositionMarker} />
+
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
@@ -261,19 +265,33 @@ class Map extends Component {
               onStart={(params) => {
                 //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
               }}
+
+                //Generate a new route when the route is 10% to short or to small
+                //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
-                console.log('total_distance: ' + result.distance)
-                this.mapView.fitToCoordinates(result.coordinates, {
-                  edgePadding: {
-                    right: (width / 15),
-                    bottom: (height / 15),
-                    left: (width / 15),
-                    top: (height / 15),
-                  }
-                });
+                if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
+                  console.log('total_distance: ' + result.distance)
+                  this.routeGenerator(this.state.wantedDistance)}
+
+                else if (result.distance > parseFloat(this.state.wantedDistance)*1.1) {
+                  console.log('total_distance: ' + result.distance)
+                  this.routeGenerator(this.state.wantedDistance)
+                }
+                else {
+                  console.log('total_distance: ' + result.distance)
+                  this.mapView.fitToCoordinates(result.coordinates, {
+                    edgePadding: {
+                      right: (width / 15),
+                      bottom: (height / 15),
+                      left: (width / 15),
+                      top: (height / 15),
+                    }
+                  });
+              }
               }}
               onError={(errorMessage) => {
-                // console.log('GOT AN ERROR');
+                 console.log('GOT AN ERROR');
+                 this.routeGenerator(this.state.wantedDistance)
               }}
             />
           )}

@@ -42,11 +42,6 @@ class App extends React.Component {
         });
     }
 
-    componentDidMount () {
-        console.log('didMount')
-        console.log(this.state)
-    }
-
     renderContent() {
         console.log('content')
         console.log(this.state.loggedIn)
