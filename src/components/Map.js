@@ -194,32 +194,51 @@ class Map extends Component {
   startRunning(){
     if (!this.state.startRunning){
       return(
-        <View style={styles.createRouteContainerStyle}>
-          <View style={styles.inputContainerStyle}>
-            <TextInput
-              keyboardType='decimal-pad'
-              style={styles.textInputStyle}
-              value={this.state.wantedDistance}
-              onChangeText={userInput => {this.setState({
-                wantedDistance: userInput
-              }), this.changeDistance(userInput)}}
-            />
-            <Text style={styles.textStyle}>km</Text>
+        <View>
+          <View style={styles.createRouteContainerStyle}>
+            <View style={styles.inputContainerStyle}>
+              <TextInput
+                keyboardType='decimal-pad'
+                style={styles.textInputStyle}
+                value={this.state.wantedDistance}
+                onChangeText={userInput => {this.setState({
+                  wantedDistance: userInput
+                }), this.changeDistance(userInput)}}
+              />
+              <Text style={styles.textStyle}>km</Text>
+            </View>
+            <Button
+              style={styles.createRouteButtonStyle}
+              disabled={this.state.createRoute}
+              onPress={() => {this.routeGenerator(this.state.wantedDistance), 
+              this.setState({ startButton: false })}}>
+                <Text style={styles.buttonTextStyle}>Create Route</Text>
+            </Button>
           </View>
           <Button
-            style={styles.createRouteButtonStyle}
-            disabled={this.state.createRoute}
-            onPress={() => {this.routeGenerator(this.state.wantedDistance), 
-            this.setState({ startButton: false })}}>
-              <Text style={styles.buttonTextStyle}>Create Route</Text>
-          </Button>
-        </View>
+          block
+          success
+          disabled={this.state.startButton}
+          style={styles.startButtonStyle}
+          onPress={() => this.setState({ startRunning: true })}>
+            <Text style={styles.buttonTextStyle}>Start</Text>
+        </Button>
+      </View>
       );
     } else {
       return(
-        <View style={styles.createRouteContainerStyle}>
-          <Text style={styles.textStyle}>Time:</Text>
-        </View>
+        <View>
+          <View style={styles.createRouteContainerStyle}>
+            <Text style={styles.textStyle}>Time:</Text>
+          </View>
+          <Button
+          block
+          danger
+          style={styles.startButtonStyle}
+          onPress={() => this.setState({ startRunning: true })}>
+            <Text style={styles.buttonTextStyle}>Stop</Text>
+        </Button>
+      </View>
       );
     }
   }
@@ -273,14 +292,6 @@ class Map extends Component {
           )}
         </MapView>
         {this.startRunning()}
-        <Button
-          block
-          success
-          disabled={this.state.startButton}
-          style={styles.startButtonStyle}
-          onPress={() => this.setState({ startRunning: true })}>
-            <Text style={styles.buttonTextStyle}>Start</Text>
-        </Button>
       </View>
     );
   }
@@ -303,6 +314,7 @@ const styles = {
     height: '79%'
   },
   createRouteContainerStyle: {
+    height: '22%',
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -332,8 +344,7 @@ const styles = {
     fontSize: 13
   },
   startButtonStyle: {
-    margin: 10,
-    marginBottom: 50
+    margin: 10
   }
 }
 
