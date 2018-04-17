@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+import { Stopwatch } from 'react-native-stopwatch-timer'
 import { Button, Text } from 'native-base';
 
 const { width, height } = Dimensions.get('window');
@@ -53,12 +54,16 @@ class Map extends Component {
       wantedDistance: '',
       createRoute: true,
       startButton: true,
-      startRunning: false
+      startRunning: false,
+      stopwatchStart: false,
+      stopwatchReset: false,
+      totalDuration: 0,
     }
     this.mapView = null;  
+    this.toggleStopwatch = this.toggleStopwatch.bind(this);
+    this.resetStopwatch = this.resetStopwatch.bind(this);
   }
   watchID: ?number = null; //JL 13/4: from tutorial, red marked but it works!
-  //JL 13/4: retrieves the user's location and sets it as the initialPosition
   
   componentDidMount() {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -86,8 +91,8 @@ class Map extends Component {
         //wayPoints: [],
         //wantedDistance: ''
       });   
-      
-    }, (error) => alert(JSON.stringify(error)),
+    }, 
+    (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
 
     this.watchID = navigator.geolocation.watchPosition(
@@ -99,7 +104,13 @@ class Map extends Component {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
           },
-          
+          /*QUESTION: do we want the marker to update or always be on the users start position?? /JF 16/4
+            initialPositionMarker: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          },*/
           currentPosition: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -152,6 +163,7 @@ class Map extends Component {
       latitude: this.state.initialPosition.latitude+delta_lat,
       longitude: this.state.initialPosition.longitude+delta_lng
     }
+   
     //Find circlePoints other points to use
     //First, call the initial direction direction+180, since we are looking in the opposite direction.
     deg[0] = direction + Math.PI;
@@ -168,6 +180,7 @@ class Map extends Component {
           longitude: center.longitude+delta_lng
         }
         waypoints[i] = nextCoord;
+        console.log('nextCoord' + nextCoord )
     }
     waypoints[circlePoints+1] = this.state.initialPosition;
 
@@ -176,8 +189,8 @@ class Map extends Component {
     });
   }
 
+  //JL 17/4: disable and enable the footer buttons
   changeDistance(userInput) {
-    console.log(userInput)
     if (userInput === '') {
       this.setState({
         createRoute: true,
@@ -191,42 +204,79 @@ class Map extends Component {
     }
   }
 
+  //JL 17/4: shows different footers before and while running
   startRunning(){
     if (!this.state.startRunning){
       return(
-        <View style={styles.createRouteContainerStyle}>
-          <View style={styles.inputContainerStyle}>
-            <TextInput
-              keyboardType='decimal-pad'
-              style={styles.textInputStyle}
-              value={this.state.wantedDistance}
-              onChangeText={userInput => {this.setState({
-                wantedDistance: userInput
-              }), this.changeDistance(userInput)}}
-            />
-            <Text style={styles.textStyle}>km</Text>
+        <View>
+          <View style={styles.createRouteContainerStyle}>
+            <View style={styles.inputContainerStyle}>
+              <TextInput
+                keyboardType='decimal-pad'
+                style={styles.textInputStyle}
+                value={this.state.wantedDistance}
+                onChangeText={userInput => {this.setState({
+                  wantedDistance: userInput
+                }), this.changeDistance(userInput)}}
+              />
+              <Text style={styles.textStyle}>km</Text>
+            </View>
+            <Button
+              style={styles.createRouteButtonStyle}
+              disabled={this.state.createRoute}
+              onPress={() => {this.routeGenerator(this.state.wantedDistance), 
+              this.setState({ startButton: false })}}>
+                <Text style={styles.buttonTextStyle}>Create Route</Text>
+            </Button>
           </View>
           <Button
-            style={styles.createRouteButtonStyle}
-            disabled={this.state.createRoute}
-            onPress={() => {this.routeGenerator(this.state.wantedDistance), 
-            this.setState({ startButton: false })}}>
-              <Text style={styles.buttonTextStyle}>Create Route</Text>
-          </Button>
-        </View>
+          block
+          success
+          disabled={this.state.startButton}
+          style={styles.startButtonStyle}
+          onPress={() => {this.setState({ startRunning: true }), 
+            this.resetStopwatch(), this.toggleStopwatch()}}>
+            <Text style={styles.buttonTextStyle}>Start</Text>
+        </Button>
+      </View>
       );
-    } else {
+    } 
+    else {
       return(
-        <View style={styles.createRouteContainerStyle}>
-          <Text style={styles.textStyle}>Time:</Text>
-        </View>
+        <View>
+          <View style={styles.createRouteContainerStyle}>
+            <Stopwatch 
+              laps secs start={this.state.stopwatchStart}
+              options={options}
+              reset={this.state.stopwatchReset}
+              getTime={this.getFormattedTime}/>
+          </View>
+          <Button
+          block
+          danger
+          style={styles.startButtonStyle}
+          onPress={() => {this.setState({ startRunning: true }), this.toggleStopwatch()}}>
+            <Text style={styles.buttonTextStyle}>Stop</Text>
+        </Button>
+      </View>
       );
     }
   }
+
+  //JL 17/4: these three functions handle the stopwatch used to track the user's runtime
+  toggleStopwatch() {
+    this.setState({stopwatchStart: !this.state.stopwatchStart, stopwatchReset: false});
+  }
+  resetStopwatch() {
+    this.setState({stopwatchStart: false, stopwatchReset: true});
+  }
+  getFormattedTime(time) {
+      this.currentTime = time;
+  };
+  //****//
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
-
     return (
       <View style={styles.containerStyle}>
         <MapView
@@ -242,6 +292,8 @@ class Map extends Component {
           ref={c => this.mapView = c}
           onPress={this.onMapPress}>
 
+          <MapView.Marker coordinate={this.state.initialPositionMarker} />
+
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
@@ -255,46 +307,54 @@ class Map extends Component {
               onStart={(params) => {
                 //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
               }}
+
+                //Generate a new route when the route is 10% to short or to small
+                //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
-                console.log('total_distance: ' + result.distance)
-                this.mapView.fitToCoordinates(result.coordinates, {
-                  edgePadding: {
-                    right: (width / 15),
-                    bottom: (height / 15),
-                    left: (width / 15),
-                    top: (height / 15),
-                  }
-                });
+                if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
+                  console.log('total_distance: ' + result.distance)
+                  this.routeGenerator(this.state.wantedDistance)}
+
+                else if (result.distance > parseFloat(this.state.wantedDistance)*1.1) {
+                  console.log('total_distance: ' + result.distance)
+                  this.routeGenerator(this.state.wantedDistance)
+                }
+                else {
+                  console.log('total_distance: ' + result.distance)
+                  this.mapView.fitToCoordinates(result.coordinates, {
+                    edgePadding: {
+                      right: (width / 15),
+                      bottom: (height / 15),
+                      left: (width / 15),
+                      top: (height / 15),
+                    }
+                  });
+              }
               }}
               onError={(errorMessage) => {
-                // console.log('GOT AN ERROR');
+                 console.log('GOT AN ERROR');
+                 this.routeGenerator(this.state.wantedDistance)
               }}
             />
           )}
         </MapView>
+        
         {this.startRunning()}
-        <Button
-          block
-          success
-          disabled={this.state.startButton}
-          style={styles.startButtonStyle}
-          onPress={() => this.setState({ startRunning: true })}>
-            <Text style={styles.buttonTextStyle}>Start</Text>
-        </Button>
       </View>
     );
   }
 }
 
+//to add markers at the coords for the waypoints insert this at row ish 113
+//inbetween the <MapView/> and <MapViewDirections/>
 /*
-  //to add markers at the coords for the waypoints insert this at row ish 113
-  //inbetween the <MapView/> and <MapViewDirections/>
-
   {this.state.wayPoints.map((coordinate, index) =>
     <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
   )}
 */
 
+
+//****STYLING*****//
 const styles = {
   containerStyle: {
     height: '94%'
@@ -303,6 +363,7 @@ const styles = {
     height: '79%'
   },
   createRouteContainerStyle: {
+    height: '22%',
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -332,9 +393,21 @@ const styles = {
     fontSize: 13
   },
   startButtonStyle: {
-    margin: 10,
-    marginBottom: 50
+    margin: 10
   }
 }
+
+const options = {
+  container: {
+    padding: 5,
+    borderRadius: 5,
+    width: 150,
+  },
+  text: {
+    fontSize: 30,
+    color: 'black',
+    marginLeft: 7,
+  }
+};
 
 export default Map;

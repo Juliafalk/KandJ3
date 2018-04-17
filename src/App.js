@@ -42,14 +42,9 @@ class App extends React.Component {
         });
     }
 
-    componentDidMount () {
-        console.log('didMount')
-        console.log(this.state)
-    }
-
     renderContent() {
-        console.log('content')
-        console.log(this.state.loggedIn)
+        //console.log('content')
+        //console.log(this.state.loggedIn)
         switch(this.state.loggedIn) {
             case true:
                 return <MyApp />;
