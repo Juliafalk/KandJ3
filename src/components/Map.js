@@ -28,10 +28,10 @@ class Map extends Component {
     this.state = {
       //intialPosition - to generate routes, it is the start position / JF (16/4)
       initialPosition: {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
     },
     //initialPositionMarker - to place the marker at the initialPosition, 
     //ev. could be same as initialPosition / JF (16/4)
@@ -44,15 +44,16 @@ class Map extends Component {
 
     //currentPosition - to update the users current position / JF (16/4)
     currentPosition: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
-      },
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    },
       wayPoints: [],
       wantedDistance: '',
       createRoute: true,
-      startButton: true
+      startButton: true,
+      startRunning: false
     }
     this.mapView = null;  
   }
@@ -63,7 +64,8 @@ class Map extends Component {
       navigator.geolocation.getCurrentPosition((position) => {
      
       // Here set all the positions, given by the devices current position. 
-     this.setState({ initialPosition: {
+     this.setState({ 
+       initialPosition: {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude, 
         latitudeDelta: LATITUDE_DELTA,
@@ -110,10 +112,9 @@ class Map extends Component {
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }
-          
         });
-    }
-  );
+      }
+    );
   }
 
   componentWillUnmount() {
@@ -196,6 +197,38 @@ class Map extends Component {
     }
   }
 
+  startRunning(){
+    if (!this.state.startRunning){
+      return(
+        <View style={styles.createRouteContainerStyle}>
+          <View style={styles.inputContainerStyle}>
+            <TextInput
+              keyboardType='decimal-pad'
+              style={styles.textInputStyle}
+              value={this.state.wantedDistance}
+              onChangeText={userInput => {this.setState({
+                wantedDistance: userInput
+              }), this.changeDistance(userInput)}}
+            />
+            <Text style={styles.textStyle}>km</Text>
+          </View>
+          <Button
+            style={styles.createRouteButtonStyle}
+            disabled={this.state.createRoute}
+            onPress={() => {this.routeGenerator(this.state.wantedDistance), 
+            this.setState({ startButton: false })}}>
+              <Text style={styles.buttonTextStyle}>Create Route</Text>
+          </Button>
+        </View>
+      );
+    } else {
+      return(
+        <View style={styles.createRouteContainerStyle}>
+          <Text style={styles.textStyle}>Time:</Text>
+        </View>
+      );
+    }
+  }
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
@@ -214,8 +247,6 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
           onPress={this.onMapPress}>
-
-          <MapView.Marker coordinate={this.state.initialPositionMarker} />
 
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
@@ -247,32 +278,13 @@ class Map extends Component {
             />
           )}
         </MapView>
-        <View style={styles.createRouteContainerStyle}>
-          <View style={styles.inputContainerStyle}>
-            <TextInput
-              keyboardType='decimal-pad'
-              style={styles.textInputStyle}
-              value={this.state.wantedDistance}
-              onChangeText={userInput => {this.setState({
-                wantedDistance: userInput
-              }), this.changeDistance(userInput)}}
-            />
-            <Text style={styles.textStyle}>km</Text>
-          </View>
-          <Button 
-            style={styles.createRouteButtonStyle}
-            disabled={this.state.createRoute}
-            onPress={() => {this.routeGenerator(this.state.wantedDistance), 
-            this.setState({ startButton: false })}}>
-              <Text style={styles.buttonTextStyle}>Create Route</Text>
-          </Button>
-        </View>
-        <Button 
+        {this.startRunning()}
+        <Button
           block
           success
           disabled={this.state.startButton}
           style={styles.startButtonStyle}
-          onPress={() => alert('Happy running, I will soon time your run!')}>
+          onPress={() => this.setState({ startRunning: true })}>
             <Text style={styles.buttonTextStyle}>Start</Text>
         </Button>
       </View>
