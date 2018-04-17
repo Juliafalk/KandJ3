@@ -43,8 +43,8 @@ class App extends React.Component {
     }
 
     renderContent() {
-        console.log('content')
-        console.log(this.state.loggedIn)
+        //console.log('content')
+        //console.log(this.state.loggedIn)
         switch(this.state.loggedIn) {
             case true:
                 return <MyApp />;
