@@ -97,7 +97,13 @@ class Map extends Component {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
           },
-          
+          /*QUESTION: do we want the marker to update or always be on the users start position?? /JF 16/4
+            initialPositionMarker: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          },*/
           currentPosition: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
