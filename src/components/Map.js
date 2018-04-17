@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+import { Stopwatch } from 'react-native-stopwatch-timer'
 import { Button, Text } from 'native-base';
 
 const { width, height } = Dimensions.get('window');
@@ -53,12 +54,16 @@ class Map extends Component {
       wantedDistance: '',
       createRoute: true,
       startButton: true,
-      startRunning: false
+      startRunning: false,
+      stopwatchStart: false,
+      stopwatchReset: false,
+      totalDuration: 0,
     }
     this.mapView = null;  
+    this.toggleStopwatch = this.toggleStopwatch.bind(this);
+    this.resetStopwatch = this.resetStopwatch.bind(this);
   }
   watchID: ?number = null; //JL 13/4: from tutorial, red marked but it works!
-  //JL 13/4: retrieves the user's location and sets it as the initialPosition
   
   componentDidMount() {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -86,8 +91,8 @@ class Map extends Component {
         //wayPoints: [],
         //wantedDistance: ''
       });   
-      
-    }, (error) => alert(JSON.stringify(error)),
+    }, 
+    (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
 
     this.watchID = navigator.geolocation.watchPosition(
@@ -99,7 +104,6 @@ class Map extends Component {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
           },
-          
           currentPosition: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -176,8 +180,8 @@ class Map extends Component {
     });
   }
 
+  //JL 17/4: disable and enable the footer buttons
   changeDistance(userInput) {
-    console.log(userInput)
     if (userInput === '') {
       this.setState({
         createRoute: true,
@@ -191,6 +195,7 @@ class Map extends Component {
     }
   }
 
+  //JL 17/4: shows different footers before and while running
   startRunning(){
     if (!this.state.startRunning){
       return(
@@ -220,32 +225,49 @@ class Map extends Component {
           success
           disabled={this.state.startButton}
           style={styles.startButtonStyle}
-          onPress={() => this.setState({ startRunning: true })}>
+          onPress={() => {this.setState({ startRunning: true }), 
+            this.resetStopwatch(), this.toggleStopwatch()}}>
             <Text style={styles.buttonTextStyle}>Start</Text>
         </Button>
       </View>
       );
-    } else {
+    } 
+    else {
       return(
         <View>
           <View style={styles.createRouteContainerStyle}>
-            <Text style={styles.textStyle}>Time:</Text>
+            <Stopwatch 
+              laps secs start={this.state.stopwatchStart}
+              options={options}
+              reset={this.state.stopwatchReset}
+              getTime={this.getFormattedTime}/>
           </View>
           <Button
           block
           danger
           style={styles.startButtonStyle}
-          onPress={() => this.setState({ startRunning: true })}>
+          onPress={() => {this.setState({ startRunning: true }), this.toggleStopwatch()}}>
             <Text style={styles.buttonTextStyle}>Stop</Text>
         </Button>
       </View>
       );
     }
   }
+
+  //JL 17/4: these three functions handle the stopwatch used to track the user's runtime
+  toggleStopwatch() {
+    this.setState({stopwatchStart: !this.state.stopwatchStart, stopwatchReset: false});
+  }
+  resetStopwatch() {
+    this.setState({stopwatchStart: false, stopwatchReset: true});
+  }
+  getFormattedTime(time) {
+      this.currentTime = time;
+  };
+  //****//
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
-
     return (
       <View style={styles.containerStyle}>
         <MapView
@@ -291,21 +313,23 @@ class Map extends Component {
             />
           )}
         </MapView>
+        
         {this.startRunning()}
       </View>
     );
   }
 }
 
+//to add markers at the coords for the waypoints insert this at row ish 113
+//inbetween the <MapView/> and <MapViewDirections/>
 /*
-  //to add markers at the coords for the waypoints insert this at row ish 113
-  //inbetween the <MapView/> and <MapViewDirections/>
-
   {this.state.wayPoints.map((coordinate, index) =>
     <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
   )}
 */
 
+
+//****STYLING*****//
 const styles = {
   containerStyle: {
     height: '94%'
@@ -347,5 +371,18 @@ const styles = {
     margin: 10
   }
 }
+
+const options = {
+  container: {
+    padding: 5,
+    borderRadius: 5,
+    width: 150,
+  },
+  text: {
+    fontSize: 30,
+    color: 'black',
+    marginLeft: 7,
+  }
+};
 
 export default Map;
