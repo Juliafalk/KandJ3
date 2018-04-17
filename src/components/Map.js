@@ -8,6 +8,7 @@ import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Stopwatch } from 'react-native-stopwatch-timer'
 import { Button, Text } from 'native-base';
+import pick from 'lodash/pick';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -26,7 +27,8 @@ class Map extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+
+    this.state = { 
       //intialPosition - to generate routes, it is the start position / JF (16/4)
       initialPosition: {
         latitude: LATITUDE,
@@ -49,7 +51,8 @@ class Map extends Component {
       longitude: LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
-    },
+    }, 
+      routeCoordinates: [], 
       wayPoints: [],
       wantedDistance: '',
       createRoute: true,
@@ -118,8 +121,11 @@ class Map extends Component {
             longitudeDelta: LONGITUDE_DELTA,
           }
         });
-      }
-    );
+        const { routeCoordinates } = this.state
+        const positionLatLngs = pick(position.coords, ['latitude', 'longitude'])
+        this.setState({ routeCoordinates: routeCoordinates.concat(positionLatLngs) }) 
+        console.log('routeCoordinate:' + positionLatLngs)     
+      });
   }
 
   componentWillUnmount() {
@@ -290,7 +296,11 @@ class Map extends Component {
           showsCompass
           style={styles.mapStyle}
           ref={c => this.mapView = c}
-          onPress={this.onMapPress}>
+          onPress={this.onMapPress}
+          overlays={[{
+            coordinates:this.state.routeCoordinates,
+            strokeColor: '#19B5FE',
+            lineWidth: 10}]}>
 
           <MapView.Marker coordinate={this.state.initialPositionMarker} />
 
