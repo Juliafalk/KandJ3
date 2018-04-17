@@ -3,12 +3,16 @@ import { View, Text, StyleSheet, Scrollview, Alert } from 'react-native';
 import { cardBody, Icon, Button, Container, Header, Content, Left, Body, Title, Right, CardItem, Card } from 'native-base';
 import Moment from 'react-moment';
 import firebase from 'firebase';
-import { MyInputCreateAccount } from './common';
+import { MyInputCreateAccount, MyButton } from './common';
 
 
 class LogPage extends Component { 
 
     state = { name: '' }
+
+    ButtonPress() {
+        firebase.auth().signOut()
+    }
 
     onButtonPress() {
         console.log(this.state)
@@ -87,6 +91,9 @@ class LogPage extends Component {
                         <CardItem>
                             <Icon name='ios-speedometer-outline'/>
                             <Text>Average Speed:</Text>
+                            <MyButton onPress={this.ButtonPress.bind(this)}>
+                                 <Text>Log out</Text>
+                            </MyButton>
                         </CardItem>
                     </Card>
                 </Content>
