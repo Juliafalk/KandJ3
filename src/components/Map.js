@@ -17,6 +17,8 @@ const LATITUDE = 0;
 const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.00922; //JL 13/4: 'the angle in which you're viewing', a universal value
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO*0.1;
+const DISTANCE_TRAVELLED = 0;
+
 
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
@@ -28,7 +30,6 @@ class Map extends Component {
   constructor(props) {
     super(props);
 
-
     this.state = { 
       //intialPosition - to generate routes, it is the start position / JF (16/4)
       initialPosition: {
@@ -36,7 +37,7 @@ class Map extends Component {
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
-    },
+      },
     //initialPositionMarker - to place the marker at the initialPosition, 
     //ev. could be same as initialPosition / JF (16/4)
       initialPositionMarker: {
@@ -44,7 +45,7 @@ class Map extends Component {
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
-    },
+      },
 
     //currentPosition - to update the users current position / JF (16/4)
       currentPosition: {
@@ -52,7 +53,8 @@ class Map extends Component {
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
-    }, 
+      }, 
+      
         routeCoordinates: [], 
         distanceTravelled: 0,
         prevLatLng: {},
@@ -64,7 +66,8 @@ class Map extends Component {
         stopwatchStart: false,
         stopwatchReset: false,
         totalDuration: 0,
-    }
+      }
+
     this.mapView = null;  
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
@@ -76,7 +79,7 @@ class Map extends Component {
      
       // Here set all the positions, given by the devices current position. 
      this.setState({ 
-       initialPosition: {
+      initialPosition: {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude, 
         latitudeDelta: LATITUDE_DELTA,
@@ -115,13 +118,6 @@ class Map extends Component {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
           },
-          /*QUESTION: do we want the marker to update or always be on the users start position?? /JF 16/4
-            initialPositionMarker: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          },*/
           currentPosition: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -275,7 +271,9 @@ class Map extends Component {
           danger
           style={styles.startButtonStyle}
           onPress={() => {this.setState({ startRunning: true }), this.toggleStopwatch(), 
-          console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(4)))}}>
+          console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(4))),
+          DISTANCE_TRAVELLED = parseFloat(this.state.distanceTravelled.toFixed(4)), 
+          console.log('DISTANCE_TRAVELLED: ' + DISTANCE_TRAVELLED)}}>
             <Text style={styles.buttonTextStyle}>Stop</Text>
         </Button>
       </View>
