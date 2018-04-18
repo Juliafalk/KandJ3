@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { 
-  Dimensions, 
+  Alert,
+  Dimensions,
+  KeyboardAvoidingView, 
+  TextInput,
   View,
-  TextInput
 } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Stopwatch } from 'react-native-stopwatch-timer'
-import { Button, Text } from 'native-base';
 import pick from 'lodash/pick';
+import { Button, Text, Icon } from 'native-base';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -55,9 +57,11 @@ class Map extends Component {
       routeCoordinates: [], 
       wayPoints: [],
       wantedDistance: '',
+      actualDistance: 0,
       createRoute: true,
       startButton: true,
       startRunning: false,
+      pauseRunning: false,
       stopwatchStart: false,
       stopwatchReset: false,
       totalDuration: 0,
@@ -69,7 +73,7 @@ class Map extends Component {
   watchID: ?number = null; //JL 13/4: from tutorial, red marked but it works!
   
   componentDidMount() {
-      navigator.geolocation.getCurrentPosition((position) => {
+    navigator.geolocation.getCurrentPosition((position) => {
      
       // Here set all the positions, given by the devices current position. 
      this.setState({ 
@@ -218,31 +222,37 @@ class Map extends Component {
           <View style={styles.createRouteContainerStyle}>
             <View style={styles.inputContainerStyle}>
               <TextInput
-                keyboardType='decimal-pad'
+                keyboardType='number-pad'
                 style={styles.textInputStyle}
+                maxLength={2}
                 value={this.state.wantedDistance}
-                onChangeText={userInput => {this.setState({
-                  wantedDistance: userInput
-                }), this.changeDistance(userInput)}}
+                onChangeText={userInput => 
+                  {this.setState({
+                  wantedDistance: userInput}),
+                  this.changeDistance(userInput)}}
               />
-              <Text style={styles.textStyle}>km</Text>
+              <Text>km</Text>
+            </View>
+            <View style={styles.actualDistance}>
+              <Text style={{ fontSize: 12}}>Distance:</Text>
+              <Text>{this.state.actualDistance} km</Text>
             </View>
             <Button
               style={styles.createRouteButtonStyle}
               disabled={this.state.createRoute}
               onPress={() => {this.routeGenerator(this.state.wantedDistance), 
               this.setState({ startButton: false })}}>
-                <Text style={styles.buttonTextStyle}>Create Route</Text>
+                <Text style={{ fontSize: 14 }}>Create Route</Text>
             </Button>
           </View>
           <Button
           block
           success
-          disabled={this.state.startButton}
+          //disabled={this.state.startButton}
           style={styles.startButtonStyle}
           onPress={() => {this.setState({ startRunning: true }), 
             this.resetStopwatch(), this.toggleStopwatch()}}>
-            <Text style={styles.buttonTextStyle}>Start</Text>
+            <Text>Start</Text>
         </Button>
       </View>
       );
@@ -251,19 +261,47 @@ class Map extends Component {
       return(
         <View>
           <View style={styles.createRouteContainerStyle}>
+            <Icon name='time' style={{fontSize: 25}}/>
             <Stopwatch 
               laps secs start={this.state.stopwatchStart}
               options={options}
               reset={this.state.stopwatchReset}
               getTime={this.getFormattedTime}/>
           </View>
-          <Button
-          block
-          danger
-          style={styles.startButtonStyle}
-          onPress={() => {this.setState({ startRunning: true }), this.toggleStopwatch()}}>
-            <Text style={styles.buttonTextStyle}>Stop</Text>
-        </Button>
+          <View style={styles.pauseDoneContainer}>
+            <Button
+              warning
+              style={styles.pauseDoneButton}
+              onPress={() => {this.setState({ startRunning: true, pauseRunning: !this.state.pauseRunning }),
+                this.toggleStopwatch()}}
+              >
+                <Icon 
+                style={{fontSize: 25}}
+                type='FontAwesome'
+                name={ this.state.pauseRunning ? 'play': 'pause'}
+                />
+            </Button>
+            <Button
+              success
+              iconLeft
+              style={styles.pauseDoneButton}
+              onPress={() =>  {this.toggleStopwatch(),
+                this.setState({ pauseRunning: true }),
+                Alert.alert(
+                  'Done running?',
+                  '',
+                  [
+                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  ],
+                  { cancelable: false }
+                )
+              }}
+              >
+                <Icon type='FontAwesome' name='check' />
+                <Text>Done</Text>
+            </Button>
+          </View>
       </View>
       );
     }
@@ -321,16 +359,14 @@ class Map extends Component {
                 //Generate a new route when the route is 10% to short or to small
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
-                if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
-                  console.log('total_distance: ' + result.distance)
+                /*if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   this.routeGenerator(this.state.wantedDistance)}
 
                 else if (result.distance > parseFloat(this.state.wantedDistance)*1.1) {
-                  console.log('total_distance: ' + result.distance)
                   this.routeGenerator(this.state.wantedDistance)
                 }
-                else {
-                  console.log('total_distance: ' + result.distance)
+                else {*/
+                  this.setState({ actualDistance: result.distance })
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
@@ -339,7 +375,7 @@ class Map extends Component {
                       top: (height / 15),
                     }
                   });
-              }
+              //}
               }}
               onError={(errorMessage) => {
                  console.log('GOT AN ERROR');
@@ -380,32 +416,46 @@ const styles = {
     alignItems: 'center'
   },
   inputContainerStyle: {
+    width: '30%',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textInputStyle: {
-    width: '30%',
+    width: '40%',
+    paddingTop: 5,
+    paddingBottom: 5,
     textAlign: 'center',
     marginRight: 5,
     borderWidth: 1,
     borderRadius: 5
   },
-  textStyle: {
-    fontSize: 25
+  actualDistance: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15
   },
   createRouteButtonStyle: {
     width: '30%',
     justifyContent: 'center',
     alignItems: 'center'
   },
-  buttonTextStyle: {
-    color: 'white',
-    fontSize: 13
-  },
   startButtonStyle: {
     margin: 10
+  },
+  pauseDoneContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    margin: 10
+  },
+  pauseDoneButton: {
+    width: '30%',
+    marginRight: 5,
+    marginLeft: 5
   }
 }
+
 
 const options = {
   container: {
