@@ -73,7 +73,7 @@ class Map extends Component {
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
   }
- // watchID: ?number = null; / from tutorial, red marked but it works! / JL (13/4) 
+  watchID: ?number = null; // from tutorial, red marked but it works! / JL (13/4) 
  //Do we need this? /JF 18/4 
   
   componentDidMount() {
