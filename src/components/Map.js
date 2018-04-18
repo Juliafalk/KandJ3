@@ -9,6 +9,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import { Stopwatch } from 'react-native-stopwatch-timer'
 import { Button, Text } from 'native-base';
 import pick from 'lodash/pick';
+import haversine from 'haversine';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -38,29 +39,31 @@ class Map extends Component {
     },
     //initialPositionMarker - to place the marker at the initialPosition, 
     //ev. could be same as initialPosition / JF (16/4)
-    initialPositionMarker: {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
+      initialPositionMarker: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
     },
 
     //currentPosition - to update the users current position / JF (16/4)
-    currentPosition: {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
+      currentPosition: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
     }, 
-      routeCoordinates: [], 
-      wayPoints: [],
-      wantedDistance: '',
-      createRoute: true,
-      startButton: true,
-      startRunning: false,
-      stopwatchStart: false,
-      stopwatchReset: false,
-      totalDuration: 0,
+        routeCoordinates: [], 
+        distanceTravelled: 0,
+        prevLatLng: {},
+        wayPoints: [],
+        wantedDistance: '',
+        createRoute: true,
+        startButton: true,
+        startRunning: false,
+        stopwatchStart: false,
+        stopwatchReset: false,
+        totalDuration: 0,
     }
     this.mapView = null;  
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
@@ -100,6 +103,11 @@ class Map extends Component {
 
     this.watchID = navigator.geolocation.watchPosition(
       position => {
+
+        const { distanceTravelled } = this.state
+        //const positionLatLngs = pick(position.coords, ['latitude', 'longitude'])
+        const newLatLngs = {latitude: position.coords.latitude, longitude: position.coords.longitude} 
+        
         this.setState({
           initialPosition: {
               latitude: position.coords.latitude,
@@ -119,13 +127,18 @@ class Map extends Component {
             longitude: position.coords.longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
-          }
+          },
+          //routeCoordinates: routeCoordinates.concat(positionLatLngs),
+          distanceTravelled: distanceTravelled + this.calcDistance(newLatLngs),
+          prevLatLng: newLatLngs
         });
-        const { routeCoordinates } = this.state
-        const positionLatLngs = pick(position.coords, ['latitude', 'longitude'])
-        this.setState({ routeCoordinates: routeCoordinates.concat(positionLatLngs) }) 
-        console.log('routeCoordinate:' + positionLatLngs)     
+        //console.log('routeCoordinate:' + routeCoordinates)     
       });
+  }
+
+  calcDistance(newLatLng) {
+    const { prevLatLng } = this.state
+    return (haversine(prevLatLng, newLatLng) || 0 )
   }
 
   componentWillUnmount() {
@@ -261,7 +274,8 @@ class Map extends Component {
           block
           danger
           style={styles.startButtonStyle}
-          onPress={() => {this.setState({ startRunning: true }), this.toggleStopwatch()}}>
+          onPress={() => {this.setState({ startRunning: true }), this.toggleStopwatch(), 
+          console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(4)))}}>
             <Text style={styles.buttonTextStyle}>Stop</Text>
         </Button>
       </View>
@@ -298,12 +312,12 @@ class Map extends Component {
           ref={c => this.mapView = c}
           onPress={this.onMapPress}
           overlays={[{
-            coordinates:this.state.routeCoordinates,
+            coordinates: this.state.routeCoordinates,
             strokeColor: '#19B5FE',
-            lineWidth: 10}]}>
+            lineWidth: 3}]}>
 
           <MapView.Marker coordinate={this.state.initialPositionMarker} />
-
+        
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
@@ -315,21 +329,23 @@ class Map extends Component {
               strokeColor="hotpink"
               
               onStart={(params) => {
+                
                 //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
               }}
 
                 //Generate a new route when the route is 10% to short or to small
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
-                if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
+                /*if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   console.log('total_distance: ' + result.distance)
-                  this.routeGenerator(this.state.wantedDistance)}
+                  this.routeGenerator(this.state.wantedDistance)
+                }
 
                 else if (result.distance > parseFloat(this.state.wantedDistance)*1.1) {
                   console.log('total_distance: ' + result.distance)
                   this.routeGenerator(this.state.wantedDistance)
                 }
-                else {
+                else {*/
                   console.log('total_distance: ' + result.distance)
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
@@ -339,17 +355,18 @@ class Map extends Component {
                       top: (height / 15),
                     }
                   });
-              }
               }}
               onError={(errorMessage) => {
                  console.log('GOT AN ERROR');
-                 this.routeGenerator(this.state.wantedDistance)
+                 //this.routeGenerator(this.state.wantedDistance)
               }}
             />
           )}
+          
         </MapView>
         
         {this.startRunning()}
+        
       </View>
     );
   }
