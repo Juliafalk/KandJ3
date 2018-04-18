@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { 
+  Alert,
   Dimensions,
   KeyboardAvoidingView, 
   TextInput,
@@ -241,7 +242,7 @@ class Map extends Component {
           <Button
           block
           success
-          disabled={this.state.startButton}
+          //disabled={this.state.startButton}
           style={styles.startButtonStyle}
           onPress={() => {this.setState({ startRunning: true }), 
             this.resetStopwatch(), this.toggleStopwatch()}}>
@@ -280,7 +281,16 @@ class Map extends Component {
               style={styles.pauseDoneButton}
               onPress={() =>  {this.toggleStopwatch(),
                 this.setState({ pauseRunning: true }),
-                alert('Are you done running?')}}
+                Alert.alert(
+                  'Done running?',
+                  '',
+                  [
+                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  ],
+                  { cancelable: false }
+                )
+              }}
               >
                 <Icon type='FontAwesome' name='check' />
                 <Text>Done</Text>
@@ -340,14 +350,13 @@ class Map extends Component {
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
                 /*if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
-                  console.log('total_distance: ' + result.distance)
                   this.routeGenerator(this.state.wantedDistance)}
 
                 else if (result.distance > parseFloat(this.state.wantedDistance)*1.1) {
                   this.routeGenerator(this.state.wantedDistance)
                 }
                 else {*/
-                  console.log('total_distance: ' + result.distance)
+                  this.setState({ actualDistance: result.distance })
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
@@ -356,8 +365,8 @@ class Map extends Component {
                       top: (height / 15),
                     }
                   });
-              }
-              }//}
+              //}
+              }}
               onError={(errorMessage) => {
                  console.log('GOT AN ERROR');
                  this.routeGenerator(this.state.wantedDistance)
