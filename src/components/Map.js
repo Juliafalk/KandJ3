@@ -21,6 +21,9 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO*0.1;
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
 
+//JL 18/4: time spent runnning
+const totalDuration = 0;
+
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 
 class Map extends Component {
@@ -44,7 +47,6 @@ class Map extends Component {
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
     },
-
     //currentPosition - to update the users current position / JF (16/4)
     currentPosition: {
       latitude: LATITUDE,
@@ -260,7 +262,8 @@ class Map extends Component {
               start={this.state.stopwatchStart}
               options={options}
               reset={this.state.stopwatchReset}
-              getTime={this.getFormattedTime()}/>
+              getTime={(time) => this.getFormattedTime(time)}
+            />
           </View>
           <View style={styles.pauseDoneContainer}>
             <Button
@@ -279,13 +282,15 @@ class Map extends Component {
               success
               iconLeft
               style={styles.pauseDoneButton}
-              onPress={() =>  {this.setState({ pauseRunning: true, stopwatchStart: false }),
+              onPress={() => {this.setState({ pauseRunning: true, stopwatchStart: false }),
                 Alert.alert(
                   'Done running?',
                   '',
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    {text: 'OK', onPress: () => {this.setState({ totalDuration: totalDuration }), 
+                      console.log('total duration: ' + this.state.totalDuration)}
+                    },
                   ],
                   { cancelable: false }
                 )
@@ -309,6 +314,7 @@ class Map extends Component {
   }
   getFormattedTime(time) {
     this.currentTime = time;
+    totalDuration = time;
   };
   //****//
   
@@ -373,7 +379,6 @@ class Map extends Component {
             />
           )}
         </MapView>
-        
         {this.startRunning()}
       </View>
     );
