@@ -273,10 +273,10 @@ class Map extends Component {
             <Text>{this.state.distanceTravelled}</Text>
             <Icon name='time' style={{fontSize: 25}}/>
             <Stopwatch 
-              laps secs start={this.state.stopwatchStart}
+              start={this.state.stopwatchStart}
               options={options}
               reset={this.state.stopwatchReset}
-              getTime={this.getFormattedTime}/>
+              getTime={this.getFormattedTime()}/>
           </View>
           <View style={styles.pauseDoneContainer}>
             <Button
@@ -294,12 +294,11 @@ class Map extends Component {
             <Button
               success
               iconLeft
-              style={styles.pauseDoneButton}
-              onPress={() =>  {this.toggleStopwatch(),
-                this.setState({ pauseRunning: true,  }),
-                console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(4))),
+              style={styles.pauseDoneButton}          
+              onPress={() =>  {this.setState({ pauseRunning: true, stopwatchStart: false }),
+              console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(4))),
                 DISTANCE_TRAVELLED = parseFloat(this.state.distanceTravelled.toFixed(4)), 
-                console.log('DISTANCE_TRAVELLED: ' + DISTANCE_TRAVELLED)
+                console.log('DISTANCE_TRAVELLED: ' + DISTANCE_TRAVELLED),
                 Alert.alert(
                   'Done running?',
                   'Distance: ' + DISTANCE_TRAVELLED,
@@ -328,7 +327,7 @@ class Map extends Component {
     this.setState({stopwatchStart: false, stopwatchReset: true});
   }
   getFormattedTime(time) {
-      this.currentTime = time;
+    this.currentTime = time;
   };
   //****//
   
