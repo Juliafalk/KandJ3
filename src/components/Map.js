@@ -19,7 +19,7 @@ const LATITUDE = 0;
 const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.00922; //JL 13/4: 'the angle in which you're viewing', a universal value
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO*0.1;
-const DISTANCE_TRAVELLED = 0;
+const DISTANCE_TRAVELLED = 0; //This is to calculate how long distance that has been travelled / JF (18/4)
 
 
 //JL 11/4: the points the route should go through (including start and end point)
@@ -300,7 +300,7 @@ class Map extends Component {
                 console.log('DISTANCE_TRAVELLED: ' + DISTANCE_TRAVELLED),
                 Alert.alert(
                   'Done running?',
-                  '',
+                  'Distance: ' + DISTANCE_TRAVELLED,
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                     {text: 'OK', onPress: () => console.log('OK Pressed')},
