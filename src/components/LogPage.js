@@ -57,7 +57,8 @@ class LogPage extends Component {
     
 
     render() {
-
+        var dt= new Date().toDateString()
+        console.log( dt)
         return (
             <Container>
 

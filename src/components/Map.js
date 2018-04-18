@@ -226,16 +226,17 @@ class Map extends Component {
 
 //JG 18/4 will send information about the route to the database
   toDatabase() {
-    console.log(DISTANCE_TRAVELLED)
+      var date= new Date().toDateString()
       const { wayPoints, totalDuration } = this.state;
       const { currentUser } = firebase.auth();
       firebase.database().ref(`/users/${currentUser.uid}/routes`)
-          .push({ wayPoints, totalDuration, DISTANCE_TRAVELLED });
+          .push({ wayPoints, totalDuration, DISTANCE_TRAVELLED, date });
       return(
       this.setState({
           wayPoints: [],
           totalDuration: 0,
-          DISTANCE_TRAVELLED: 0    
+          DISTANCE_TRAVELLED: 0 ,
+          date: 0   
       })
       
       );
