@@ -311,7 +311,7 @@ class Map extends Component {
                 //Generate a new route when the route is 10% to short or to small
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
-                if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
+                /*if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   console.log('total_distance: ' + result.distance)
                   this.routeGenerator(this.state.wantedDistance)}
 
@@ -319,7 +319,7 @@ class Map extends Component {
                   console.log('total_distance: ' + result.distance)
                   this.routeGenerator(this.state.wantedDistance)
                 }
-                else {
+                else {*/
                   console.log('total_distance: ' + result.distance)
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
@@ -330,7 +330,7 @@ class Map extends Component {
                     }
                   });
               }
-              }}
+              }//}
               onError={(errorMessage) => {
                  console.log('GOT AN ERROR');
                  this.routeGenerator(this.state.wantedDistance)
