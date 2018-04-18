@@ -131,7 +131,7 @@ class Map extends Component {
           prevLatLng: newLatLngs
           
         });
-        console.log('Update frequently? ' + parseFloat(this.state.distanceTravelled.toFixed(4)))
+        console.log('Update frequently? ' + parseFloat(this.state.distanceTravelled.toFixed(2)))
         //console.log('routeCoordinate:' + routeCoordinates)     
       });
   }
@@ -270,13 +270,20 @@ class Map extends Component {
       return(
         <View>
           <View style={styles.createRouteContainerStyle}>
-            <Text>{this.state.distanceTravelled}</Text>
-            <Icon name='time' style={{fontSize: 25}}/>
-            <Stopwatch 
+          <View style={styles.distanceContainer}>
+            <Text style={{ fontSize: 12}}>Distance:</Text>
+            <Text style={styles.distanceTravelledStyle}>
+              {this.state.distanceTravelled.toFixed(2)} km 
+            </Text>
+          </View>
+          <View style={styles.timeContainer}>
+            <Icon name='time' style={{fontSize: 25, marginTop: 6}}/>
+            <Stopwatch
               start={this.state.stopwatchStart}
               options={options}
               reset={this.state.stopwatchReset}
               getTime={this.getFormattedTime()}/>
+          </View>
           </View>
           <View style={styles.pauseDoneContainer}>
             <Button
@@ -296,7 +303,7 @@ class Map extends Component {
               iconLeft
               style={styles.pauseDoneButton}          
               onPress={() =>  {this.setState({ pauseRunning: true, stopwatchStart: false }),
-              console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(4))),
+                console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(4))),
                 DISTANCE_TRAVELLED = parseFloat(this.state.distanceTravelled.toFixed(4)), 
                 console.log('DISTANCE_TRAVELLED: ' + DISTANCE_TRAVELLED),
                 Alert.alert(
@@ -308,8 +315,7 @@ class Map extends Component {
                   ],
                   { cancelable: false }
                 )
-              }}
-              >
+              }}>
                 <Icon type='FontAwesome' name='check' />
                 <Text>Done</Text>
             </Button>
@@ -419,6 +425,7 @@ class Map extends Component {
 
 
 //****STYLING*****//
+//Obs, styling for clock is in the bottom under const options / JF (18/4)
 const styles = {
   containerStyle: {
     height: '94%'
@@ -432,6 +439,25 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center', 
+  },
+  distanceContainer: {
+    width: '35%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10
+  },
+  timeContainer: {
+    width: '35%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10
+  },
+  distanceTravelledStyle: {
+    fontSize: 25
   },
   inputContainerStyle: {
     width: '30%',
@@ -474,17 +500,15 @@ const styles = {
   }
 }
 
-
+//This is styling for the clock / JF (18/4)
 const options = {
   container: {
     padding: 5,
-    borderRadius: 5,
-    width: 150,
   },
   text: {
-    fontSize: 30,
+    fontSize: 25,
     color: 'black',
-    marginLeft: 7,
+    marginLeft: 2,
   }
 };
 
