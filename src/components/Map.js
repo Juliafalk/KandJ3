@@ -270,6 +270,7 @@ class Map extends Component {
       return(
         <View>
           <View style={styles.createRouteContainerStyle}>
+            <Text>{this.state.distanceTravelled}</Text>
             <Icon name='time' style={{fontSize: 25}}/>
             <Stopwatch 
               laps secs start={this.state.stopwatchStart}
@@ -431,7 +432,7 @@ const styles = {
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center', 
   },
   inputContainerStyle: {
     width: '30%',
