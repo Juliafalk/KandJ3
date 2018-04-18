@@ -19,7 +19,7 @@ class MapPage extends React.Component {
     render() {
         return (
         <View>
-            <Header>
+            <Header style={{ height: 60}}>
                 <Left>
                     <Icon name='ios-menu' onPress={() =>
                         this.props.navigation.navigate('DrawerOpen')}/>

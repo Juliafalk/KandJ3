@@ -9,9 +9,11 @@ import {
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Stopwatch } from 'react-native-stopwatch-timer'
+import { SwitchNavigator } from 'react-navigation';
 import pick from 'lodash/pick';
 import { Button, Text, Icon } from 'native-base';
 import haversine from 'haversine';
+import SummaryPage from './SummaryPage';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -311,8 +313,8 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.setState({ totalDuration: totalDuration }), 
-                      console.log('total duration: ' + this.state.totalDuration)}
+                    {text: 'OK', onPress: () => {this.SummaryPage(), this.setState({ totalDuration: totalDuration }), 
+                      console.log('total duration: ' + this.state.totalDuration)} 
                     },
                   ],
                   { cancelable: false }
@@ -327,10 +329,19 @@ class Map extends Component {
     }
   }
 
+  SummaryPage() {
+    this.props.navigation.navigate('SummaryView', {
+      durationTime: this.state.totalDuration,
+      totalDistance: DISTANCE_TRAVELLED,
+    });
+  }
+
+
   //JL 17/4: these three functions handle the stopwatch used to track the user's runtime
   toggleStopwatch() {
     this.setState({stopwatchStart: !this.state.stopwatchStart, stopwatchReset: false});
   }
+
   resetStopwatch() {
     this.setState({stopwatchStart: false, stopwatchReset: true});
   }
@@ -497,7 +508,11 @@ const styles = {
     width: '30%',
     marginRight: 5,
     marginLeft: 5
-  }
+  },
+  divideSection: {
+    height: '30%',
+    justifyContent: 'center',
+}
 }
 
 //This is styling for the clock / JF (18/4)
@@ -513,4 +528,41 @@ const options = {
   }
 };
 
-export default Map;
+
+/****************HERE STARTS A NEW CLASS FOR SUMMARYPAGE*****************/
+class TheSummary extends React.Component {
+  static navigationOptions = {
+      title: 'SummaryView'
+  };
+  render() {
+    const { params } = this.props.navigation.state;
+    const durationTime = params ? params.durationTime : null;
+    const totalDistance = params ? params.totalDistance : null;
+
+    console.log('durationTime' + durationTime)
+    console.log('totalDistance' + totalDistance)
+    
+    return (
+        <View style={{ height: '90%', marginTop: 60}}>
+        <View style={styles.divideSection}>
+            <Text>Here should be a Map</Text>
+        </View>
+        <View style={styles.divideSection}>
+            <Text>{durationTime}</Text>
+            <Text>{totalDistance}</Text>
+        </View>
+        <View style={styles.divideSection}>
+            <Text>Here should be some sharing function (if it is possible..</Text>
+        </View>
+
+        </View>
+        
+    );  
+}
+};
+
+export default SwitchNavigator({
+  Home: { screen: Map },
+  SummaryView: {screen: TheSummary}
+});
+
