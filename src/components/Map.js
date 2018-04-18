@@ -9,8 +9,10 @@ import {
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Stopwatch } from 'react-native-stopwatch-timer'
+import pick from 'lodash/pick';
 import { Button, Text, Icon } from 'native-base';
 import firebase from 'firebase';
+import haversine from 'haversine';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -18,9 +20,14 @@ const LATITUDE = 0;
 const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.00922; //JL 13/4: 'the angle in which you're viewing', a universal value
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO*0.1;
+const DISTANCE_TRAVELLED = 0; //This is to calculate how long distance that has been travelled / JF (18/4)
+
 
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
+
+//JL 18/4: time spent runnning
+const totalDuration = 0;
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 
@@ -29,14 +36,14 @@ class Map extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.state = { 
       //intialPosition - to generate routes, it is the start position / JF (16/4)
       initialPosition: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
-    },
+      },
     //initialPositionMarker - to place the marker at the initialPosition, 
     //ev. could be same as initialPosition / JF (16/4)
     initialPositionMarker: {
@@ -45,7 +52,6 @@ class Map extends Component {
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
     },
-
     //currentPosition - to update the users current position / JF (16/4)
     currentPosition: {
       latitude: LATITUDE,
@@ -53,29 +59,32 @@ class Map extends Component {
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
     },
-      wayPoints: [],
-      wantedDistance: '',
-      actualDistance: 0,
-      createRoute: true,
-      startButton: true,
-      startRunning: false,
-      pauseRunning: false,
-      stopwatchStart: false,
-      stopwatchReset: false,
-      totalDuration: 0,
-    }
+        distanceTravelled: 0,
+        actualDistance: 0,
+        prevLatLng: {},
+        wayPoints: [],
+        wantedDistance: '',
+        createRoute: true,
+        startButton: true,
+        startRunning: false,
+        stopwatchStart: false,
+        stopwatchReset: false,
+        totalDuration: 0,
+      }
+
     this.mapView = null;  
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
   }
-  watchID: ?number = null; //JL 13/4: from tutorial, red marked but it works!
+  watchID: ?number = null; // from tutorial, red marked but it works! / JL (13/4) 
+ //Do we need this? /JF 18/4 
   
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
      
       // Here set all the positions, given by the devices current position. 
      this.setState({ 
-       initialPosition: {
+      initialPosition: {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude, 
         latitudeDelta: LATITUDE_DELTA,
@@ -102,29 +111,34 @@ class Map extends Component {
 
     this.watchID = navigator.geolocation.watchPosition(
       position => {
+        
+        const { distanceTravelled } = this.state
+        const newLatLngs = {latitude: position.coords.latitude, longitude: position.coords.longitude} 
+
         this.setState({
           initialPosition: {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-          },
-          /*QUESTION: do we want the marker to update or always be on the users start position?? /JF 16/4
-            initialPositionMarker: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
-          },*/
+          },
           currentPosition: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
-          }
+          },
+          distanceTravelled: distanceTravelled + this.calcDistance(newLatLngs),
+          prevLatLng: newLatLngs 
         });
-      }
-    );
+
+        console.log('Update frequently? ' + parseFloat(this.state.distanceTravelled.toFixed(2)))  
+      });
+  }
+
+  calcDistance(newLatLng) {
+    const { prevLatLng } = this.state
+    return (haversine(prevLatLng, newLatLng) || 0 )
   }
 
   componentWillUnmount() {
@@ -212,14 +226,16 @@ class Map extends Component {
 
 //JG 18/4 will send information about the route to the database
   toDatabase() {
-      const { wayPoints } = this.state;
+    console.log(DISTANCE_TRAVELLED)
+      const { wayPoints, totalDuration } = this.state;
       const { currentUser } = firebase.auth();
       firebase.database().ref(`/users/${currentUser.uid}/routes`)
-          .push({ wayPoints });
+          .push({ wayPoints, totalDuration, DISTANCE_TRAVELLED });
       return(
       this.setState({
-          wayPoints: []
-      
+          wayPoints: [],
+          totalDuration: 0,
+          DISTANCE_TRAVELLED: 0    
       })
       
       );
@@ -262,7 +278,7 @@ class Map extends Component {
           success
           //disabled={this.state.startButton}
           style={styles.startButtonStyle}
-          onPress={() => {this.setState({ startRunning: true }), 
+          onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
             this.resetStopwatch(), this.toggleStopwatch()}}>
             <Text>Start</Text>
         </Button>
@@ -273,12 +289,21 @@ class Map extends Component {
       return(
         <View>
           <View style={styles.createRouteContainerStyle}>
-            <Icon name='time' style={{fontSize: 25}}/>
-            <Stopwatch 
-              laps secs start={this.state.stopwatchStart}
+          <View style={styles.distanceContainer}>
+            <Text style={{ fontSize: 12}}>Distance:</Text>
+            <Text style={styles.distanceTravelledStyle}>
+              {this.state.distanceTravelled.toFixed(2)} km 
+            </Text>
+          </View>
+          <View style={styles.timeContainer}>
+            <Icon name='time' style={{fontSize: 25, marginTop: 6}}/>
+            <Stopwatch
+              start={this.state.stopwatchStart}
               options={options}
               reset={this.state.stopwatchReset}
-              getTime={this.getFormattedTime}/>
+              getTime={(time) => this.getFormattedTime(time)}
+            />
+          </View>
           </View>
           <View style={styles.pauseDoneContainer}>
             <Button
@@ -296,21 +321,23 @@ class Map extends Component {
             <Button
               success
               iconLeft
-              value={this.state.wayPoints}
-              style={styles.pauseDoneButton}
-              onPress={() =>  {this.toggleStopwatch(),
-                this.setState({ pauseRunning: true }),
+              style={styles.pauseDoneButton}          
+              onPress={() =>  {this.setState({ pauseRunning: true, stopwatchStart: false }),
+                console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(2))),
+                DISTANCE_TRAVELLED = parseFloat(this.state.distanceTravelled.toFixed(2)), 
+                console.log('DISTANCE_TRAVELLED: ' + DISTANCE_TRAVELLED),
                 Alert.alert(
                   'Done running?',
-                  '',
+                  '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => this.toDatabase()},
+                    {text: 'OK', onPress: () => {this.setState({ totalDuration: totalDuration }), 
+                      console.log('total duration: ' + this.state.totalDuration), this.toDatabase()}
+                    },
                   ],
                   { cancelable: false }
                 )
-              }}
-              >
+              }}>
                 <Icon type='FontAwesome' name='check' />
                 <Text>Done</Text>
             </Button>
@@ -328,7 +355,8 @@ class Map extends Component {
     this.setState({stopwatchStart: false, stopwatchReset: true});
   }
   getFormattedTime(time) {
-      this.currentTime = time;
+    this.currentTime = time;
+    totalDuration = time;
   };
   //****//
   
@@ -347,10 +375,12 @@ class Map extends Component {
           show 
           style={styles.mapStyle}
           ref={c => this.mapView = c}
-          onPress={this.onMapPress}>
-
-          <MapView.Marker coordinate={this.state.initialPositionMarker} />
-
+          onPress={this.onMapPress}
+         >
+          <MapView.Marker 
+          coordinate={this.state.initialPositionMarker} 
+          />
+        
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
@@ -362,6 +392,7 @@ class Map extends Component {
               strokeColor="hotpink"
               
               onStart={(params) => {
+                
                 //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
               }}
 
@@ -369,13 +400,16 @@ class Map extends Component {
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
                 /*if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
-                  this.routeGenerator(this.state.wantedDistance)}
+                  console.log('total_distance: ' + result.distance)
+                  this.routeGenerator(this.state.wantedDistance)
+                }
 
                 else if (result.distance > parseFloat(this.state.wantedDistance)*1.1) {
                   this.routeGenerator(this.state.wantedDistance)
                 }
                 else {*/
                   this.setState({ actualDistance: result.distance })
+                  console.log('total_distance: ' + result.distance)
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
@@ -388,13 +422,14 @@ class Map extends Component {
               }}
               onError={(errorMessage) => {
                  console.log('GOT AN ERROR');
-                 this.routeGenerator(this.state.wantedDistance)
+                 //this.routeGenerator(this.state.wantedDistance)
               }}
             />
           )}
+          
         </MapView>
-        
         {this.startRunning()}
+        
       </View>
     );
   }
@@ -410,6 +445,7 @@ class Map extends Component {
 
 
 //****STYLING*****//
+//Obs, styling for clock is in the bottom under const options / JF (18/4)
 const styles = {
   containerStyle: {
     height: '94%'
@@ -422,7 +458,26 @@ const styles = {
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center', 
+  },
+  distanceContainer: {
+    width: '35%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10
+  },
+  timeContainer: {
+    width: '35%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10
+  },
+  distanceTravelledStyle: {
+    fontSize: 25
   },
   inputContainerStyle: {
     width: '30%',
@@ -465,17 +520,16 @@ const styles = {
   }
 }
 
-
+//This is styling for the clock / JF (18/4)
 const options = {
   container: {
     padding: 5,
-    borderRadius: 5,
-    width: 150,
+    width: '100%'
   },
   text: {
-    fontSize: 30,
+    fontSize: 25,
     color: 'black',
-    marginLeft: 7,
+    marginLeft: 2,
   }
 };
 
