@@ -10,6 +10,7 @@ import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Stopwatch } from 'react-native-stopwatch-timer'
 import { Button, Text, Icon } from 'native-base';
+import firebase from 'firebase';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -208,6 +209,23 @@ class Map extends Component {
     }
   }
 
+
+//JG 18/4 will send information about the route to the database
+  toDatabase() {
+      const { wayPoints } = this.state;
+      const { currentUser } = firebase.auth();
+      firebase.database().ref(`/users/${currentUser.uid}/routes`)
+          .push({ wayPoints });
+      return(
+      this.setState({
+          wayPoints: []
+      
+      })
+      
+      );
+     
+  }
+
   //JL 17/4: shows different footers before and while running
   startRunning(){
     if (!this.state.startRunning){
@@ -278,6 +296,7 @@ class Map extends Component {
             <Button
               success
               iconLeft
+              value={this.state.wayPoints}
               style={styles.pauseDoneButton}
               onPress={() =>  {this.toggleStopwatch(),
                 this.setState({ pauseRunning: true }),
@@ -286,7 +305,7 @@ class Map extends Component {
                   '',
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    {text: 'OK', onPress: () => this.toDatabase()},
                   ],
                   { cancelable: false }
                 )
@@ -325,7 +344,7 @@ class Map extends Component {
           onRegionChange={ currentPosition => this.setState({currentPosition}) }
           onRegionChangeComplete={ currentPosition => this.setState({currentPosition}) }
           showsMyLocationButton
-          showsCompass
+          show 
           style={styles.mapStyle}
           ref={c => this.mapView = c}
           onPress={this.onMapPress}>

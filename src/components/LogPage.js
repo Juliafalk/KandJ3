@@ -29,6 +29,19 @@ class LogPage extends Component {
         );
        
     }
+
+    /*routeFetch() {
+        console.log(snapshot.val())
+        const { currentUser } = firebase.auth();
+        firebase.database().ref(`/users/${currentUser.uid}/routes`)
+            .on('value', snapshot =>{ 
+                dispatch({ payload: snapshot.val() })
+
+            });
+            <Button onPress={this.routeFetch.bind(this)}> 
+                            <Text>Get route info</Text>
+                            </Button>
+    }*/
     
     ShowCurrentDate=()=>{
  
@@ -76,7 +89,7 @@ class LogPage extends Component {
                         
 
                             <Button onPress={this.onButtonPress.bind(this)}> 
-                            <Text>Get Date</Text>
+                            <Text>Create route name</Text>
                             </Button>
                         </CardItem>
 
@@ -91,6 +104,7 @@ class LogPage extends Component {
                         <CardItem>
                             <Icon name='ios-speedometer-outline'/>
                             <Text>Average Speed:</Text>
+                            
                             <MyButton onPress={this.ButtonPress.bind(this)}>
                                  <Text>Log out</Text>
                             </MyButton>
