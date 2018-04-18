@@ -25,6 +25,9 @@ const DISTANCE_TRAVELLED = 0; //This is to calculate how long distance that has 
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
 
+//JL 18/4: time spent runnning
+const totalDuration = 0;
+
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 
 class Map extends Component {
@@ -42,13 +45,12 @@ class Map extends Component {
       },
     //initialPositionMarker - to place the marker at the initialPosition, 
     //ev. could be same as initialPosition / JF (16/4)
-      initialPositionMarker: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
-      },
-
+    initialPositionMarker: {
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    },
     //currentPosition - to update the users current position / JF (16/4)
     currentPosition: {
       latitude: LATITUDE,
@@ -275,7 +277,8 @@ class Map extends Component {
               start={this.state.stopwatchStart}
               options={options}
               reset={this.state.stopwatchReset}
-              getTime={this.getFormattedTime()}/>
+              getTime={(time) => this.getFormattedTime(time)}
+            />
           </View>
           <View style={styles.pauseDoneContainer}>
             <Button
@@ -303,7 +306,9 @@ class Map extends Component {
                   'Distance: ' + DISTANCE_TRAVELLED,
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    {text: 'OK', onPress: () => {this.setState({ totalDuration: totalDuration }), 
+                      console.log('total duration: ' + this.state.totalDuration)}
+                    },
                   ],
                   { cancelable: false }
                 )
@@ -327,6 +332,7 @@ class Map extends Component {
   }
   getFormattedTime(time) {
     this.currentTime = time;
+    totalDuration = time;
   };
   //****//
   
@@ -400,7 +406,6 @@ class Map extends Component {
           )}
           
         </MapView>
-        
         {this.startRunning()}
         
       </View>
