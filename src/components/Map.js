@@ -56,7 +56,6 @@ class Map extends Component {
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
     },
-        routeCoordinates: [], 
         distanceTravelled: 0,
         actualDistance: 0,
         prevLatLng: {},
@@ -74,7 +73,8 @@ class Map extends Component {
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
   }
-  watchID: ?number = null; //JL 13/4: from tutorial, red marked but it works!
+ // watchID: ?number = null; / from tutorial, red marked but it works! / JL (13/4) 
+ //Do we need this? /JF 18/4 
   
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -108,17 +108,16 @@ class Map extends Component {
 
     this.watchID = navigator.geolocation.watchPosition(
       position => {
-
-        const { distanceTravelled } = this.state
-        //const positionLatLngs = pick(position.coords, ['latitude', 'longitude'])
-        const newLatLngs = {latitude: position.coords.latitude, longitude: position.coords.longitude} 
         
+        const { distanceTravelled } = this.state
+        const newLatLngs = {latitude: position.coords.latitude, longitude: position.coords.longitude} 
+
         this.setState({
           initialPosition: {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
           },
           currentPosition: {
             latitude: position.coords.latitude,
@@ -126,13 +125,11 @@ class Map extends Component {
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           },
-          //routeCoordinates: routeCoordinates.concat(positionLatLngs),
           distanceTravelled: distanceTravelled + this.calcDistance(newLatLngs),
-          prevLatLng: newLatLngs
-          
+          prevLatLng: newLatLngs 
         });
-        console.log('Update frequently? ' + parseFloat(this.state.distanceTravelled.toFixed(2)))
-        //console.log('routeCoordinate:' + routeCoordinates)     
+
+        console.log('Update frequently? ' + parseFloat(this.state.distanceTravelled.toFixed(2)))  
       });
   }
 
@@ -303,12 +300,12 @@ class Map extends Component {
               iconLeft
               style={styles.pauseDoneButton}          
               onPress={() =>  {this.setState({ pauseRunning: true, stopwatchStart: false }),
-                console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(4))),
-                DISTANCE_TRAVELLED = parseFloat(this.state.distanceTravelled.toFixed(4)), 
+                console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(2))),
+                DISTANCE_TRAVELLED = parseFloat(this.state.distanceTravelled.toFixed(2)), 
                 console.log('DISTANCE_TRAVELLED: ' + DISTANCE_TRAVELLED),
                 Alert.alert(
                   'Done running?',
-                  'Distance: ' + DISTANCE_TRAVELLED,
+                  '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                     {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -353,12 +350,10 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
           onPress={this.onMapPress}
-          overlays={[{
-            coordinates: this.state.routeCoordinates,
-            strokeColor: '#19B5FE',
-            lineWidth: 3}]}>
-
-          <MapView.Marker coordinate={this.state.initialPositionMarker} />
+         >
+          <MapView.Marker 
+          coordinate={this.state.initialPositionMarker} 
+          />
         
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
@@ -504,6 +499,7 @@ const styles = {
 const options = {
   container: {
     padding: 5,
+    width: '100%'
   },
   text: {
     fontSize: 25,
