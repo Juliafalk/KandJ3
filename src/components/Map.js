@@ -26,7 +26,7 @@ const DISTANCE_TRAVELLED = 0; //This is to calculate how long distance that has 
 const waypoints = [];
 
 //JL 18/4: time spent runnning
-const totalDuration = 0;
+const TOTAL_DURATION = 0;
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 
@@ -224,16 +224,42 @@ class Map extends Component {
 
   //JL 17/4: shows different footers before and while running
   startRunning(){
+    //JL 18/4: deconstruction of styles and states
+    const {
+      createRouteContainerStyle,
+      createRouteButtonStyle,
+      inputContainerStyle,
+      distanceContainer,
+      textInputStyle,
+      actualDistanceStyle,
+      startButtonStyle,
+      distanceTravelledStyle,
+      timeContainer,
+      pauseDoneContainer,
+      pauseDoneButton
+    } = styles;
+    const {
+      wantedDistance,
+      actualDistance,
+      createRoute,
+      startButton,
+      distanceTravelled,
+      stopwatchStart,
+      stopwatchReset,
+      pauseRunning,
+      totalDuration
+    } = this.state;
+
     if (!this.state.startRunning){
       return(
         <View>
-          <View style={styles.createRouteContainerStyle}>
-            <View style={styles.inputContainerStyle}>
+          <View style={createRouteContainerStyle}>
+            <View style={inputContainerStyle}>
               <TextInput
                 keyboardType='number-pad'
-                style={styles.textInputStyle}
+                style={textInputStyle}
                 maxLength={2}
-                value={this.state.wantedDistance}
+                value={wantedDistance}
                 onChangeText={userInput => 
                   {this.setState({
                   wantedDistance: userInput}),
@@ -241,14 +267,14 @@ class Map extends Component {
               />
               <Text>km</Text>
             </View>
-            <View style={styles.actualDistance}>
+            <View style={actualDistance}>
               <Text style={{ fontSize: 12}}>Distance:</Text>
-              <Text>{this.state.actualDistance} km</Text>
+              <Text>{actualDistance} km</Text>
             </View>
             <Button
-              style={styles.createRouteButtonStyle}
-              disabled={this.state.createRoute}
-              onPress={() => {this.routeGenerator(this.state.wantedDistance), 
+              style={createRouteButtonStyle}
+              disabled={createRoute}
+              onPress={() => {this.routeGenerator(wantedDistance), 
               this.setState({ startButton: false })}}>
                 <Text style={{ fontSize: 14 }}>Create Route</Text>
             </Button>
@@ -256,8 +282,8 @@ class Map extends Component {
           <Button
           block
           success
-          //disabled={this.state.startButton}
-          style={styles.startButtonStyle}
+          //disabled={startButton}
+          style={startButtonStyle}
           onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
             this.resetStopwatch(), this.toggleStopwatch()}}>
             <Text>Start</Text>
@@ -268,50 +294,50 @@ class Map extends Component {
     else {
       return(
         <View>
-          <View style={styles.createRouteContainerStyle}>
-          <View style={styles.distanceContainer}>
+          <View style={createRouteContainerStyle}>
+          <View style={distanceContainer}>
             <Text style={{ fontSize: 12}}>Distance:</Text>
-            <Text style={styles.distanceTravelledStyle}>
-              {this.state.distanceTravelled.toFixed(2)} km 
+            <Text style={distanceTravelledStyle}>
+              {distanceTravelled.toFixed(2)} km 
             </Text>
           </View>
-          <View style={styles.timeContainer}>
+          <View style={timeContainer}>
             <Icon name='time' style={{fontSize: 25, marginTop: 6}}/>
             <Stopwatch
-              start={this.state.stopwatchStart}
+              start={stopwatchStart}
               options={options}
-              reset={this.state.stopwatchReset}
+              reset={stopwatchReset}
               getTime={(time) => this.getFormattedTime(time)}
             />
           </View>
           </View>
-          <View style={styles.pauseDoneContainer}>
+          <View style={pauseDoneContainer}>
             <Button
               warning
-              style={styles.pauseDoneButton}
-              onPress={() => {this.setState({ startRunning: true, pauseRunning: !this.state.pauseRunning }),
+              style={pauseDoneButton}
+              onPress={() => {this.setState({ startRunning: true, pauseRunning: !pauseRunning }),
                 this.toggleStopwatch()}}
               >
                 <Icon 
                 style={{fontSize: 25}}
                 type='FontAwesome'
-                name={ this.state.pauseRunning ? 'play': 'pause'}
+                name={pauseRunning ? 'play': 'pause'}
                 />
             </Button>
             <Button
               success
               iconLeft
-              style={styles.pauseDoneButton}          
+              style={pauseDoneButton}          
               onPress={() =>  {this.setState({ pauseRunning: true, stopwatchStart: false }),
-                console.log('does this work? ' + parseFloat(this.state.distanceTravelled.toFixed(2))),
-                DISTANCE_TRAVELLED = parseFloat(this.state.distanceTravelled.toFixed(2)), 
+                console.log('does this work? ' + parseFloat(distanceTravelled.toFixed(2))),
+                DISTANCE_TRAVELLED = parseFloat(distanceTravelled.toFixed(2)), 
                 console.log('DISTANCE_TRAVELLED: ' + DISTANCE_TRAVELLED),
                 Alert.alert(
                   'Done running?',
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.setState({ totalDuration: totalDuration }), 
+                    {text: 'OK', onPress: () => {this.setState({ totalDuration: TOTAL_DURATION }), 
                       console.log('total duration: ' + this.state.totalDuration)}
                     },
                   ],
@@ -336,7 +362,7 @@ class Map extends Component {
   }
   getFormattedTime(time) {
     this.currentTime = time;
-    totalDuration = time;
+    TOTAL_DURATION = time;
   };
   //****//
   
@@ -474,7 +500,7 @@ const styles = {
     borderWidth: 1,
     borderRadius: 5
   },
-  actualDistance: {
+  actualDistanceStyle: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
