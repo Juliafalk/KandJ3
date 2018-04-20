@@ -14,7 +14,7 @@ import pick from 'lodash/pick';
 import { Button, Text, Icon } from 'native-base';
 import firebase from 'firebase';
 import haversine from 'haversine';
-import SummaryPage from './SummaryPage';
+//import SummaryPage from './SummaryPage';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -360,7 +360,7 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.SummaryPage(), this.setState({ totalDuration: TOTAL_DURATION }), /*this.toDatabase(),*/ 
+                    {text: 'OK', onPress: () => {this.SummaryPage(), TOTAL_DURATION = totalDuration , /*this.toDatabase(),*/ 
                       console.log('total duration: ' + this.state.totalDuration)}
                     },
                   ],
