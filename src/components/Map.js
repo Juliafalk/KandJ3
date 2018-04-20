@@ -135,7 +135,6 @@ class Map extends Component {
           prevLatLng: newLatLngs 
         });
 
-        console.log('Update frequently? ' + parseFloat(this.state.distanceTravelled.toFixed(2)))  
       });
   }
 
@@ -202,7 +201,6 @@ class Map extends Component {
           longitude: center.longitude+delta_lng
         }
         waypoints[i] = nextCoord;
-        console.log('nextCoord' + nextCoord )
     }
     waypoints[circlePoints+1] = this.state.initialPosition;
 
@@ -353,16 +351,13 @@ class Map extends Component {
               iconLeft
               style={pauseDoneButton}          
               onPress={() =>  {this.setState({ pauseRunning: true, stopwatchStart: false }),
-                console.log('does this work? ' + parseFloat(distanceTravelled.toFixed(2))),
                 DISTANCE_TRAVELLED = parseFloat(distanceTravelled.toFixed(2)), 
-                console.log('DISTANCE_TRAVELLED: ' + DISTANCE_TRAVELLED),
                 Alert.alert(
                   'Done running?',
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.SummaryPage(), TOTAL_DURATION = totalDuration , /*this.toDatabase(),*/ 
-                      console.log('total duration: ' + this.state.totalDuration)}
+                    {text: 'OK', onPress: () => {this.SummaryPage(), TOTAL_DURATION = totalDuration , /*this.toDatabase(),*/}
                     },
                   ],
                   { cancelable: false }
@@ -465,7 +460,6 @@ class Map extends Component {
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
                 /*if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
-                  console.log('total_distance: ' + result.distance)
                   this.routeGenerator(this.state.wantedDistance)
                 }
 
@@ -474,7 +468,6 @@ class Map extends Component {
                 }
                 else {*/
                   this.setState({ actualDistance: result.distance })
-                  console.log('total_distance: ' + result.distance)
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
@@ -611,8 +604,6 @@ class TheSummary extends React.Component {
     const durationTime = params ? params.durationTime : null;
     const totalDistance = params ? params.totalDistance : null;
 
-    console.log('durationTime' + durationTime)
-    console.log('totalDistance' + totalDistance)
     
     return (
         <View style={{ height: '90%', marginTop: 60}}>
