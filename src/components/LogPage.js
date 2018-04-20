@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Scrollview, Alert } from 'react-native';
-import { cardBody, Icon, Button, Container, Header, Content, Left, Body, Title, Right, CardItem, Card } from 'native-base';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import { Icon, Button, Container, Header, Content, Left, Body, Title, Right, CardItem, Card } from 'native-base';
 import Moment from 'react-moment';
 import firebase from 'firebase';
 import { MyInputCreateAccount, MyButton } from './common';
@@ -43,57 +43,39 @@ class LogPage extends Component {
                             </Button>
     }*/
     
-    ShowCurrentDate=()=>{
- 
-        var date = new Date().getDate();
-        var month = new Date().getMonth() + 1;
-        var year = new Date().getFullYear();
-       
-   
-        Alert.alert(date + '-' + month + '-' + year);
-        
-   
-       }
-    
 
     render() {
         var dt= new Date().toDateString()
         console.log( dt)
         return (
             <Container>
-
                 <Header>
                     <Left>
                         <Icon name="ios-menu" onPress={() =>
                         this.props.navigation.navigate('DrawerOpen')}/>
                     </Left>
                     <Body>
-                            <Title>Log</Title>
+                        <Title>Log</Title>
                     </Body>
                     <Right />
                 </Header>
-                 <Content>
+                <Content>
                     <Card>
                         <CardItem header bordered style={{ backgroundColor: 'lightgray'}}>
                             <Text style={styles.labelStyle}>Your run on..(todays date)..</Text>
                         </CardItem>
-
                         <CardItem>
-                        
-                          
                             <MyInputCreateAccount 
                             label="Name: "
                             placeholder="Enter name"
                             label="Name:"
                             value={this.state.name}
-                            onChangeText={name => this.setState({ name })}/>
-                        
-
+                            onChangeText={name => this.setState({ name })}
+                            />
                             <Button onPress={this.onButtonPress.bind(this)}> 
                             <Text>Create route name</Text>
                             </Button>
                         </CardItem>
-
                         <CardItem>
                             <Icon name='ios-stopwatch-outline'/>
                             <Text>Time:</Text>
@@ -105,7 +87,6 @@ class LogPage extends Component {
                         <CardItem>
                             <Icon name='ios-speedometer-outline'/>
                             <Text>Average Speed:</Text>
-                            
                             <MyButton onPress={this.ButtonPress.bind(this)}>
                                  <Text>Log out</Text>
                             </MyButton>

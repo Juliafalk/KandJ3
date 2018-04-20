@@ -5,7 +5,7 @@ between diffrent pages / JF (18/4) */
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Icon, Button, Container, Header, Content, Left, Body, Right, Title } from 'native-base';
+
 
 class SummaryPage extends React.Component { 
     

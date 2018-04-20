@@ -4,10 +4,10 @@ The back-button navigates back to the startpage trough the SwitchNavigator in th
 and the GoBack function / JF (11/4) */ 
 
 import React, { Component } from 'react';
-import { Text, View, ImageBackground } from 'react-native';
+import { Text, View } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
-import { Button, Icon, Header, Left, Right, Body, Title } from 'native-base';
-import { MyCard, MyCardSection, MyHeader, MyInputLogin, MyInputCreateAccount, MySpinner } from './common';
+import { Button, Icon, Header, Body } from 'native-base';
+import { MyCard, MyCardSection, MyInputCreateAccount, MySpinner } from './common';
 import StartPage from './StartPage';
 import firebase from 'firebase';
 

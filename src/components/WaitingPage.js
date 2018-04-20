@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ImageBackground } from 'react-native';
 import firebase from 'firebase';
-import { Icon, Header, Left, Title, Body, Right } from 'native-base';
+import { Icon } from 'native-base';
 
 
 class WaitingPage extends React.Component {

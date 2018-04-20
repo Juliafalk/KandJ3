@@ -4,11 +4,10 @@ The code navigates to correst pages with SwitchNavigator. / JF (11/4)
 */
 import firebase from 'firebase';
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
-import { SwitchNavigator } from 'react-navigation';
-import { DrawerNavigator, DrawerItems } from 'react-navigation';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { DrawerNavigator, DrawerItems, SwitchNavigator } from 'react-navigation';
 import { Container, Content, Header, Body, Button, Icon } from 'native-base';
-import { MyCard, MyCardSection} from './common';
+import { MyCard, MyCardSection } from './common';
 //JL: should add an index file to reduce imports below
 import MapPage from './MapPage'; 
 //import MyApp from './MyApp';

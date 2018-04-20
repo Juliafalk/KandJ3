@@ -6,7 +6,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import firebase from 'firebase';
 import Map from './Map';
-import { MyButton, MyHeader } from './common';
+import { MyButton } from './common';
 import { Icon, Header, Left, Title, Body, Right } from 'native-base';
 
 class MapPage extends React.Component {
@@ -22,7 +22,7 @@ class MapPage extends React.Component {
             <Header style={{ height: 60}}>
                 <Left>
                     <Icon name='ios-menu' onPress={() =>
-                        this.props.navigation.navigate('DrawerOpen')}/>
+                    this.props.navigation.navigate('DrawerOpen')}/>
                 </Left>
                 <Body>
                     <Title>Map</Title>
