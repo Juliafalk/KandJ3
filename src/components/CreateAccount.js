@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
 import { Button, Icon, Header, Body } from 'native-base';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MyCard, MyCardSection, MyInputCreateAccount, MySpinner } from './common';
 import StartPage from './StartPage';
 import firebase from 'firebase';
@@ -71,12 +72,18 @@ class CreateAccount extends React.Component {
 
     render () {
             return (
+            <KeyboardAwareScrollView
+                resetScrollToCoords={{ x: 0, y: -100 }}
+                contentContainerStyle={styles.container}
+                scrollEnabled={true}
+            >
                 <View>
                 <Header style={styles.headerStyle}>
                 <Body>
                     <Text style={styles.headerStyleText}>Create your account</Text>
                 </Body>
                 </Header>
+                
                 <View style={{justifyContent: 'center', height: '88%'}}>
                 <Icon type="FontAwesome" name="user-plus" style={styles.iconStyle} />
                 <MyCard>
@@ -139,7 +146,10 @@ class CreateAccount extends React.Component {
                     </MyCardSection>
                 </MyCard>
                 </View>
+          
                 </View>
+                </KeyboardAwareScrollView>
+
             );
         };
 
