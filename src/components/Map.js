@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Stopwatch } from 'react-native-stopwatch-timer'
 import { SwitchNavigator } from 'react-navigation';
 import pick from 'lodash/pick';
@@ -400,7 +401,34 @@ class Map extends Component {
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
+
+    const {
+      createRouteContainerStyle,
+      createRouteButtonStyle,
+      inputContainerStyle,
+      distanceContainer,
+      textInputStyle,
+      actualDistanceStyle,
+      startButtonStyle,
+      distanceTravelledStyle,
+      timeContainer,
+      pauseDoneContainer,
+      pauseDoneButton
+    } = styles;
+    const {
+      wantedDistance,
+      actualDistance,
+      createRoute,
+      startButton,
+      distanceTravelled,
+      stopwatchStart,
+      stopwatchReset,
+      pauseRunning,
+      totalDuration
+    } = this.state;
+
     return (
+     
       <View style={styles.containerStyle}>
         <MapView
           provider={"google"}
@@ -467,8 +495,9 @@ class Map extends Component {
           
         </MapView>
         {this.startRunning()}
-        
       </View>
+    
+      
     );
   }
 }
@@ -485,11 +514,11 @@ class Map extends Component {
 //****STYLING*****//
 //Obs, styling for clock is in the bottom under const options / JF (18/4)
 const styles = {
-  containerStyle: {
+  /*containerStyle: {
     height: '94%'
-  },
+  },*/
   mapStyle: {
-    height: '79%'
+    height: '66%'
   },
   createRouteContainerStyle: {
     height: '22%',

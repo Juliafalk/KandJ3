@@ -4,8 +4,9 @@ The back-button navigates back to the startpage trough the SwitchNavigator in th
 and the GoBack function / JF (11/4) */ 
 
 import React, { Component } from 'react';
-import { Text, View, ImageBackground } from 'react-native';
+import { Text, View, ImageBackground, KeyboardAvoidingView } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Button, Icon, Header, Left, Right, Body, Title } from 'native-base';
 import { MyCard, MyCardSection, MyHeader, MyInputLogin, MyInputCreateAccount, MySpinner } from './common';
 import StartPage from './StartPage';
@@ -71,12 +72,18 @@ class CreateAccount extends React.Component {
 
     render () {
             return (
+            <KeyboardAwareScrollView
+                resetScrollToCoords={{ x: 0, y: -100 }}
+                contentContainerStyle={styles.container}
+                scrollEnabled={true}
+            >
                 <View>
                 <Header style={styles.headerStyle}>
                 <Body>
                     <Text style={styles.headerStyleText}>Create your account</Text>
                 </Body>
                 </Header>
+                
                 <View style={{justifyContent: 'center', height: '88%'}}>
                 <Icon type="FontAwesome" name="user-plus" style={styles.iconStyle} />
                 <MyCard>
@@ -139,7 +146,10 @@ class CreateAccount extends React.Component {
                     </MyCardSection>
                 </MyCard>
                 </View>
+          
                 </View>
+                </KeyboardAwareScrollView>
+
             );
         };
 

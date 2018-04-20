@@ -17,6 +17,7 @@ import LoginPage from './LoginPage';
 import LogPage from './LogPage';
 import FavoritePage from './FavoritePage';
 import SettingsScreen from './SettingsScreen';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 //This is the first page / JF (11/4)
 //Map button will not be visible later. 
@@ -100,9 +101,15 @@ class TheMap extends React.Component {
     };
     render () {
         return (
+            <KeyboardAwareScrollView
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            contentContainerStyle={styles.container}
+            scrollEnabled={false}
+            >
             <Container>
                 <MyApp /> 
             </Container>
+            </KeyboardAwareScrollView>
         );
     }
 };
