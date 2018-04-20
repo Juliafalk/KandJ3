@@ -30,7 +30,7 @@ class LogPage extends Component {
        
     }
 
-    /*routeFetch() {
+    routeFetch() {
         console.log(snapshot.val())
         const { currentUser } = firebase.auth();
         firebase.database().ref(`/users/${currentUser.uid}/routes`)
@@ -41,7 +41,7 @@ class LogPage extends Component {
             <Button onPress={this.routeFetch.bind(this)}> 
                             <Text>Get route info</Text>
                             </Button>
-    }*/
+    }
     
 
     render() {
