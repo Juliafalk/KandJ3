@@ -357,7 +357,8 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.SummaryPage(), TOTAL_DURATION = totalDuration , /*this.toDatabase(),*/}
+                    {text: 'OK', onPress: () => {this.SummaryPage(), TOTAL_DURATION = totalDuration /*this.toDatabase(),*/}
+            
                     },
                   ],
                   { cancelable: false }
