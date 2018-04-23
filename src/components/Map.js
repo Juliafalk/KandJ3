@@ -73,6 +73,8 @@ class Map extends Component {
         stopwatchStart: false,
         stopwatchReset: false,
         totalDuration: 0,
+        date: 0, 
+        pauseRunning: false
       }
 
     this.mapView = null;  
@@ -228,15 +230,16 @@ class Map extends Component {
 //JG 18/4 will send information about the route to the database
   toDatabase() {
       var date= new Date().toDateString()
-      const { wayPoints, totalDuration } = this.state;
+      const { wayPoints, totalDuration, actualDistance } = this.state;
       const { currentUser } = firebase.auth();
       firebase.database().ref(`/users/${currentUser.uid}/routes`)
-          .push({ wayPoints, totalDuration, DISTANCE_TRAVELLED, date });
+          .push({ wayPoints, totalDuration, DISTANCE_TRAVELLED, date, actualDistance });
       return(
-      this.setState({
+        DISTANCE_TRAVELLED = 0,
+        this.setState({
           wayPoints: [],
           totalDuration: 0,
-          DISTANCE_TRAVELLED: 0 ,
+          //DISTANCE_TRAVELLED: 0 ,
           date: 0   
       })
       
@@ -357,7 +360,7 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.SummaryPage(), TOTAL_DURATION = totalDuration /*this.toDatabase(),*/}
+                    {text: 'OK', onPress: () => {this.SummaryPage(), TOTAL_DURATION = totalDuration, this.toDatabase()}
             
                     },
                   ],

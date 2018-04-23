@@ -5,9 +5,15 @@ import Moment from 'react-moment';
 import firebase from 'firebase';
 import { MyInputCreateAccount, MyButton } from './common';
 
+const travelled_distance = [];
+const actual_distance = [];
+const duration = [];
+const date = [];
+const wayPoints = [];
+
+
 
 class LogPage extends Component { 
-
     state = { name: '' }
 
     ButtonPress() {
@@ -30,17 +36,45 @@ class LogPage extends Component {
        
     }
 
-    routeFetch() {
-        console.log(snapshot.val())
-        const { currentUser } = firebase.auth();
-        firebase.database().ref(`/users/${currentUser.uid}/routes`)
-            .on('value', snapshot =>{ 
-                dispatch({ payload: snapshot.val() })
+   
 
-            });
-            <Button onPress={this.routeFetch.bind(this)}> 
-                            <Text>Get route info</Text>
-                            </Button>
+    routeFetch() {
+        var userId = firebase.auth().currentUser.uid;
+        
+        firebase.database().ref('/users/' + userId + '/routes/').on('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            var key = childSnapshot.key;
+            var childData = childSnapshot.val();
+            travelled_distance.push(childData.DISTANCE_TRAVELLED);
+            actual_distance.push(childData.actualDistance);
+            duration.push(childData.totalDuration)
+            date.push(childData.date)
+            wayPoints.push(childData.wayPoints)
+           
+        });
+        
+        });
+        console.log(travelled_distance)
+        console.log(actual_distance)
+        console.log(date)
+        console.log(wayPoints)
+        console.log('')
+
+        return(
+            <View style={{ backgroundColor: 'blue' }}>
+            <Text>{toString(actual_distance)}</Text>
+            </View>
+        )
+        
+
+    /*const { currentUser } = firebase.auth();
+    const { user } = this.state;
+    console.log(currentUser)
+    var recentPostsRef = firebase.database().ref(`/users/${currentUser.uid}/routes`);
+        recentPostsRef.once('value').then(snapshot => {
+        this.setState({ user: snapshot.val().users })
+        console.log (user)*/
+    
     }
     
 
@@ -91,8 +125,16 @@ class LogPage extends Component {
                                  <Text>Log out</Text>
                             </MyButton>
                         </CardItem>
+                        <CardItem>
+                        <Button onPress={this.routeFetch.bind(this)}> 
+                            <Text>Get route info</Text>
+                        </Button>
+                        </CardItem>
+                        {this.routeFetch()}
+
                     </Card>
                 </Content>
+                
             </Container>
 
         );
