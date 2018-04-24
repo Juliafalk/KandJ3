@@ -6,8 +6,8 @@ import firebase from 'firebase';
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { DrawerNavigator, DrawerItems, SwitchNavigator } from 'react-navigation';
-import { Container, Content, Header, Body, Button, Icon } from 'native-base';
-import { MyCard, MyCardSection } from './common';
+import { Container, Content, Header, Body, Button, Icon, Footer } from 'native-base';
+import { MyCard, MyCardSection, MyButton } from './common';
 //JL: should add an index file to reduce imports below
 import MapPage from './MapPage'; 
 //import MyApp from './MyApp';
@@ -127,6 +127,9 @@ const styles = {
     seeMapStyle: {
         backgroundColor: '#fff'
     },
+    startButtonStyle: {
+        margin: 10
+      },
 };
 
 //layout on sidemenu/ JG 13/4 
@@ -141,7 +144,7 @@ const CustomDrawerContentComponent = (props) => (
         </Header>
         <Content>
             <DrawerItems {...props}/>
-        </Content>
+        </Content>        
     </Container>
 );
 
@@ -195,3 +198,4 @@ otherStyles = StyleSheet.create({
         borderRadius: 75
     }
 })
+
