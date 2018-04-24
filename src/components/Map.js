@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView, 
   TextInput,
   View,
+  Image
 } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -12,7 +13,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Stopwatch } from 'react-native-stopwatch-timer'
 import { SwitchNavigator } from 'react-navigation';
 import pick from 'lodash/pick';
-import { Button, Text, Icon } from 'native-base';
+import { Button, Text, Icon, CardItem, Card } from 'native-base';
 import firebase from 'firebase';
 import haversine from 'haversine';
 //import SummaryPage from './SummaryPage';
@@ -578,6 +579,7 @@ const styles = {
   divideSection: {
     height: '30%',
     justifyContent: 'center',
+    alignItems: 'center',
 }
 }
 
@@ -604,19 +606,35 @@ class TheSummary extends React.Component {
     const { params } = this.props.navigation.state;
     const durationTime = params ? params.durationTime : null;
     const totalDistance = params ? params.totalDistance : null;
+    const date= new Date().toDateString()
 
     
     return (
-        <View style={{ height: '90%', marginTop: 60}}>
-        <View style={styles.divideSection}>
-            <Text>Here should be a Map</Text>
+        <View style={{  height: '85%' }}>
+        <View style={{ marginLeft: 15, marginTop: 10 }}>
+        <Icon name='close' 
+        onPress={() => {this.props.navigation.navigate('Home')}} 
+        style={{ fontSize: 50, color: 'red' }}
+        />
         </View>
         <View style={styles.divideSection}>
-            <Text>{durationTime}</Text>
-            <Text>{totalDistance}</Text>
+            < Image style={{ height: 90, width: 90}}  
+            source={require('./finisher.png')}/>
         </View>
         <View style={styles.divideSection}>
-            <Text>Here should be some sharing function (if it is possible..</Text>
+        
+          <CardItem>
+              <Text style={{ fontWeight: 'bold' }}>{date}</Text>
+          </CardItem>
+          <CardItem>
+              <Icon name='ios-stopwatch-outline'/>
+              <Text>{durationTime}</Text>
+          </CardItem>
+          <CardItem>
+              <Icon name= "ios-walk-outline"/>
+              <Text>{totalDistance}</Text>
+          </CardItem> 
+                    
         </View>
 
         </View>
