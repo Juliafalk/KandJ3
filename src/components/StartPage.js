@@ -100,15 +100,10 @@ class TheMap extends React.Component {
     };
     render () {
         return (
-            <KeyboardAwareScrollView
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            contentContainerStyle={styles.container}
-            scrollEnabled={false}
-            >
-            <Container>
+            <ScrollView
+            keyboardShouldPersistTaps='always'>
                 <MyApp /> 
-            </Container>
-            </KeyboardAwareScrollView>
+            </ScrollView>        
         );
     }
 };
@@ -145,10 +140,8 @@ const CustomDrawerContentComponent = (props) => (
     </Container>
 );
 
-
 /*Sidemenu with directions to which page if clicking on an option
 InitialRouteName is which page to start on when calling MyApp/JG 13/4 */
-
 const MyApp = DrawerNavigator({
 
     Map: {
@@ -172,7 +165,6 @@ const MyApp = DrawerNavigator({
     
 });
 
-
 //Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)
 export default SwitchNavigator({
     Home: { screen: StartPage },
@@ -180,7 +172,6 @@ export default SwitchNavigator({
     CreateAccount: { screen: CreateAccountScreen },
     MapView: {screen: TheMap}
 });
-
 
 otherStyles = StyleSheet.create({
     container: {
