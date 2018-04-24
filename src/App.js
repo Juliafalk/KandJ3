@@ -13,7 +13,7 @@ import FavoritePage from './components/FavoritePage';
 import SettingsScreen from './components/SettingsScreen';
 import WaitingPage from './components/WaitingPage'
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import { Container, Content, Header, Body, Footer, Button } from 'native-base';
+import { Container, Content, Header, Body, Footer, Button, Icon } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class App extends React.Component {
@@ -89,6 +89,7 @@ const CustomDrawerContentComponent = (props) => (
         <Footer style={{ backgroundColor: 'white' }}>
             <Button danger /*onPress={this.Logout.bind(this)}*/>
                 <Text style={{ fontWeight: 'bold'}}>  Log out  </Text>
+                <Icon name= "ios-log-out-outline" style={{ color: 'black'}}/>
             </Button>
         </Footer>
     </Container>

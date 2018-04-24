@@ -8,6 +8,12 @@ import { MyInputCreateAccount, MyButton } from './common';
 
 class LogPage extends Component { 
 
+    static navigationOptions = {
+        drawerIcon: (
+            <Icon name='ios-list-box-outline' />
+        )
+    }
+
     state = { name: '' }
 
     ButtonPress() {
@@ -49,7 +55,7 @@ class LogPage extends Component {
         console.log( dt)
         return (
             <Container>
-                <Header>
+                <Header style={{ backgroundColor: '#8CBA80'}}>
                     <Left>
                         <Icon name="ios-menu" onPress={() =>
                         this.props.navigation.navigate('DrawerOpen')}/>
