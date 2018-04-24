@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import firebase from 'firebase';
 import StartPage from './StartPage';
 import MapPage from './MapPage';
@@ -8,7 +8,7 @@ import FavoritePage from './FavoritePage';
 import SettingsScreen from './SettingsScreen';
 import WaitingPage from './WaitingPage';
 import { DrawerNavigator, DrawerItems, SwitchNavigator } from 'react-navigation';
-import { Container, Content, Header, Body, Button, Icon, } from 'native-base';
+import { Container, Content, Header, Body  } from 'native-base';
 
 const MyApp = DrawerNavigator({
     Map: {

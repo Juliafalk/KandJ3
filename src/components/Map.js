@@ -8,10 +8,14 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Stopwatch } from 'react-native-stopwatch-timer'
+import { SwitchNavigator } from 'react-navigation';
 import pick from 'lodash/pick';
 import { Button, Text, Icon } from 'native-base';
+import firebase from 'firebase';
 import haversine from 'haversine';
+//import SummaryPage from './SummaryPage';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -130,7 +134,6 @@ class Map extends Component {
           prevLatLng: newLatLngs 
         });
 
-        console.log('Update frequently? ' + parseFloat(this.state.distanceTravelled.toFixed(2)))  
       });
   }
 
@@ -197,7 +200,6 @@ class Map extends Component {
           longitude: center.longitude+delta_lng
         }
         waypoints[i] = nextCoord;
-        console.log('nextCoord' + nextCoord )
     }
     waypoints[circlePoints+1] = this.state.initialPosition;
 
@@ -219,6 +221,26 @@ class Map extends Component {
         createRoute: false,
       })
     }
+  }
+
+
+//JG 18/4 will send information about the route to the database
+  toDatabase() {
+      var date= new Date().toDateString()
+      const { wayPoints, totalDuration } = this.state;
+      const { currentUser } = firebase.auth();
+      firebase.database().ref(`/users/${currentUser.uid}/routes`)
+          .push({ wayPoints, totalDuration, DISTANCE_TRAVELLED, date });
+      return(
+      this.setState({
+          wayPoints: [],
+          totalDuration: 0,
+          DISTANCE_TRAVELLED: 0 ,
+          date: 0   
+      })
+      
+      );
+     
   }
 
   //JL 17/4: shows different footers before and while running
@@ -266,9 +288,9 @@ class Map extends Component {
               />
               <Text>km</Text>
             </View>
-            <View style={actualDistance}>
+            <View style={actualDistanceStyle}>
               <Text style={{ fontSize: 12}}>Distance:</Text>
-              <Text>{actualDistance} km</Text>
+              <Text>{actualDistance.toFixed(2)} km</Text>
             </View>
             <Button
               style={createRouteButtonStyle}
@@ -328,16 +350,14 @@ class Map extends Component {
               iconLeft
               style={pauseDoneButton}          
               onPress={() =>  {this.setState({ pauseRunning: true, stopwatchStart: false }),
-                console.log('does this work? ' + parseFloat(distanceTravelled.toFixed(2))),
                 DISTANCE_TRAVELLED = parseFloat(distanceTravelled.toFixed(2)), 
-                console.log('DISTANCE_TRAVELLED: ' + DISTANCE_TRAVELLED),
                 Alert.alert(
                   'Done running?',
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.setState({ totalDuration: TOTAL_DURATION }), 
-                      console.log('total duration: ' + this.state.totalDuration)}
+                    {text: 'OK', onPress: () => {this.SummaryPage(), TOTAL_DURATION = totalDuration /*this.toDatabase(),*/}
+            
                     },
                   ],
                   { cancelable: false }
@@ -352,10 +372,19 @@ class Map extends Component {
     }
   }
 
+  SummaryPage() {
+    this.props.navigation.navigate('SummaryView', {
+      durationTime: TOTAL_DURATION,
+      totalDistance: DISTANCE_TRAVELLED,
+    });
+  }
+
+
   //JL 17/4: these three functions handle the stopwatch used to track the user's runtime
   toggleStopwatch() {
     this.setState({stopwatchStart: !this.state.stopwatchStart, stopwatchReset: false});
   }
+
   resetStopwatch() {
     this.setState({stopwatchStart: false, stopwatchReset: true});
   }
@@ -367,8 +396,35 @@ class Map extends Component {
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
+
+    const {
+      createRouteContainerStyle,
+      createRouteButtonStyle,
+      inputContainerStyle,
+      distanceContainer,
+      textInputStyle,
+      actualDistanceStyle,
+      startButtonStyle,
+      distanceTravelledStyle,
+      timeContainer,
+      pauseDoneContainer,
+      pauseDoneButton
+    } = styles;
+    const {
+      wantedDistance,
+      actualDistance,
+      createRoute,
+      startButton,
+      distanceTravelled,
+      stopwatchStart,
+      stopwatchReset,
+      pauseRunning,
+      totalDuration
+    } = this.state;
+
     return (
-      <View style={styles.containerStyle}>
+     
+      <View>
         <MapView
           provider={"google"}
           showsUserLocation={true}
@@ -377,10 +433,9 @@ class Map extends Component {
           onRegionChange={ currentPosition => this.setState({currentPosition}) }
           onRegionChangeComplete={ currentPosition => this.setState({currentPosition}) }
           showsMyLocationButton
-          showsCompass
+          show 
           style={styles.mapStyle}
           ref={c => this.mapView = c}
-          onPress={this.onMapPress}
          >
           <MapView.Marker 
           coordinate={this.state.initialPositionMarker} 
@@ -405,7 +460,6 @@ class Map extends Component {
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
                 /*if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
-                  console.log('total_distance: ' + result.distance)
                   this.routeGenerator(this.state.wantedDistance)
                 }
 
@@ -414,7 +468,6 @@ class Map extends Component {
                 }
                 else {*/
                   this.setState({ actualDistance: result.distance })
-                  console.log('total_distance: ' + result.distance)
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
@@ -434,8 +487,9 @@ class Map extends Component {
           
         </MapView>
         {this.startRunning()}
-        
       </View>
+    
+      
     );
   }
 }
@@ -452,11 +506,8 @@ class Map extends Component {
 //****STYLING*****//
 //Obs, styling for clock is in the bottom under const options / JF (18/4)
 const styles = {
-  containerStyle: {
-    height: '94%'
-  },
   mapStyle: {
-    height: '79%'
+    height: '67%'
   },
   createRouteContainerStyle: {
     height: '22%',
@@ -522,7 +573,11 @@ const styles = {
     width: '30%',
     marginRight: 5,
     marginLeft: 5
-  }
+  },
+  divideSection: {
+    height: '30%',
+    justifyContent: 'center',
+}
 }
 
 //This is styling for the clock / JF (18/4)
@@ -538,4 +593,39 @@ const options = {
   }
 };
 
-export default Map;
+
+/****************HERE STARTS A NEW CLASS FOR SUMMARYPAGE*****************/
+class TheSummary extends React.Component {
+  static navigationOptions = {
+      title: 'SummaryView'
+  };
+  render() {
+    const { params } = this.props.navigation.state;
+    const durationTime = params ? params.durationTime : null;
+    const totalDistance = params ? params.totalDistance : null;
+
+    
+    return (
+        <View style={{ height: '90%', marginTop: 60}}>
+        <View style={styles.divideSection}>
+            <Text>Here should be a Map</Text>
+        </View>
+        <View style={styles.divideSection}>
+            <Text>{durationTime}</Text>
+            <Text>{totalDistance}</Text>
+        </View>
+        <View style={styles.divideSection}>
+            <Text>Here should be some sharing function (if it is possible..</Text>
+        </View>
+
+        </View>
+        
+    );  
+}
+};
+
+export default SwitchNavigator({
+  Home: { screen: Map },
+  SummaryView: {screen: TheSummary}
+});
+

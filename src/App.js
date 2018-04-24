@@ -13,7 +13,8 @@ import FavoritePage from './components/FavoritePage';
 import SettingsScreen from './components/SettingsScreen';
 import WaitingPage from './components/WaitingPage'
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import { Container, Content, Header, Body, Icon } from 'native-base';
+import { Container, Content, Header, Body } from 'native-base';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class App extends React.Component {
 
@@ -43,11 +44,18 @@ class App extends React.Component {
     }
 
     renderContent() {
-        //console.log('content')
-        //console.log(this.state.loggedIn)
         switch(this.state.loggedIn) {
             case true:
-                return <MyApp />;
+                return(
+                <KeyboardAwareScrollView
+                resetScrollToCoords={{ x: 0, y: 0 }}
+                contentContainerStyle={styles.container}
+                scrollEnabled={false}
+                >
+                <Container>
+                <MyApp /> 
+                 </Container>
+                </KeyboardAwareScrollView>);
             case false:
                 return <StartPage />;
             default:
@@ -102,7 +110,11 @@ const MyApp = DrawerNavigator({
     
 })
 
+const styles = {
+
+};
 export default App;
+
 
 otherStyles = StyleSheet.create({
     container: {

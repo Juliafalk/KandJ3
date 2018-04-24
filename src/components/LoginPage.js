@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import firebase from 'firebase';
 import { MyCard, MyCardSection, MySpinner, MyInputLogin } from './common';
-import { Button, Body, Icon, Left} from 'native-base';
+import { Button } from 'native-base';
 
 class LoginPage extends Component { 
     state = { email: '', password: '', error: '', loading: false };
