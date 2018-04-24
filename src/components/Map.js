@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { 
   Alert,
   Dimensions,
+  Keyboard,
   KeyboardAvoidingView, 
   TextInput,
   View,
@@ -25,7 +26,6 @@ const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.00922; //JL 13/4: 'the angle in which you're viewing', a universal value
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO*0.1;
 const DISTANCE_TRAVELLED = 0; //This is to calculate how long distance that has been travelled / JF (18/4)
-
 
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
@@ -298,7 +298,7 @@ class Map extends Component {
               style={createRouteButtonStyle}
               disabled={createRoute}
               onPress={() => {this.routeGenerator(wantedDistance), 
-              this.setState({ startButton: false })}}>
+              this.setState({ startButton: false }), Keyboard.dismiss}}>
                 <Text style={{ fontSize: 14 }}>Create Route</Text>
             </Button>
           </View>
@@ -358,7 +358,7 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.SummaryPage(), TOTAL_DURATION = totalDuration /*this.toDatabase(),*/}
+                    {text: 'OK', onPress: () => {this.SummaryPage(), this.setState({ totalDuration: TOTAL_DURATION }) /*this.toDatabase(),*/}
             
                     },
                   ],
@@ -381,7 +381,6 @@ class Map extends Component {
     });
   }
 
-
   //JL 17/4: these three functions handle the stopwatch used to track the user's runtime
   toggleStopwatch() {
     this.setState({stopwatchStart: !this.state.stopwatchStart, stopwatchReset: false});
@@ -398,7 +397,6 @@ class Map extends Component {
   
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
-
     const {
       createRouteContainerStyle,
       createRouteButtonStyle,
@@ -504,7 +502,6 @@ class Map extends Component {
   )}
 */
 
-
 //****STYLING*****//
 //Obs, styling for clock is in the bottom under const options / JF (18/4)
 const styles = {
@@ -580,7 +577,7 @@ const styles = {
     height: '30%',
     justifyContent: 'center',
     alignItems: 'center',
-}
+  }
 }
 
 //This is styling for the clock / JF (18/4)
@@ -596,7 +593,6 @@ const options = {
   }
 };
 
-
 /****************HERE STARTS A NEW CLASS FOR SUMMARYPAGE*****************/
 class TheSummary extends React.Component {
   static navigationOptions = {
@@ -608,7 +604,6 @@ class TheSummary extends React.Component {
     const totalDistance = params ? params.totalDistance : null;
     const date= new Date().toDateString()
 
-    
     return (
         <View style={{  height: '85%' }}>
         <View style={{ marginLeft: 15, marginTop: 10 }}>
@@ -647,4 +642,3 @@ export default SwitchNavigator({
   Home: { screen: Map },
   SummaryView: {screen: TheSummary}
 });
-
