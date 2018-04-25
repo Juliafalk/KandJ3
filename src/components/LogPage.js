@@ -1,7 +1,15 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Alert, ListView} from 'react-native';
-import { Icon, Button, Container, Header, Content, Left, Body, Title, Right, CardItem, Card } from 'native-base';
+import { View, ListView} from 'react-native';
+import { 
+    Icon, 
+    Header,  
+    Left, 
+    Body, 
+    Title, 
+    Right,
+    CardItem 
+} from 'native-base';
 import Moment from 'react-moment';
 import firebase from 'firebase';
 import { MyInputCreateAccount, MyButton } from './common';
@@ -65,6 +73,8 @@ class LogPage extends React.Component {
                     dataSource={this.dataSource}
                     renderRow={this.renderRow}
                     />
+                     <CardItem>
+                    </CardItem>
                 </View>
         )
     }

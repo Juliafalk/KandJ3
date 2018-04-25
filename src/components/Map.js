@@ -252,12 +252,13 @@ class Map extends Component {
         <GooglePlacesAutocomplete
         placeholder='Current location'
         placeholderTextColor='rgb(65,127,225)'
-          styles={{
-            listView: {
-              backgroundColor: 'white',
-              opacity: 0.8,
-            },
-            textInput: {color: 'rgb(65,127,225)'}
+        styles={{
+          listView: {
+            backgroundColor: 'white',
+            opacity: 0.8,
+          },
+          textInput: {color: 'rgb(65,127,225)'},
+          textInputContainer: {backgroundColor: '#7c7c7c'} 
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
@@ -269,7 +270,7 @@ class Map extends Component {
             language: 'en', // language of the results
           }}
           renderLeftButton={() => <Icon type='EvilIcons' name='location' 
-            style={{marginTop: 8, marginLeft: 3}}/>}
+            style={{marginTop: 8, marginLeft: 3, color: 'white'}}/>}
         />
       );
     }
