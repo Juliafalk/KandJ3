@@ -264,11 +264,19 @@ class Map extends Component {
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
-            console.log(data.description),
             Geocoder.from(data.description)
               .then(json => {
                 var location = json.results[0].geometry.location;
-                console.log(location);
+                this.setState({
+                  initialPosition: {
+                    latitude: location.lat,
+                    longitude: location.lng
+                  },
+                  initialPositionMarker: {
+                    latitude: location.lat,
+                    longitude: location.lng
+                  }
+                });
               })
               .catch(error => console.warn(error))
           }}
@@ -478,18 +486,14 @@ class Map extends Component {
          >
           {this.chooseStartpoint()}
           <MapView.Marker 
-          coordinate={this.state.initialPositionMarker} 
+            coordinate={this.state.initialPositionMarker} 
           />
-
-          {this.state.wayPoints.map((coordinate, index) =>
-    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
-  )}
         
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
               waypoints={ (this.state.wayPoints.length > 2) ? this.state.wayPoints.slice(1, -1): null}
-              destination={this.state.wayPoints}
+              destination={this.state.wayPoints[this.state.wayPoints.length-1]}
               mode={'walking'}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={3}
