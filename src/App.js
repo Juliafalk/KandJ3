@@ -13,7 +13,7 @@ import FavoritePage from './components/FavoritePage';
 import SettingsScreen from './components/SettingsScreen';
 import WaitingPage from './components/WaitingPage'
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import { Container, Content, Header, Body } from 'native-base';
+import { Container, Content, Header, Body, Footer, Button, Icon } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class App extends React.Component {
@@ -72,6 +72,8 @@ class App extends React.Component {
     }
 }
 
+
+
 const CustomDrawerContentComponent = (props) => (
     <Container>
         <Header style={{ height: 200, backgroundColor: 'white' }}>
@@ -84,8 +86,18 @@ const CustomDrawerContentComponent = (props) => (
         <Content>
             <DrawerItems {...props}/>
         </Content>
+        <Footer style={{ backgroundColor: 'white' }}>
+            <Button danger onPress={() => Logout()}>
+                <Text style={{ fontWeight: 'bold'}}>  Log out  </Text>
+                <Icon name= "ios-log-out-outline" style={{ color: 'black'}}/>
+            </Button>
+        </Footer>
     </Container>
 )
+
+function Logout() {
+    firebase.auth().signOut()
+}
 
 const MyApp = DrawerNavigator({
 

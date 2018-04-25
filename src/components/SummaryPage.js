@@ -5,7 +5,7 @@ between diffrent pages / JF (18/4) */
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
+import { MyButton } from './common';
 
 class SummaryPage extends React.Component { 
     

@@ -11,6 +11,11 @@ import { Icon, Header, Left, Title, Body, Right } from 'native-base';
 
 class MapPage extends React.Component {
     
+    static navigationOptions = {
+        drawerIcon: (
+            <Icon name='ios-map-outline' />
+        )
+    }
     //Button to sign out. 
     onButtonPress() {
         firebase.auth().signOut()
@@ -19,7 +24,7 @@ class MapPage extends React.Component {
     render() {
         return (
         <View>
-            <Header style={{ height: 60}}>
+            <Header style={{ height: 60}} style={{ backgroundColor: '#8CBA80'}}>
                 <Left>
                     <Icon name='ios-menu' onPress={() =>
                     this.props.navigation.navigate('DrawerOpen')}/>

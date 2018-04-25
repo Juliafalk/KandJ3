@@ -3,10 +3,16 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Icon, Container, Header, Content, Left, Body, Right, Title } from 'native-base';
 
 class FavoritePage extends Component { 
+    static navigationOptions = {
+        drawerIcon: (
+            <Icon name='ios-star-outline' />
+        )
+    }
+
     render() {
         return (
             <Container>
-                <Header>
+                <Header style={{ backgroundColor: '#8CBA80'}}>
                     <Left>
                         <Icon name="ios-menu" onPress={() =>
                         this.props.navigation.navigate('DrawerOpen')}/>

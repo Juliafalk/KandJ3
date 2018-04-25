@@ -6,8 +6,8 @@ import firebase from 'firebase';
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { DrawerNavigator, DrawerItems, SwitchNavigator } from 'react-navigation';
-import { Container, Content, Header, Body, Button, Icon } from 'native-base';
-import { MyCard, MyCardSection } from './common';
+import { Container, Content, Header, Body, Button, Icon, Footer } from 'native-base';
+import { MyCard, MyCardSection, MyButton } from './common';
 //JL: should add an index file to reduce imports below
 import MapPage from './MapPage'; 
 //import MyApp from './MyApp';
@@ -100,15 +100,9 @@ class TheMap extends React.Component {
     };
     render () {
         return (
-            <KeyboardAwareScrollView
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            contentContainerStyle={styles.container}
-            scrollEnabled={false}
-            >
             <Container>
                 <MyApp /> 
-            </Container>
-            </KeyboardAwareScrollView>
+            </Container>        
         );
     }
 };
@@ -117,7 +111,7 @@ const styles = {
     createAccountStyle: {
         backgroundColor: '#fcfcfc',
         alignSelf: 'center',
-        width: '60%'
+        width: '37%'
     },
     createAccountText: {
         fontSize: 18,
@@ -127,6 +121,9 @@ const styles = {
     seeMapStyle: {
         backgroundColor: '#fff'
     },
+    startButtonStyle: {
+        margin: 10
+      },
 };
 
 //layout on sidemenu/ JG 13/4 
@@ -141,14 +138,12 @@ const CustomDrawerContentComponent = (props) => (
         </Header>
         <Content>
             <DrawerItems {...props}/>
-        </Content>
+        </Content>        
     </Container>
 );
 
-
 /*Sidemenu with directions to which page if clicking on an option
 InitialRouteName is which page to start on when calling MyApp/JG 13/4 */
-
 const MyApp = DrawerNavigator({
 
     Map: {
@@ -172,7 +167,6 @@ const MyApp = DrawerNavigator({
     
 });
 
-
 //Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)
 export default SwitchNavigator({
     Home: { screen: StartPage },
@@ -180,7 +174,6 @@ export default SwitchNavigator({
     CreateAccount: { screen: CreateAccountScreen },
     MapView: {screen: TheMap}
 });
-
 
 otherStyles = StyleSheet.create({
     container: {
@@ -195,3 +188,4 @@ otherStyles = StyleSheet.create({
         borderRadius: 75
     }
 })
+
