@@ -50,7 +50,7 @@ class LogPage extends React.Component {
         console.log(this.dataSource);
         return (
                 <View>
-                    <Header>
+                    <Header style={{ backgroundColor: '#8CBA80'}}>
                         <Left>
                             <Icon name="ios-menu" onPress={() =>
                             this.props.navigation.navigate('DrawerOpen')}/>

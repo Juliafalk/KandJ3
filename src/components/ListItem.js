@@ -32,7 +32,7 @@ class ListItem extends Component {
                     </CardItem>
                     <CardItem>
                         <Icon name= "ios-walk-outline"/>
-                        <Text>You ran: {route.DISTANCE_TRAVELLED}</Text>
+                        <Text>Your distance: {route.DISTANCE_TRAVELLED}</Text>
                     </CardItem>
                     
             </View>
