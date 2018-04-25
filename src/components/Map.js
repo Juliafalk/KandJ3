@@ -16,6 +16,7 @@ import { SwitchNavigator } from 'react-navigation';
 import pick from 'lodash/pick';
 import { Button, Text, Icon, CardItem, Card } from 'native-base';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import Geocoder from 'react-native-geocoding';
 import firebase from 'firebase';
 import haversine from 'haversine';
 //import SummaryPage from './SummaryPage';
@@ -35,6 +36,7 @@ const waypoints = [];
 const TOTAL_DURATION = 0;
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
+Geocoder.init(GOOGLE_MAPS_APIKEY);
 
 class Map extends Component {
 
@@ -49,35 +51,36 @@ class Map extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
       },
-    //initialPositionMarker - to place the marker at the initialPosition, 
-    //ev. could be same as initialPosition / JF (16/4)
-    initialPositionMarker: {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
-    },
-    //currentPosition - to update the users current position / JF (16/4)
-    currentPosition: {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
-    },
-        distanceTravelled: 0,
-        actualDistance: 0,
-        prevLatLng: {},
-        wayPoints: [],
-        wantedDistance: '',
-        createRoute: true,
-        startButton: true,
-        startRunning: false,
-        stopwatchStart: false,
-        stopwatchReset: false,
-        totalDuration: 0,
-        date: 0, 
-        pauseRunning: false
-      }
+      //initialPositionMarker - to place the marker at the initialPosition, 
+      //ev. could be same as initialPosition / JF (16/4)
+      initialPositionMarker: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      },
+      //currentPosition - to update the users current position / JF (16/4)
+      currentPosition: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      },
+      chosenStartpoint: '',
+      distanceTravelled: 0,
+      actualDistance: 0,
+      prevLatLng: {},
+      wayPoints: [],
+      wantedDistance: '',
+      createRoute: true,
+      startButton: true,
+      startRunning: false,
+      stopwatchStart: false,
+      stopwatchReset: false,
+      totalDuration: 0,
+      date: 0, 
+      pauseRunning: false
+    }
 
     this.mapView = null;  
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
@@ -137,7 +140,6 @@ class Map extends Component {
           distanceTravelled: distanceTravelled + this.calcDistance(newLatLngs),
           prevLatLng: newLatLngs 
         });
-
       });
   }
 
@@ -262,7 +264,13 @@ class Map extends Component {
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
-            console.log(data.description)
+            console.log(data.description),
+            Geocoder.from(data.description)
+              .then(json => {
+                var location = json.results[0].geometry.location;
+                console.log(location);
+              })
+              .catch(error => console.warn(error))
           }}
           query={{
             // available options: https://developers.google.com/places/web-service/autocomplete
@@ -472,12 +480,16 @@ class Map extends Component {
           <MapView.Marker 
           coordinate={this.state.initialPositionMarker} 
           />
+
+          {this.state.wayPoints.map((coordinate, index) =>
+    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
+  )}
         
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
               waypoints={ (this.state.wayPoints.length > 2) ? this.state.wayPoints.slice(1, -1): null}
-              destination={this.state.wayPoints[this.state.wayPoints.length-1]}
+              destination={this.state.wayPoints}
               mode={'walking'}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={3}
