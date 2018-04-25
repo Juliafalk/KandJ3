@@ -100,9 +100,15 @@ class TheMap extends React.Component {
     };
     render () {
         return (
+            <KeyboardAwareScrollView
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            contentContainerStyle={styles.container}
+            scrollEnabled={false}
+            >
             <Container>
                 <MyApp /> 
-            </Container>        
+            </Container>
+            </KeyboardAwareScrollView>       
         );
     }
 };
