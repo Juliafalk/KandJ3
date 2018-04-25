@@ -87,16 +87,17 @@ const CustomDrawerContentComponent = (props) => (
             <DrawerItems {...props}/>
         </Content>
         <Footer style={{ backgroundColor: 'white' }}>
-            <Button danger /*onPress={this.Logout.bind(this)}*/>
+            <Button danger onPress={() => Logout()}>
                 <Text style={{ fontWeight: 'bold'}}>  Log out  </Text>
                 <Icon name= "ios-log-out-outline" style={{ color: 'black'}}/>
             </Button>
         </Footer>
     </Container>
 )
-/*Logout() {
+
+function Logout() {
     firebase.auth().signOut()
-}*/
+}
 
 const MyApp = DrawerNavigator({
 
