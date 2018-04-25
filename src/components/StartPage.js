@@ -100,10 +100,15 @@ class TheMap extends React.Component {
     };
     render () {
         return (
-            <ScrollView
-            keyboardShouldPersistTaps='always'>
+            <KeyboardAwareScrollView
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            contentContainerStyle={styles.container}
+            scrollEnabled={false}
+            >
+            <Container>
                 <MyApp /> 
-            </ScrollView>        
+            </Container>
+            </KeyboardAwareScrollView>       
         );
     }
 };
@@ -112,7 +117,7 @@ const styles = {
     createAccountStyle: {
         backgroundColor: '#fcfcfc',
         alignSelf: 'center',
-        width: '60%'
+        width: '37%'
     },
     createAccountText: {
         fontSize: 18,

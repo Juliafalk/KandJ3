@@ -15,6 +15,7 @@ import { Stopwatch } from 'react-native-stopwatch-timer'
 import { SwitchNavigator } from 'react-navigation';
 import pick from 'lodash/pick';
 import { Button, Text, Icon, CardItem, Card } from 'native-base';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import firebase from 'firebase';
 import haversine from 'haversine';
 //import SummaryPage from './SummaryPage';
@@ -85,7 +86,6 @@ class Map extends Component {
   
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
-     
       // Here set all the positions, given by the devices current position. 
      this.setState({ 
       initialPosition: {
@@ -208,6 +208,7 @@ class Map extends Component {
     this.setState({
       wayPoints: waypoints
     });
+    console.log(waypoints)
   }
 
   //JL 17/4: disable and enable the footer buttons
@@ -225,7 +226,6 @@ class Map extends Component {
     }
   }
 
-
 //JG 18/4 will send information about the route to the database
   toDatabase() {
       var date= new Date().toDateString()
@@ -234,15 +234,48 @@ class Map extends Component {
       firebase.database().ref(`/users/${currentUser.uid}/routes`)
           .push({ wayPoints, totalDuration, DISTANCE_TRAVELLED, date });
       return(
-      this.setState({
-          wayPoints: [],
-          totalDuration: 0,
-          DISTANCE_TRAVELLED: 0 ,
-          date: 0   
-      })
-      
+        this.setState({
+            wayPoints: [],
+            totalDuration: 0,
+            DISTANCE_TRAVELLED: 0 ,
+            date: 0   
+        })
       );
-     
+  }
+
+  //JL 25/4: allows user to choose starting point
+  chooseStartpoint(){
+    if (!this.state.startRunning) {
+      return(
+        <GooglePlacesAutocomplete
+        placeholder='Current location'
+        placeholderTextColor='rgb(65,127,225)'
+          styles={{
+            listView: {
+              backgroundColor: 'white',
+              opacity: 0.8,
+            },
+            textInput: {color: 'rgb(65,127,225)'}
+          }}
+          returnKeyType={'search'}
+          onPress={(data = null) => {
+            console.log(data.description)
+          }}
+          query={{
+            // available options: https://developers.google.com/places/web-service/autocomplete
+            key: GOOGLE_MAPS_APIKEY,
+            language: 'en', // language of the results
+          }}
+          renderLeftButton={() => <Icon type='EvilIcons' name='location' 
+            style={{marginTop: 8, marginLeft: 3}}/>}
+        />
+      );
+    }
+    else{
+      return(
+        <GooglePlacesAutocomplete/>
+      );
+    }
   }
 
   //JL 17/4: shows different footers before and while running
@@ -277,6 +310,10 @@ class Map extends Component {
       return(
         <View>
           <View style={createRouteContainerStyle}>
+            <View style={actualDistanceStyle}>
+              <Text style={{ fontSize: 12}}>This Route:</Text>
+              <Text>{actualDistance.toFixed(2)} km</Text>
+            </View>
             <View style={inputContainerStyle}>
               <TextInput
                 keyboardType='number-pad'
@@ -289,10 +326,6 @@ class Map extends Component {
                   this.changeDistance(userInput)}}
               />
               <Text>km</Text>
-            </View>
-            <View style={actualDistanceStyle}>
-              <Text style={{ fontSize: 12}}>Distance:</Text>
-              <Text>{actualDistance.toFixed(2)} km</Text>
             </View>
             <Button
               style={createRouteButtonStyle}
@@ -318,12 +351,9 @@ class Map extends Component {
       return(
         <View>
           <View style={createRouteContainerStyle}>
-          <View style={distanceContainer}>
-            <Text style={{ fontSize: 12}}>Distance:</Text>
             <Text style={distanceTravelledStyle}>
               {distanceTravelled.toFixed(2)} km 
             </Text>
-          </View>
           <View style={timeContainer}>
             <Icon name='time' style={{fontSize: 25, marginTop: 6}}/>
             <Stopwatch
@@ -358,8 +388,8 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.SummaryPage(), this.setState({ totalDuration: TOTAL_DURATION }) /*this.toDatabase(),*/}
-            
+                    {text: 'OK', onPress: () => {this.SummaryPage(), 
+                      this.setState({ totalDuration: TOTAL_DURATION }) /*this.toDatabase(),*/}
                     },
                   ],
                   { cancelable: false }
@@ -437,6 +467,7 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
          >
+         {this.chooseStartpoint()}
           <MapView.Marker 
           coordinate={this.state.initialPositionMarker} 
           />
@@ -462,7 +493,6 @@ class Map extends Component {
                 /*if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   this.routeGenerator(this.state.wantedDistance)
                 }
-
                 else if (result.distance > parseFloat(this.state.wantedDistance)*1.1) {
                   this.routeGenerator(this.state.wantedDistance)
                 }
@@ -488,8 +518,6 @@ class Map extends Component {
         </MapView>
         {this.startRunning()}
       </View>
-    
-      
     );
   }
 }
@@ -528,8 +556,8 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 10,
-    marginRight: 10
+    marginLeft: 30,
+    marginRight: -15
   },
   distanceTravelledStyle: {
     fontSize: 25
@@ -561,12 +589,12 @@ const styles = {
     alignItems: 'center'
   },
   startButtonStyle: {
-    margin: 10
+    margin: 9
   },
   pauseDoneContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    margin: 10
+    margin: 9
   },
   pauseDoneButton: {
     width: '30%',
@@ -577,6 +605,10 @@ const styles = {
     height: '30%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  chooseStartpointStyle: {
+    backgroundColor: 'white',
+    opacity: 0.8
   }
 }
 
