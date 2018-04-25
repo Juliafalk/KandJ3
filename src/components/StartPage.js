@@ -32,8 +32,9 @@ class StartPage extends React.Component {
        
         <View style={{justifyContent: 'center', height: '100%'}}>
          <Wallpaper>
+             <View style={{marginTop: 130}}>
             <MyCardSection>
-                <Icon type="Foundation" name='map' style={{fontSize: 100}}/>
+                <Text style={{fontSize: 50, fontWeight: 'bold' }}>runRouter</Text>
             </MyCardSection>
                 
             <LoginPage />
@@ -42,12 +43,11 @@ class StartPage extends React.Component {
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <Button block style={styles.createAccountStyle} onPress={this.CreateAccount}> 
                         <Text style={styles.createAccountText}>Create account</Text>
-                    </Button> 
-                    <Button block style={styles.seeMapStyle}onPress={this.SeeMap}> 
-                        <Text>See the map</Text>
-                    </Button>
+                   </Button> 
+                   
                 </View>
             </MyCardSection>
+            </View>
             </Wallpaper>
         </View>
         
@@ -121,14 +121,15 @@ class TheMap extends React.Component {
 
 const styles = {
     createAccountStyle: {
-        backgroundColor: '#fcfcfc',
+        backgroundColor: 'transparent',
         alignSelf: 'center',
         width: '37%'
     },
     createAccountText: {
-        fontSize: 18,
+        fontSize: 19,
         fontFamily: 'GillSans-Light',
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
+        color: 'white'
     },
     seeMapStyle: {
         backgroundColor: '#fff'

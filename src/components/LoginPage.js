@@ -2,7 +2,7 @@
 The Loginpage is placed on an card in App.js
 The user can use/ JF (12/4) */
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import firebase from 'firebase';
 import { MyCard, MyCardSection, MySpinner, MyInputLogin } from './common';
 import { Button } from 'native-base';
@@ -43,9 +43,9 @@ class LoginPage extends Component {
 
         return (
             <View style={{flex: 1, justifyContent: 'center'}}>
-                <Button block style={styles.loginButton} onPress={this.onButtonPress.bind(this)}> 
+                <TouchableOpacity block style={styles.login} onPress={this.onButtonPress.bind(this)}> 
                     <Text style={styles.loginButtonText}>Login </Text>  
-                </Button>
+                </TouchableOpacity>
             </View>
         );
          
@@ -100,6 +100,16 @@ const styles = {
         backgroundColor: '#3a88e8',
         width: '40%',
         alignSelf: 'center',    
+    },
+    login: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',  
+        backgroundColor: '#3a88e8',
+        height: 40,
+        width: '40%',
+        borderRadius: 20,
+        zIndex: 100,
     },
     loginButtonText: {
         color: 'white',

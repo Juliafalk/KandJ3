@@ -26,7 +26,15 @@ const MyInputLogin = ({ value, onChangeText, placeholder, secureTextEntry, iconT
 
 const styles = {  
     inputStyle: {
-        backgroundColor: '#ededed',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        marginRight: 25*1.1 + 5,
+        width: '60%',
+        height: 40,
+        marginHorizontal: 20,
+        paddingLeft: 45,
+        borderRadius: 20,
+        color: 'black',
+        /*backgroundColor: '#ededed',
         //To get the text in the center, because of the icon
         //Remeber to change the margin if you change the iconStyle / JF (13/4)
         marginRight: 25*1.1 + 5,
@@ -36,7 +44,7 @@ const styles = {
         width: '60%',
         borderRadius: 5,
         height: 40,
-        alignItems: 'center',
+        alignItems: 'center',*/
 
     },
     containerStyle: {
