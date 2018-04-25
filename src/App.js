@@ -5,7 +5,11 @@ if startpage or map should be shown direct (like if the user already is signed i
 */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import reducers from './reducers';
 import firebase from 'firebase';
+import ReduxThunk from 'redux-thunk';
 import StartPage from './components/StartPage';
 import MapPage from './components/MapPage';
 import LogPage from './components/LogPage';
@@ -15,6 +19,8 @@ import WaitingPage from './components/WaitingPage'
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
 import { Container, Content, Header, Body } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+const store = createStore(reducers , {}, applyMiddleware(ReduxThunk))
 
 class App extends React.Component {
 
@@ -54,6 +60,7 @@ class App extends React.Component {
                 >
                 <Container>
                 <MyApp /> 
+                
                  </Container>
                 </KeyboardAwareScrollView>);
             case false:
@@ -64,10 +71,14 @@ class App extends React.Component {
     }
 
     render()  {
+
+        
         return(
+            <Provider store={ store }>
             <Container>
            {this.renderContent()};    
            </Container>
+           </Provider>
         );
     }
 }

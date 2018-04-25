@@ -146,7 +146,7 @@ class Map extends Component {
   }
 
   componentWillUnmount() {
-    console.log(this.wacthID)
+    //console.log(this.wacthID)
     navigator.geolocation.clearWatch(this.watchID)
   }
 
@@ -170,7 +170,7 @@ class Map extends Component {
   routeGenerator(length) {
 
     lengthInMeters = length*1000;
-    lengthInMeters = lengthInMeters*0.8; //only takes 80% of the input to compensate, since the generated route is almost 'always' too long
+    lengthInMeters = lengthInMeters*0.7; //only takes 80% of the input to compensate, since the generated route is almost 'always' too long
     waypoints[0] = this.state.initialPosition;
     var circlePoints = 4;
     const radius = lengthInMeters/2/Math.PI;
