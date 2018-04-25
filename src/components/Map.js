@@ -276,7 +276,7 @@ class Map extends Component {
     }
     else{
       return(
-        <GooglePlacesAutocomplete/>
+        null
       );
     }
   }
@@ -341,7 +341,7 @@ class Map extends Component {
           <Button
           block
           success
-          //disabled={startButton}
+          disabled={startButton}
           style={startButtonStyle}
           onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
             this.resetStopwatch(), this.toggleStopwatch()}}>
@@ -418,7 +418,6 @@ class Map extends Component {
   toggleStopwatch() {
     this.setState({stopwatchStart: !this.state.stopwatchStart, stopwatchReset: false});
   }
-
   resetStopwatch() {
     this.setState({stopwatchStart: false, stopwatchReset: true});
   }
@@ -456,7 +455,6 @@ class Map extends Component {
     } = this.state;
 
     return (
-     
       <View>
         <MapView
           provider={"google"}
@@ -470,7 +468,7 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
          >
-         {this.chooseStartpoint()}
+          {this.chooseStartpoint()}
           <MapView.Marker 
           coordinate={this.state.initialPositionMarker} 
           />
@@ -670,7 +668,7 @@ class TheSummary extends React.Component {
         </View>
         
     );  
-}
+  }
 };
 
 export default SwitchNavigator({
