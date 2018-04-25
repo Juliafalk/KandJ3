@@ -471,6 +471,10 @@ class Map extends Component {
           <MapView.Marker 
           coordinate={this.state.initialPositionMarker} 
           />
+
+          {this.state.wayPoints.map((coordinate, index) =>
+    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
+  )}
         
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
