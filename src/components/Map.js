@@ -75,6 +75,8 @@ class Map extends Component {
         stopwatchStart: false,
         stopwatchReset: false,
         totalDuration: 0,
+        date: 0, 
+        pauseRunning: false
       }
 
     this.mapView = null;  
@@ -145,7 +147,7 @@ class Map extends Component {
   }
 
   componentWillUnmount() {
-    console.log(this.wacthID)
+    //console.log(this.wacthID)
     navigator.geolocation.clearWatch(this.watchID)
   }
 
@@ -169,7 +171,7 @@ class Map extends Component {
   routeGenerator(length) {
 
     lengthInMeters = length*1000;
-    lengthInMeters = lengthInMeters*0.8; //only takes 80% of the input to compensate, since the generated route is almost 'always' too long
+    lengthInMeters = lengthInMeters*0.7; //only takes 80% of the input to compensate, since the generated route is almost 'always' too long
     waypoints[0] = this.state.initialPosition;
     var circlePoints = 4;
     const radius = lengthInMeters/2/Math.PI;
@@ -229,10 +231,10 @@ class Map extends Component {
 //JG 18/4 will send information about the route to the database
   toDatabase() {
       var date= new Date().toDateString()
-      const { wayPoints, totalDuration } = this.state;
+      const { wayPoints, totalDuration, actualDistance } = this.state;
       const { currentUser } = firebase.auth();
       firebase.database().ref(`/users/${currentUser.uid}/routes`)
-          .push({ wayPoints, totalDuration, DISTANCE_TRAVELLED, date });
+          .push({ wayPoints, TOTAL_DURATION, DISTANCE_TRAVELLED, date, actualDistance });
       return(
         this.setState({
             wayPoints: [],
@@ -250,12 +252,13 @@ class Map extends Component {
         <GooglePlacesAutocomplete
         placeholder='Current location'
         placeholderTextColor='rgb(65,127,225)'
-          styles={{
-            listView: {
-              backgroundColor: 'white',
-              opacity: 0.8,
-            },
-            textInput: {color: 'rgb(65,127,225)'}
+        styles={{
+          listView: {
+            backgroundColor: 'white',
+            opacity: 0.8,
+          },
+          textInput: {color: 'rgb(65,127,225)'},
+          textInputContainer: {backgroundColor: '#7c7c7c'} 
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
@@ -267,7 +270,7 @@ class Map extends Component {
             language: 'en', // language of the results
           }}
           renderLeftButton={() => <Icon type='EvilIcons' name='location' 
-            style={{marginTop: 8, marginLeft: 3}}/>}
+            style={{marginTop: 8, marginLeft: 3, color: 'white'}}/>}
         />
       );
     }
@@ -388,8 +391,8 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.SummaryPage(), 
-                      this.setState({ totalDuration: TOTAL_DURATION }) /*this.toDatabase(),*/}
+                    {text: 'OK', onPress: () => {this.SummaryPage(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase()}
+            
                     },
                   ],
                   { cancelable: false }
@@ -471,10 +474,6 @@ class Map extends Component {
           <MapView.Marker 
           coordinate={this.state.initialPositionMarker} 
           />
-
-          {this.state.wayPoints.map((coordinate, index) =>
-    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
-  )}
         
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections

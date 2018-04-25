@@ -1,27 +1,103 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
-import { Icon, Button, Container, Header, Content, Left, Body, Title, Right, CardItem, Card } from 'native-base';
+import { View, ListView} from 'react-native';
+import { 
+    Icon, 
+    Header,  
+    Left, 
+    Body, 
+    Title, 
+    Right,
+    CardItem 
+} from 'native-base';
 import Moment from 'react-moment';
 import firebase from 'firebase';
 import { MyInputCreateAccount, MyButton } from './common';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducers from '../reducers';
+import { connect } from 'react-redux';
+import { routesFetch } from '../actions/RoutesActions';
+import ListItem from './ListItem';
 
 
-class LogPage extends Component { 
-
+class LogPage extends React.Component { 
     static navigationOptions = {
         drawerIcon: (
             <Icon name='ios-list-box-outline' />
         )
     }
 
-    state = { name: '' }
+    componentWillMount() {
+        this.props.routesFetch();
+        this.createDataSource(this.props);
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.createDataSource(this.props);
+    }
+
+    createDataSource({ routes }) {
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        });
+
+        this.dataSource = ds.cloneWithRows(routes)
+        console.log('dataSource' + this.dataSource)
+    }
+
+    renderRow(route){
+        console.log('renderrow?')
+        return <ListItem route={route} />;
+    }
+
+    render() {
+        console.log('render');
+        console.log(this.props);
+        console.log('dataSource')
+        console.log(this.dataSource);
+        return (
+                <View>
+                    <Header style={{ backgroundColor: '#8CBA80'}}>
+                        <Left>
+                            <Icon name="ios-menu" onPress={() =>
+                            this.props.navigation.navigate('DrawerOpen')}/>
+                        </Left>
+                        <Body>
+                            <Title>Log</Title>
+                        </Body>
+                        <Right />
+                    </Header>
+                    <ListView
+                    enableEmptySections
+                    dataSource={this.dataSource}
+                    renderRow={this.renderRow}
+                    />
+                     <CardItem>
+                    </CardItem>
+                </View>
+        )
+    }
+}
+
+const mapStateToProps = state => {
+    const routes = _.map(state.routes, (val, uid) => {
+        return {...val, uid};
+    });
+
+    return { routes };
+};
+
+export default connect(mapStateToProps, { routesFetch })(LogPage); 
+    
+/*
+    
 
     ButtonPress() {
         firebase.auth().signOut()
     }
 
     onButtonPress() {
-        console.log(this.state)
         const { name } = this.state;
         const { currentUser } = firebase.auth();
         firebase.database().ref(`/users/${currentUser.uid}/routes`)
@@ -29,89 +105,9 @@ class LogPage extends Component {
         return(
         this.setState({
             name: ''
-        
         })
-        
-        );
-       
-    }
-
-    routeFetch() {
-        console.log(snapshot.val())
-        const { currentUser } = firebase.auth();
-        firebase.database().ref(`/users/${currentUser.uid}/routes`)
-            .on('value', snapshot =>{ 
-                dispatch({ payload: snapshot.val() })
-
-            });
-            <Button onPress={this.routeFetch.bind(this)}> 
-                            <Text>Get route info</Text>
-                            </Button>
-    }
-    
-
-    render() {
-        var dt= new Date().toDateString()
-        console.log( dt)
-        return (
-            <Container>
-                <Header style={{ backgroundColor: '#8CBA80'}}>
-                    <Left>
-                        <Icon name="ios-menu" onPress={() =>
-                        this.props.navigation.navigate('DrawerOpen')}/>
-                    </Left>
-                    <Body>
-                        <Title>Log</Title>
-                    </Body>
-                    <Right />
-                </Header>
-                <Content>
-                    <Card>
-                        <CardItem header bordered style={{ backgroundColor: 'lightgray'}}>
-                            <Text style={styles.labelStyle}>Your run on..(todays date)..</Text>
-                        </CardItem>
-                        <CardItem>
-                            <MyInputCreateAccount 
-                            label="Name: "
-                            placeholder="Enter name"
-                            label="Name:"
-                            value={this.state.name}
-                            onChangeText={name => this.setState({ name })}
-                            />
-                            <Button onPress={this.onButtonPress.bind(this)}> 
-                            <Text>Create route name</Text>
-                            </Button>
-                        </CardItem>
-                        <CardItem>
-                            <Icon name='ios-stopwatch-outline'/>
-                            <Text>Time:</Text>
-                        </CardItem>
-                        <CardItem>
-                            <Icon name= "ios-walk-outline"/>
-                            <Text>Distance:</Text>
-                        </CardItem>
-                        <CardItem>
-                            <Icon name='ios-speedometer-outline'/>
-                            <Text>Average Speed:</Text>
-                            <MyButton onPress={this.ButtonPress.bind(this)}>
-                                 <Text>Log out</Text>
-                            </MyButton>
-                        </CardItem>
-                    </Card>
-                </Content>
-            </Container>
-
         );
     }
-}
+*/
 
-const styles = {  
-    labelStyle: {
-        fontSize: 17,
-        paddingLeft: 1, 
-        flex: 1,
-        fontWeight: 'bold', 
-    },
-};
 
-export default LogPage;
