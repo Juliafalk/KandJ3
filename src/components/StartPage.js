@@ -18,6 +18,8 @@ import FavoritePage from './FavoritePage';
 import SettingsScreen from './SettingsScreen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import Wallpaper from './Wallpaper';
+
 //This is the first page / JF (11/4)
 //Map button will not be visible later. 
 class StartPage extends React.Component {
@@ -27,7 +29,9 @@ class StartPage extends React.Component {
     render() {
         return (
         
+       
         <View style={{justifyContent: 'center', height: '100%'}}>
+         <Wallpaper>
             <MyCardSection>
                 <Icon type="Foundation" name='map' style={{fontSize: 100}}/>
             </MyCardSection>
@@ -44,7 +48,9 @@ class StartPage extends React.Component {
                     </Button>
                 </View>
             </MyCardSection>
+            </Wallpaper>
         </View>
+        
         );
     }
 
