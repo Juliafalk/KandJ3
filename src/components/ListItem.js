@@ -24,15 +24,15 @@ class ListItem extends Component {
                     </CardItem>
                     <CardItem>
                         <Icon name='ios-stopwatch-outline'/>
-                        <Text>Duration: {route.totalDuration}</Text>
+                        <Text>Duration: {route.TOTAL_DURATION}</Text>
                     </CardItem>
                     <CardItem>
                         <Icon name= "ios-walk-outline"/>
-                        <Text>Route distance: {route.actualDistance}</Text>
+                        <Text>Route distance: {route.actualDistance.toFixed(2)}</Text>
                     </CardItem>
                     <CardItem>
                         <Icon name= "ios-walk-outline"/>
-                        <Text>Your distance: {route.DISTANCE_TRAVELLED}</Text>
+                        <Text>Your distance: {route.DISTANCE_TRAVELLED.toFixed(2)}</Text>
                     </CardItem>
                     
             </View>

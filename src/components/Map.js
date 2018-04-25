@@ -234,7 +234,7 @@ class Map extends Component {
       const { wayPoints, totalDuration, actualDistance } = this.state;
       const { currentUser } = firebase.auth();
       firebase.database().ref(`/users/${currentUser.uid}/routes`)
-          .push({ wayPoints, totalDuration, DISTANCE_TRAVELLED, date, actualDistance });
+          .push({ wayPoints, TOTAL_DURATION, DISTANCE_TRAVELLED, date, actualDistance });
       return(
         DISTANCE_TRAVELLED = 0,
         this.setState({
