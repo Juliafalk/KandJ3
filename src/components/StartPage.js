@@ -28,29 +28,27 @@ class StartPage extends React.Component {
     };
     render() {
         return (
-        
-       
-        <View style={{justifyContent: 'center', height: '100%'}}>
-         <Wallpaper>
-             <View style={{marginTop: 130}}>
-            <MyCardSection>
-                <Text style={{fontSize: 50, fontWeight: 'bold' }}>runRouter</Text>
-            </MyCardSection>
-                
-            <LoginPage />
-                
-            <MyCardSection>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                    <Button block style={styles.createAccountStyle} onPress={this.CreateAccount}> 
-                        <Text style={styles.createAccountText}>Create account</Text>
-                   </Button> 
-                   
-                </View>
-            </MyCardSection>
+            <View style={{ height: '100%' }}>
+                <Wallpaper>
+                    <Container style={styles.loginForm}>
+                        <MyCardSection>
+                            <Text style={{fontSize: 50, fontWeight: 'bold', marginBottom: 35 }}>runRouter</Text>
+                        </MyCardSection>
+                            
+                        <LoginPage />
+                            
+                        <MyCardSection>
+                            <View style={styles.createAccountView}>
+                                <Button full 
+                                    style={styles.createAccountButton}
+                                    onPress={this.CreateAccount}> 
+                                    <Text style={styles.createAccountText}>Create account</Text>
+                                </Button> 
+                            </View>
+                        </MyCardSection>
+                    </Container>
+                </Wallpaper>
             </View>
-            </Wallpaper>
-        </View>
-        
         );
     }
 
@@ -89,7 +87,8 @@ class CreateAccountScreen extends React.Component {
     };
     render () {
         return (
-            <View>
+            <View 
+            style={{ height: '100%', backgroundColor: '#5c688c'}}>
                 <CreateAccount />
             </View>
         );
@@ -120,23 +119,24 @@ class TheMap extends React.Component {
 };
 
 const styles = {
-    createAccountStyle: {
-        backgroundColor: 'transparent',
-        alignSelf: 'center',
-        width: '37%'
+    loginForm: {
+        width: '80%', 
+        marginTop: 130,
+        alignSelf: 'center'
+    },
+    createAccountView: {
+        flex: 1, 
+        justifyContent: 'center' 
+    },
+    createAccountButton: {
+        height: 35, 
+        backgroundColor: '#5c688c' 
     },
     createAccountText: {
-        fontSize: 19,
+        fontSize: 17,
         fontFamily: 'GillSans-Light',
-        textDecorationLine: 'underline',
         color: 'white'
     },
-    seeMapStyle: {
-        backgroundColor: '#fff'
-    },
-    startButtonStyle: {
-        margin: 10
-      },
 };
 
 //layout on sidemenu/ JG 13/4 
@@ -194,7 +194,6 @@ otherStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-
     drawerImage: {
         height: 150,
         width: 150,

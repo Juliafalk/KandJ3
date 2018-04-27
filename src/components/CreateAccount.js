@@ -8,7 +8,7 @@ import { Text, View } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
 import { Button, Icon, Header, Body } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { MyCard, MyCardSection, MyInputCreateAccount, MySpinner } from './common';
+import { MyCard, MyCardSection, MyInput, MySpinner } from './common';
 import StartPage from './StartPage';
 import firebase from 'firebase';
 
@@ -75,85 +75,70 @@ class CreateAccount extends React.Component {
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 contentContainerStyle={styles.container}
-                scrollEnabled={true}
-            >
+                scrollEnabled={true}>
                 <View>
-                <Header style={styles.headerStyle}>
-                <Body>
-                    <Text style={styles.headerStyleText}>Create your account</Text>
-                </Body>
-                </Header>
+                    <Header style={styles.headerStyle}>
+                        <Body>
+                            <Text style={styles.headerStyleText}>Create account</Text>
+                        </Body>
+                    </Header>
                 
-                <View style={{justifyContent: 'center', height: '88%'}}>
-                <Icon type="FontAwesome" name="user-plus" style={styles.iconStyle} />
-                <MyCard>
-                    <MyCardSection>
-                        <MyInputCreateAccount 
-                        label="Name: "
-                        placeholder="Enter name"
-                        label="Name:"
-                        value={this.state.name}
-                        onChangeText={name => this.setState({ name })}/>
-                    </MyCardSection>
+                    <View style={{justifyContent: 'center'}}>
+                        <View style={styles.inputContainer}>
+                            <Icon type="SimpleLineIcons" name="user-follow" style={styles.iconStyle} />
+                                <MyCardSection>
+                                    <MyInput
+                                    placeholder="name"
+                                    value={this.state.name}
+                                    onChangeText={name => this.setState({ name })}/>
+                                </MyCardSection>
 
-                                    
-                    <MyCardSection>
-                        <MyInputCreateAccount 
-                        placeholder="Age, ex. 22"
-                        label="Age:"
-                        value={this.state.age}
-                        onChangeText={age => this.setState({ age })}/>
-                    </MyCardSection>
+                                <MyCardSection>
+                                    <MyInput 
+                                    placeholder="user@gmail.com"
+                                    value={this.state.email}
+                                    onChangeText={email => this.setState({ email })}
+                                    />
+                                </MyCardSection>
+                
+                                <MyCardSection>
+                                    <MyInput 
+                                    placeholder="password, min 6 characters"
+                                    label="Password: "
+                                    secureTextEntry={true}
+                                    value={this.state.password}
+                                    onChangeText={password => this.setState({ password })}
+                                    />
+                                </MyCardSection>
 
-                    <MyCardSection>
-                        <MyInputCreateAccount 
-                        placeholder="user@gmail.com"
-                        label="Email:"
-                        value={this.state.email}
-                        onChangeText={email => this.setState({ email })}
-                        />
-                    </MyCardSection>
-    
-                    <MyCardSection>
-                        <MyInputCreateAccount 
-                        placeholder="password, min 6 characters"
-                        label="Password: "
-                        secureTextEntry={true}
-                        value={this.state.password}
-                        onChangeText={password => this.setState({ password })}
-                        />
-                    </MyCardSection>
+                                <MyCardSection>
+                                    <MyInput 
+                                    placeholder="repeat password"
+                                    label="Password: "
+                                    secureTextEntry={true}
+                                    value={this.state.repPassword}
+                                    onChangeText={repPassword => this.setState({ repPassword })}
+                                    />
+                                </MyCardSection>
+                                
+                                <MyCardSection>
+                                    {this.renderButton()}
+                                </MyCardSection>
+                            </View>
+                            
 
-                    <MyCardSection>
-                        <MyInputCreateAccount 
-                        placeholder="repeat password"
-                        label="Password: "
-                        secureTextEntry={true}
-                        value={this.state.repPassword}
-                        onChangeText={repPassword => this.setState({ repPassword })}
-                        />
-                    </MyCardSection>
-                    
-                    <MyCardSection>
-                        {this.renderButton()}
-                    </MyCardSection>
-
-                    <MyCardSection>
-                        <Button block style={styles.goBackButton} onPress={this.GoBack}>
-                        <Icon type="Ionicons" name="ios-arrow-back" style={{color:'black', fontSize: 15}}/> 
-                            <Text style={styles.goBackButtonText}>Go back</Text>
-                        </Button>
-                    </MyCardSection>
-                </MyCard>
+                            <MyCardSection>
+                                <Button block style={styles.goBackButton} onPress={this.GoBack}>
+                                    <Icon type="Ionicons" name="ios-arrow-back" style={{color:'black', fontSize: 15}}/> 
+                                    <Text style={styles.goBackButtonText}>Go back</Text>
+                                </Button>
+                            </MyCardSection>
+                    </View>
                 </View>
-          
-                </View>
-                </KeyboardAwareScrollView>
+            </KeyboardAwareScrollView>
+        );
+    };
 
-            );
-        };
-
-    
     GoBack =() => {
             this.props.navigation.navigate('Home');
     } 
@@ -173,7 +158,6 @@ class GoBackStartPage extends React.Component {
 const styles = {
     headerStyle: {
         height: 80
-
     },
     headerStyleText: {
         fontFamily: 'GillSans',
@@ -193,7 +177,9 @@ const styles = {
         color: 'white',
         fontSize: 20,
         fontFamily: 'GillSans-Light',
-        
+    },
+    inputContainer: {
+        width: '80%'
     },
     goBackButton: {
         backgroundColor: '#fcfcfc',
@@ -212,5 +198,4 @@ const styles = {
 export default SwitchNavigator({
     CreateAccount: { screen: CreateAccount },
     Home: { screen: GoBackStartPage }
-
 });

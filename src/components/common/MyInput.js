@@ -1,44 +1,51 @@
 //För att kunna hantera input från användaren vid distans av rutt 
 import React from 'react';
 import { Text, TextInput, View } from 'react-native';
+import { Icon } from 'native-base';
 
-const MyInput = ({ label, value, onChangeText, placeholder, secureTextEntry }) => {
-    const { inputStyle, labelStyle, containerStyle } = styles; 
+const MyInput = ({secureTextEntry, placeholder, value, onChangeText, iconType, iconName  }) => {
+    const { inputField, iconStyle, inputContainer, viewStyle } = styles; 
     return (
-        <View style={containerStyle}>
-            <TextInput
-                secureTextEntry={secureTextEntry} //for passwords it should only show * in the input area
-                placeholder={placeholder}
-                autoCorrect={false} //we don't want to autocorrect the emails
-                style={inputStyle}
-                value={value}
-                onChangeText={onChangeText}
-            />
-            <Text style={labelStyle}>{label}</Text>
+        <View style={viewStyle}>
+            <View style={inputContainer}>
+                <Icon type={iconType} name={iconName}
+                    style={iconStyle}/>
+                <TextInput
+                    secureTextEntry={secureTextEntry} //for passwords it should only show * in the input area
+                    placeholder={placeholder}
+                    autoCorrect={false} //we don't want to autocorrect the emails
+                    style={inputField}
+                    value={value}
+                    onChangeText={onChangeText}
+                />
+            </View>
         </View>
     );
 };
 
 const styles = {
-    inputStyle: {
-        color: '#000',
-        paddingRight: 5,
-        paddingLeft: 5,
-        fontSize: 18,
-        lineHeight: 23, //how much space is inbetween each line of text
-        flex: 1 //flex, inputStyle and labelStyle are children of the view tag. 
-        //we are allocating 2/3 of the space to one and 1/3 to the other
-    },
-    labelStyle: {
-        fontSize: 18,
-        paddingLeft: 20,
-        flex: 1
-    },
-    containerStyle: {
+    viewStyle: {
         height: 40,
         flex: 1,
+    },
+    inputContainer: {
+        backgroundColor: 'white',
+        opacity: 0.78,
+        padding: 8,
         flexDirection: 'row',
-        alignItems: 'center'
+    },
+    iconStyle: {
+        fontSize: 22,
+        width: 30,
+        paddingRight: 8
+    },
+    inputField: {
+        fontSize: 18,
+        paddingLeft: 10,
+        borderLeftWidth: 1,
+        borderLeftColor: '#5c688c',
+        lineHeight: 24, //how much space is inbetween each line of text
+        flex: 1
     }
 };
 
