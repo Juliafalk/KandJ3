@@ -311,7 +311,7 @@ class Map extends Component {
 
     if (!this.state.startRunning){
       return(
-        <View>
+        <View style={{backgroundColor: '#7785ad'}}>
           <View style={createRouteContainerStyle}>
             <View style={actualDistanceStyle}>
               <Text style={{ fontSize: 12}}>This Route:</Text>
@@ -352,7 +352,7 @@ class Map extends Component {
     } 
     else {
       return(
-        <View>
+        <View >
           <View style={createRouteContainerStyle}>
             <Text style={distanceTravelledStyle}>
               {distanceTravelled.toFixed(2)} km 
@@ -542,7 +542,7 @@ const styles = {
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center', 
+    alignItems: 'center',  
   },
   distanceContainer: {
     width: '35%',
@@ -590,7 +590,9 @@ const styles = {
     alignItems: 'center'
   },
   startButtonStyle: {
-    margin: 9
+    margin: 10,
+    //marginLeft: -1,
+    //marginRight: -1
   },
   pauseDoneContainer: {
     flexDirection: 'row',

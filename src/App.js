@@ -17,7 +17,7 @@ import FavoritePage from './components/FavoritePage';
 import SettingsScreen from './components/SettingsScreen';
 import WaitingPage from './components/WaitingPage'
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import { Container, Content, Header, Body, Footer, Button, Icon } from 'native-base';
+import { Container, Content, Header, Body, Footer, Button, Icon, FooterTab } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const store = createStore(reducers , {}, applyMiddleware(ReduxThunk))
@@ -86,22 +86,26 @@ class App extends React.Component {
 
 
 const CustomDrawerContentComponent = (props) => (
-    <Container>
+    <Container >
         <Header style={{ height: 200, backgroundColor: 'white' }}>
             <Body>
-                <Image
-                style={otherStyles.drawerImage}
-                source={require('./components/Runit_logo.png')}/>
+                <Text style={{fontSize: 20, fontWeight: 'bold', color: 'black' }}>runRouter</Text>
             </Body>
         </Header>
-        <Content>
-            <DrawerItems {...props}/>
+        <Content style={{ backgroundColor: '#5c688c' }}>
+            <DrawerItems {...props} 
+            inactiveTintColor='white'
+            activeTintColor='white'
+            activeBackgroundColor= '#7785ad'/>
         </Content>
-        <Footer style={{ backgroundColor: 'white' }}>
-            <Button danger onPress={() => Logout()}>
-                <Text style={{ fontWeight: 'bold'}}>  Log out  </Text>
-                <Icon name= "ios-log-out-outline" style={{ color: 'black'}}/>
+        <Footer style={{ backgroundColor: '#7785ad' }}>
+            <FooterTab>
+            <Button onPress={() => Logout()}>
+               
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white'}}>  Log out  </Text>
+                
             </Button>
+            </FooterTab>
         </Footer>
     </Container>
 )

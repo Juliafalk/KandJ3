@@ -24,7 +24,7 @@ import ListItem from './ListItem';
 class LogPage extends React.Component { 
     static navigationOptions = {
         drawerIcon: (
-            <Icon name='ios-list-box-outline' />
+            <Icon name='ios-list-box-outline' style={{ color: 'white'}}/>
         )
     }
 
@@ -58,13 +58,14 @@ class LogPage extends React.Component {
         console.log(this.dataSource);
         return (
                 <View>
-                    <Header style={{ backgroundColor: '#8CBA80'}}>
+                    <Header style={{ backgroundColor: '#7785ad'}}>
                         <Left>
-                            <Icon name="ios-menu" onPress={() =>
+                            <Icon name="ios-menu" style={{color:'white'}}
+                            onPress={() =>
                             this.props.navigation.navigate('DrawerOpen')}/>
                         </Left>
                         <Body>
-                            <Title>Log</Title>
+                            <Title style={{color:'white'}}>Log</Title>
                         </Body>
                         <Right />
                     </Header>
