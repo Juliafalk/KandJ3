@@ -4,7 +4,7 @@ The user can use/ JF (12/4) */
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import firebase from 'firebase';
-import { MyCard, MyCardSection, MySpinner, MyInputLogin } from './common';
+import { MyCard, MyCardSection, MySpinner, MyInput } from './common';
 import { Button } from 'native-base';
 
 class LoginPage extends Component { 
@@ -42,81 +42,74 @@ class LoginPage extends Component {
         }
 
         return (
-            <View style={{flex: 1, justifyContent: 'center'}}>
-                <TouchableOpacity block style={styles.login} onPress={this.onButtonPress.bind(this)}> 
-                    <Text style={styles.loginButtonText}>Login </Text>  
-                </TouchableOpacity>
+            <View>
+                <Button
+                    full
+                    style={styles.loginButton}
+                    onPress={this.onButtonPress.bind(this)}> 
+                    <Text
+                    style={styles.loginButtonText}>Login</Text>  
+                </Button>
             </View>
         );
-         
     }
 
     render() {
         return (
-            <MyCard>
-                <MyCardSection>
-                    <MyInputLogin
-                    style={{alignSelf: 'center'}}
-                    placeholder="user@gmail.com"
-                    value={this.state.email}
-                    onChangeText={email => this.setState({ email })}
-                    iconType={"FontAwesome"} 
-                    iconName={'user-o'} 
-                    />
-                </MyCardSection>
-               
-                <MyCardSection>
-                    <MyInputLogin
-                    placeholder="password"
-                    secureTextEntry={true}
-                    value={this.state.password}
-                    onChangeText={password => this.setState({ password })}
-                    iconType={"Entypo"} 
-                    iconName={'key'} 
-                    //Vill vi ha nyckel?? / JF (13/4)
-                    />
-                </MyCardSection>
-
+            <View>
                 <Text style={styles.errorTextStyle}>
                     {this.state.error}
                 </Text>
 
                 <MyCardSection>
+                    <MyInput
+                    placeholder="user@gmail.com"
+                    value={this.state.email}
+                    onChangeText={email => this.setState({ email })}
+                    iconType={"SimpleLineIcons"} 
+                    iconName={'user'} 
+                    />
+                </MyCardSection>
+               
+                <MyCardSection>
+                    <MyInput
+                    placeholder="password"
+                    secureTextEntry={true}
+                    value={this.state.password}
+                    onChangeText={password => this.setState({ password })}
+                    iconType={"SimpleLineIcons"} 
+                    iconName={'lock'} 
+                    />
+                </MyCardSection>
+
+                <MyCardSection>
                     {this.renderButton()}
                 </MyCardSection>
-            </MyCard>
+            </View>
         );
     };
 };
 
 const styles = {
     errorTextStyle: {
+        height: 20,
         fontSize: 20,
         alignSelf: 'center',
-        color: '#a80000',
+        color: 'black',
         fontFamily: 'GillSans-SemiBold'
     },
     loginButton: {
-        backgroundColor: '#3a88e8',
-        width: '40%',
-        alignSelf: 'center',    
-    },
-    login: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'center',  
-        backgroundColor: '#3a88e8',
-        height: 40,
-        width: '40%',
-        borderRadius: 20,
-        zIndex: 100,
+        marginTop: 10,
+        height: 35,
+        alignSelf: 'center',
+        width: '134%',
+        backgroundColor: '#7785ad'
     },
     loginButtonText: {
-        color: 'white',
         fontSize: 20,
         fontFamily: 'GillSans-Light',
+        color: 'white'
     }
-
 }
 
 //Error message will only be seen if something goes wrong
