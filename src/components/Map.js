@@ -19,6 +19,10 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import Geocoder from 'react-native-geocoding';
 import firebase from 'firebase';
 import haversine from 'haversine';
+import {
+  LogCard,
+  LogCardItem
+} from './common';
 //import SummaryPage from './SummaryPage';
 
 const { width, height } = Dimensions.get('window');
@@ -633,6 +637,34 @@ const styles = {
   chooseStartpointStyle: {
     backgroundColor: 'white',
     opacity: 0.8
+  },
+  summary: {
+    height: '100%',
+    backgroundColor: '#5c688c'
+  },
+  summaryCard: {
+    alignItems: 'center',
+    backgroundColor: '#5c688c',
+    zIndex: -1
+  },
+  summaryLabel: {
+    fontSize: 17, 
+    paddingLeft: 1, 
+    flex: 1, 
+    fontFamily: 'GillSans-Light',
+    color: 'black'
+  },
+  iconSummary: { 
+    width: '7%',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  summaryText:{
+    marginTop: 5,
+    fontSize: 17,
+    fontFamily: 'GillSans-Light',
+    paddingLeft: 10
   }
 }
 
@@ -661,7 +693,7 @@ class TheSummary extends React.Component {
     const date= new Date().toDateString()
 
     return (
-        <View style={{  height: '100%', backgroundColor: '#5c688c' }}>
+        <View style={styles.summary} >
         <View style={{ marginLeft: 15, marginTop: 10 }}>
         <Icon name='close' 
         onPress={() => {this.props.navigation.navigate('Home')}} 
@@ -672,19 +704,27 @@ class TheSummary extends React.Component {
             < Image style={{ height: 90, width: 90}}  
             source={require('./finisher.png')}/>
         </View>
-        <View style={styles.divideSection}>
-
-          <CardItem>
-              <Text style={{ fontWeight: 'bold' }}>{date}</Text>
-          </CardItem>
-          <CardItem>
-              <Icon name='ios-stopwatch-outline'/>
-              <Text>{durationTime}</Text>
-          </CardItem>
-          <CardItem>
-              <Icon name= "ios-walk-outline"/>
-              <Text>{totalDistance} km</Text>
-          </CardItem> 
+        <View style={styles.summaryCard}>
+        <LogCard>
+                    <LogCardItem>
+                        <Text style={styles.summaryLabel} >
+                        {date.toUpperCase()}</Text>
+                    </LogCardItem>
+                    <View style={{ backgroundColor: 'black', height: 0.5,  
+                    width: '100%',marginBottom: 8,}} />
+                    <LogCardItem>
+                    <View style={styles.iconSummary} >
+                        <Icon  name='ios-stopwatch-outline'/>
+                    </View>
+                        <Text style={styles.summaryText}>Duration: {durationTime}</Text>
+                    </LogCardItem>
+                    <LogCardItem block >
+                    <View style={styles.iconSummary} >
+                        <Icon  name="ios-walk-outline"/>
+                    </View>
+                        <Text style={styles.summaryText} >Your distance: {totalDistance} km</Text>
+                    </LogCardItem>
+                </LogCard>
 
         </View>
 
