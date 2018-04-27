@@ -48,24 +48,26 @@ class LogPage extends React.Component {
 
     renderRow(route){
         console.log('renderrow?')
-        return <ListItem route={route} />;
+            return <ListItem route={route} />;
+       
     }
 
     render() {
-        console.log('render');
-        console.log(this.props);
-        console.log('dataSource')
-        console.log(this.dataSource);
+        const { 
+           headerStyle, 
+           headerTextStyle,
+           iconStyle,
+           viewStyle
+        } = styles;
         return (
-                <View>
-                    <Header style={{ backgroundColor: '#7785ad'}}>
+                <View style={viewStyle}>
+                    <Header style={headerStyle}>
                         <Left>
-                            <Icon name="ios-menu" style={{color:'white'}}
-                            onPress={() =>
+                            <Icon name="ios-menu" style={iconStyle} onPress={() =>
                             this.props.navigation.navigate('DrawerOpen')}/>
                         </Left>
                         <Body>
-                            <Title style={{color:'white'}}>Log</Title>
+                            <Title style={headerTextStyle}>L O G</Title>
                         </Body>
                         <Right />
                     </Header>
@@ -89,26 +91,25 @@ const mapStateToProps = state => {
     return { routes };
 };
 
+const styles = {
+    headerStyle: {
+        backgroundColor: '#7785ad' 
+    },
+    headerTextStyle: {
+        color: 'white', 
+        fontSize: 20,
+        fontFamily: 'GillSans',
+    }, 
+    iconStyle: {
+        color: 'white'
+    }, 
+ 
+}
+
+
+
 export default connect(mapStateToProps, { routesFetch })(LogPage); 
     
-/*
-    
 
-    ButtonPress() {
-        firebase.auth().signOut()
-    }
-
-    onButtonPress() {
-        const { name } = this.state;
-        const { currentUser } = firebase.auth();
-        firebase.database().ref(`/users/${currentUser.uid}/routes`)
-            .push({ name });
-        return(
-        this.setState({
-            name: ''
-        })
-        );
-    }
-*/
 
 
