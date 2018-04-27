@@ -56,18 +56,19 @@ class CreateAccount extends React.Component {
         });
     }
 
-
     renderButton() {
         if (this.state.loading) {
             return <MySpinner size="small" />
         }
 
         return (
-                <Button block style={styles.createAccountButton} onPress={this.onButtonPress.bind(this)}>
-                    <Text style={styles.createAccountButtonText}>Create Account</Text>
+            <View
+                style={styles.createAccountView}>
+                <Button full style={styles.createAccountButton} onPress={this.onButtonPress.bind(this)}>
+                    <Text style={styles.createAccountText}>Create Account</Text>
                 </Button>
+            </View>
         );
-         
     }
 
     render () {
@@ -79,18 +80,21 @@ class CreateAccount extends React.Component {
                 <View>
                     <Header style={styles.headerStyle}>
                         <Body>
-                            <Text style={styles.headerStyleText}>Create account</Text>
+                            <Text style={styles.headerStyleText}>Create Account</Text>
                         </Body>
                     </Header>
                 
-                    <View style={{justifyContent: 'center'}}>
+                    <View>
                         <View style={styles.inputContainer}>
                             <Icon type="SimpleLineIcons" name="user-follow" style={styles.iconStyle} />
                                 <MyCardSection>
                                     <MyInput
                                     placeholder="name"
                                     value={this.state.name}
-                                    onChangeText={name => this.setState({ name })}/>
+                                    onChangeText={name => this.setState({ name })}
+                                    iconType={"SimpleLineIcons"} 
+                                    iconName={'user-follow'} 
+                                    />
                                 </MyCardSection>
 
                                 <MyCardSection>
@@ -98,6 +102,8 @@ class CreateAccount extends React.Component {
                                     placeholder="user@gmail.com"
                                     value={this.state.email}
                                     onChangeText={email => this.setState({ email })}
+                                    iconType={"SimpleLineIcons"} 
+                                    iconName={'user'} 
                                     />
                                 </MyCardSection>
                 
@@ -108,6 +114,8 @@ class CreateAccount extends React.Component {
                                     secureTextEntry={true}
                                     value={this.state.password}
                                     onChangeText={password => this.setState({ password })}
+                                    iconType={"SimpleLineIcons"} 
+                                    iconName={'lock'} 
                                     />
                                 </MyCardSection>
 
@@ -118,6 +126,8 @@ class CreateAccount extends React.Component {
                                     secureTextEntry={true}
                                     value={this.state.repPassword}
                                     onChangeText={repPassword => this.setState({ repPassword })}
+                                    iconType={"SimpleLineIcons"} 
+                                    iconName={'lock'} 
                                     />
                                 </MyCardSection>
                                 
@@ -126,9 +136,8 @@ class CreateAccount extends React.Component {
                                 </MyCardSection>
                             </View>
                             
-
                             <MyCardSection>
-                                <Button block style={styles.goBackButton} onPress={this.GoBack}>
+                                <Button full style={styles.goBackButton} onPress={this.GoBack}>
                                     <Icon type="Ionicons" name="ios-arrow-back" style={{color:'black', fontSize: 15}}/> 
                                     <Text style={styles.goBackButtonText}>Go back</Text>
                                 </Button>
@@ -165,25 +174,33 @@ const styles = {
     },
     iconStyle: {
         fontSize: 60,
+        marginBottom: 20,
         color: '#eaeaea',
         alignSelf: 'center'
     },
-    createAccountButton: { 
-        backgroundColor: '#65bc58',
-        width: '50%',
-        alignSelf: 'center',
+    createAccountView: {
+        flex: 1, 
+        justifyContent: 'center' 
     },
-    createAccountButtonText: {
-        color: 'white',
-        fontSize: 20,
+    createAccountButton: {
+        height: 40, 
+        marginTop: 10,
+        backgroundColor: '#7785ad' 
+    },
+    createAccountText: {
+        fontSize: 17,
         fontFamily: 'GillSans-Light',
+        color: 'white'
     },
     inputContainer: {
-        width: '80%'
+        width: '80%',
+        alignSelf: 'center',
+        marginTop: 50
     },
     goBackButton: {
         backgroundColor: '#fcfcfc',
         alignSelf: 'center',
+        height: 40,
         width: '40%',
     },
     goBackButtonText: {

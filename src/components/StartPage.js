@@ -38,8 +38,8 @@ class StartPage extends React.Component {
                         <LoginPage />
                             
                         <MyCardSection>
-                            <View style={styles.createAccountView}>
-                                <Button full 
+                            <View>
+                                <Button 
                                     style={styles.createAccountButton}
                                     onPress={this.CreateAccount}> 
                                     <Text style={styles.createAccountText}>Create account</Text>
@@ -124,16 +124,13 @@ const styles = {
         marginTop: 130,
         alignSelf: 'center'
     },
-    createAccountView: {
-        flex: 1, 
-        justifyContent: 'center' 
-    },
     createAccountButton: {
-        height: 35, 
-        backgroundColor: '#5c688c' 
+        height: 35,
+        backgroundColor: 'transparent'
     },
     createAccountText: {
         fontSize: 17,
+        textDecorationLine: 'underline',
         fontFamily: 'GillSans-Light',
         color: 'white'
     },
