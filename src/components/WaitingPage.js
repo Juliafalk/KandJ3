@@ -3,7 +3,6 @@ import { View, Text, ImageBackground } from 'react-native';
 import firebase from 'firebase';
 import { Icon } from 'native-base';
 
-
 class WaitingPage extends React.Component {
 
     render() {
@@ -15,7 +14,6 @@ class WaitingPage extends React.Component {
             <Text style={styles.textStyle}>Lets run!</Text>
             <Icon type="MaterialIcons" name="directions-run" style={styles.iconStyle} />
             </ImageBackground>);
-        
     }
 }
 

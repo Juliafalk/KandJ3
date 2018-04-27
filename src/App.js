@@ -17,7 +17,16 @@ import FavoritePage from './components/FavoritePage';
 import SettingsScreen from './components/SettingsScreen';
 import WaitingPage from './components/WaitingPage'
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import { Container, Content, Header, Body, Footer, Button, Icon, FooterTab } from 'native-base';
+import { 
+    Container, 
+    Content, 
+    Header, 
+    Body, 
+    Footer, 
+    Button, 
+    Icon,
+    FooterTab
+} from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const store = createStore(reducers , {}, applyMiddleware(ReduxThunk))
