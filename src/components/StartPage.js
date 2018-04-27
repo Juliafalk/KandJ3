@@ -32,7 +32,7 @@ class StartPage extends React.Component {
                 <Wallpaper>
                     <Container style={styles.loginForm}>
                         <MyCardSection>
-                            <Text style={{fontSize: 50, fontWeight: 'bold', marginBottom: 35 }}>runRouter</Text>
+                            <Text style={styles.headerText}>runRouter</Text>
                         </MyCardSection>
                             
                         <LoginPage />
@@ -42,7 +42,7 @@ class StartPage extends React.Component {
                                 <Button 
                                     style={styles.createAccountButton}
                                     onPress={this.CreateAccount}> 
-                                    <Text style={styles.createAccountText}>Create account</Text>
+                                    <Text style={styles.createAccountText}>Create Account</Text>
                                 </Button> 
                             </View>
                         </MyCardSection>
@@ -88,8 +88,10 @@ class CreateAccountScreen extends React.Component {
     render () {
         return (
             <View 
-            style={{ height: '100%', backgroundColor: '#5c688c'}}>
+            style={{ height: '100%'}}>
+            <Wallpaper>
                 <CreateAccount />
+                </Wallpaper>
             </View>
         );
     }
@@ -119,9 +121,15 @@ class TheMap extends React.Component {
 };
 
 const styles = {
+    headerText: {
+        fontSize: 50, 
+        fontWeight: 'bold', 
+        marginBottom: 77.7,
+        color: 'white'
+    },
     loginForm: {
         width: '80%', 
-        marginTop: 130,
+        marginTop: 100,
         alignSelf: 'center'
     },
     createAccountButton: {
