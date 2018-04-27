@@ -16,6 +16,7 @@ import { SwitchNavigator } from 'react-navigation';
 import pick from 'lodash/pick';
 import { Button, Text, Icon, CardItem, Card } from 'native-base';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import Geocoder from 'react-native-geocoding';
 import firebase from 'firebase';
 import haversine from 'haversine';
 //import SummaryPage from './SummaryPage';
@@ -35,6 +36,7 @@ const waypoints = [];
 const TOTAL_DURATION = 0;
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
+Geocoder.init(GOOGLE_MAPS_APIKEY);
 
 class Map extends Component {
 
@@ -49,35 +51,36 @@ class Map extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
       },
-    //initialPositionMarker - to place the marker at the initialPosition, 
-    //ev. could be same as initialPosition / JF (16/4)
-    initialPositionMarker: {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
-    },
-    //currentPosition - to update the users current position / JF (16/4)
-    currentPosition: {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
-    },
-        distanceTravelled: 0,
-        actualDistance: 0,
-        prevLatLng: {},
-        wayPoints: [],
-        wantedDistance: '',
-        createRoute: true,
-        startButton: true,
-        startRunning: false,
-        stopwatchStart: false,
-        stopwatchReset: false,
-        totalDuration: 0,
-        date: 0, 
-        pauseRunning: false
-      }
+      //initialPositionMarker - to place the marker at the initialPosition, 
+      //ev. could be same as initialPosition / JF (16/4)
+      initialPositionMarker: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      },
+      //currentPosition - to update the users current position / JF (16/4)
+      currentPosition: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      },
+      chosenStartpoint: '',
+      distanceTravelled: 0,
+      actualDistance: 0,
+      prevLatLng: {},
+      wayPoints: [],
+      wantedDistance: '',
+      createRoute: true,
+      startButton: true,
+      startRunning: false,
+      stopwatchStart: false,
+      stopwatchReset: false,
+      totalDuration: 0,
+      date: 0, 
+      pauseRunning: false
+    }
 
     this.mapView = null;  
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
@@ -85,7 +88,7 @@ class Map extends Component {
   }
   watchID: ?number = null; // from tutorial, red marked but it works! / JL (13/4) 
  //Do we need this? /JF 18/4 
-  
+
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
       // Here set all the positions, given by the devices current position. 
@@ -110,14 +113,14 @@ class Map extends Component {
       },
         //wayPoints: [],
         //wantedDistance: ''
-      });   
-    }, 
+      });
+    },
     (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
 
     this.watchID = navigator.geolocation.watchPosition(
       position => {
-        
+
         const { distanceTravelled } = this.state
         const newLatLngs = {latitude: position.coords.latitude, longitude: position.coords.longitude} 
 
@@ -137,8 +140,8 @@ class Map extends Component {
           distanceTravelled: distanceTravelled + this.calcDistance(newLatLngs),
           prevLatLng: newLatLngs 
         });
-
-      });
+      }
+    );
   }
 
   calcDistance(newLatLng) {
@@ -187,7 +190,7 @@ class Map extends Component {
       latitude: this.state.initialPosition.latitude+delta_lat,
       longitude: this.state.initialPosition.longitude+delta_lng
     }
-   
+
     //Find circlePoints other points to use
     //First, call the initial direction direction+180, since we are looking in the opposite direction.
     deg[0] = direction + Math.PI;
@@ -220,7 +223,7 @@ class Map extends Component {
         createRoute: true,
         startButton: true
       })
-    } 
+    }
     else {
       this.setState({
         createRoute: false,
@@ -228,21 +231,21 @@ class Map extends Component {
     }
   }
 
-//JG 18/4 will send information about the route to the database
+  //JG 18/4 will send information about the route to the database
   toDatabase() {
-      var date= new Date().toDateString()
-      const { wayPoints, totalDuration, actualDistance } = this.state;
-      const { currentUser } = firebase.auth();
-      firebase.database().ref(`/users/${currentUser.uid}/routes`)
-          .push({ wayPoints, TOTAL_DURATION, DISTANCE_TRAVELLED, date, actualDistance });
-      return(
-        this.setState({
-            wayPoints: [],
-            totalDuration: 0,
-            DISTANCE_TRAVELLED: 0 ,
-            date: 0   
-        })
-      );
+    var date= new Date().toDateString()
+    const { wayPoints, totalDuration, actualDistance } = this.state;
+    const { currentUser } = firebase.auth();
+    firebase.database().ref(`/users/${currentUser.uid}/routes`)
+        .push({ wayPoints, TOTAL_DURATION, DISTANCE_TRAVELLED, date, actualDistance });
+    return(
+      this.setState({
+          wayPoints: [],
+          totalDuration: 0,
+          DISTANCE_TRAVELLED: 0 ,
+          date: 0   
+      })
+    );
   }
 
   //JL 25/4: allows user to choose starting point
@@ -258,11 +261,25 @@ class Map extends Component {
             opacity: 0.8,
           },
           textInput: {color: 'rgb(65,127,225)'},
-          textInputContainer: {backgroundColor: '#7c7c7c'} 
+          textInputContainer: {backgroundColor: '#7c7c7c'}
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
-            console.log(data.description)
+            Geocoder.from(data.description)
+              .then(json => {
+                var location = json.results[0].geometry.location;
+                this.setState({
+                  initialPosition: {
+                    latitude: location.lat,
+                    longitude: location.lng
+                  },
+                  initialPositionMarker: {
+                    latitude: location.lat,
+                    longitude: location.lng
+                  }
+                });
+              })
+              .catch(error => console.warn(error))
           }}
           query={{
             // available options: https://developers.google.com/places/web-service/autocomplete
@@ -311,7 +328,7 @@ class Map extends Component {
 
     if (!this.state.startRunning){
       return(
-        <View>
+        <View style={{backgroundColor: '#7785ad'}}>
           <View style={createRouteContainerStyle}>
             <View style={actualDistanceStyle}>
               <Text style={{ fontSize: 12}}>This Route:</Text>
@@ -352,7 +369,7 @@ class Map extends Component {
     } 
     else {
       return(
-        <View>
+        <View >
           <View style={createRouteContainerStyle}>
             <Text style={distanceTravelledStyle}>
               {distanceTravelled.toFixed(2)} km 
@@ -426,7 +443,7 @@ class Map extends Component {
     TOTAL_DURATION = time;
   };
   //****//
-  
+
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
     const {
@@ -468,11 +485,14 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
          >
-          {this.chooseStartpoint()}
+          <View
+          style={{ height: '37%' }}>
+            {this.chooseStartpoint()}
+          </View>
           <MapView.Marker 
-          coordinate={this.state.initialPositionMarker} 
+            coordinate={this.state.initialPositionMarker} 
           />
-        
+
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
@@ -484,7 +504,7 @@ class Map extends Component {
               strokeColor="hotpink"
               
               onStart={(params) => {
-                
+
                 //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
               }}
 
@@ -515,7 +535,7 @@ class Map extends Component {
               }}
             />
           )}
-          
+
         </MapView>
         {this.startRunning()}
       </View>
@@ -542,7 +562,7 @@ const styles = {
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center', 
+    alignItems: 'center',  
   },
   distanceContainer: {
     width: '35%',
@@ -590,7 +610,9 @@ const styles = {
     alignItems: 'center'
   },
   startButtonStyle: {
-    margin: 9
+    margin: 10,
+    //marginLeft: -1,
+    //marginRight: -1
   },
   pauseDoneContainer: {
     flexDirection: 'row',
@@ -650,7 +672,7 @@ class TheSummary extends React.Component {
             source={require('./finisher.png')}/>
         </View>
         <View style={styles.divideSection}>
-        
+
           <CardItem>
               <Text style={{ fontWeight: 'bold' }}>{date}</Text>
           </CardItem>
@@ -662,11 +684,11 @@ class TheSummary extends React.Component {
               <Icon name= "ios-walk-outline"/>
               <Text>{totalDistance}</Text>
           </CardItem> 
-                    
+
         </View>
 
         </View>
-        
+
     );  
   }
 };

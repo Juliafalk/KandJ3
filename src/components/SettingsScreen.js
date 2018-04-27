@@ -7,7 +7,7 @@ class SettingsScreen extends Component {
   
    static navigationOptions = {
        drawerIcon: (
-           <Icon name='ios-settings-outline' />
+           <Icon name='ios-settings-outline' style={{ color: 'white'}}/>
        )
    }
   
@@ -15,13 +15,14 @@ class SettingsScreen extends Component {
        const user= firebase.auth().currentUser;
        return (
            <Container>
-               <Header style={{ backgroundColor: '#8CBA80'}}>
+               <Header style={{ backgroundColor: '#7785ad'}}>
                    <Left>
-                       <Icon name="ios-menu" onPress={() =>
+                       <Icon name="ios-menu" style={{color:'white'}}
+                       onPress={() =>
                        this.props.navigation.navigate('DrawerOpen')}/>
                    </Left>
                    <Body>
-                       <Title>Settings</Title>
+                       <Title style={{color:'white'}}>Settings</Title>
                    </Body>
                    <Right />
                </Header>

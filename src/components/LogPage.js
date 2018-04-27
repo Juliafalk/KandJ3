@@ -24,7 +24,7 @@ import ListItem from './ListItem';
 class LogPage extends React.Component { 
     static navigationOptions = {
         drawerIcon: (
-            <Icon name='ios-list-box-outline' />
+            <Icon name='ios-list-box-outline' style={{ color: 'white'}}/>
         )
     }
 

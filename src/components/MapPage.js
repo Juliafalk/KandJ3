@@ -13,7 +13,7 @@ class MapPage extends React.Component {
     
     static navigationOptions = {
         drawerIcon: (
-            <Icon name='ios-map-outline' />
+            <Icon name='ios-map-outline' style={{ color: 'white'}} />
         )
     }
     //Button to sign out. 
@@ -24,13 +24,14 @@ class MapPage extends React.Component {
     render() {
         return (
         <View>
-            <Header style={{ height: 60}} style={{ backgroundColor: '#8CBA80'}}>
+            <Header style={{ height: 60}} style={{ backgroundColor: '#7785ad'}}>
                 <Left>
-                    <Icon name='ios-menu' onPress={() =>
+                    <Icon name='ios-menu' style={{color:'white'}}
+                    onPress={() =>
                     this.props.navigation.navigate('DrawerOpen')}/>
                 </Left>
                 <Body>
-                    <Title>Map</Title>
+                    <Title style={{color:'white'}}>Map</Title>
                 </Body>
                 <Right />
             </Header>

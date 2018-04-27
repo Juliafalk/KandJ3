@@ -5,20 +5,21 @@ import { Icon, Container, Header, Content, Left, Body, Right, Title } from 'nati
 class FavoritePage extends Component { 
     static navigationOptions = {
         drawerIcon: (
-            <Icon name='ios-star-outline' />
+            <Icon name='ios-star-outline' style={{ color: 'white'}}/>
         )
     }
 
     render() {
         return (
             <Container>
-                <Header style={{ backgroundColor: '#8CBA80'}}>
+                <Header style={{ backgroundColor: '#7785ad'}}>
                     <Left>
-                        <Icon name="ios-menu" onPress={() =>
+                        <Icon name="ios-menu" style={{color:'white'}}
+                        onPress={() =>
                         this.props.navigation.navigate('DrawerOpen')}/>
                     </Left>
                     <Body>
-                        <Title>Favorites</Title>
+                        <Title style={{color:'white'}}>Favorites</Title>
                     </Body>
                     <Right />
                 </Header>
