@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, ListView} from 'react-native';
+import { View, ListView, ScrollView, Text} from 'react-native';
 import { 
     Icon, 
     Header,  
@@ -67,18 +67,21 @@ class LogPage extends React.Component {
                             this.props.navigation.navigate('DrawerOpen')}/>
                         </Left>
                         <Body>
-                            <Title style={headerTextStyle}>L O G</Title>
+                            <Text style={headerTextStyle}>Log</Text>
                         </Body>
                         <Right />
                     </Header>
+                    <ScrollView>
+                    <View>
                     <ListView
                     enableEmptySections
                     dataSource={this.dataSource}
                     renderRow={this.renderRow}
                     />
-                     <CardItem>
-                    </CardItem>
+                    </View>
+                    </ScrollView>
                 </View>
+             
         )
     }
 }
@@ -92,12 +95,18 @@ const mapStateToProps = state => {
 };
 
 const styles = {
+    viewStyle: {
+        backgroundColor: '#5c688c',
+        zIndex: -5,
+        paddingBottom: 80
+        //Padding because of styling and bugs in scrollview 
+    },
     headerStyle: {
         backgroundColor: '#7785ad' 
     },
     headerTextStyle: {
         color: 'white', 
-        fontSize: 20,
+        fontSize: 23,
         fontFamily: 'GillSans',
     }, 
     iconStyle: {
