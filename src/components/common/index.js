@@ -7,4 +7,6 @@ export * from './MyHeader';
 export * from './MyInput';
 export * from './MySpinner';
 export * from './MyInputLogin';
-export * from './MyInputCreateAccount'
+export * from './MyInputCreateAccount';
+export * from './LogCard';
+export * from './LogCardItem';
