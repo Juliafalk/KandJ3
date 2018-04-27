@@ -261,11 +261,7 @@ class Map extends Component {
             opacity: 0.8,
           },
           textInput: {color: 'rgb(65,127,225)'},
-<<<<<<< HEAD
           textInputContainer: {backgroundColor: '#5c688c', opacity: 0.5,} 
-=======
-          textInputContainer: {backgroundColor: '#7c7c7c'}
->>>>>>> origin
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
@@ -332,7 +328,7 @@ class Map extends Component {
 
     if (!this.state.startRunning){
       return(
-        <View style={{backgroundColor: '#7785ad'}}>
+        <View style={{backgroundColor: '#5c688c'}}>
           <View style={createRouteContainerStyle}>
             <View style={actualDistanceStyle}>
               <Text style={{ fontSize: 12}}>This Route:</Text>
@@ -352,8 +348,9 @@ class Map extends Component {
               <Text>km</Text>
             </View>
             <Button
+              info
               style={createRouteButtonStyle}
-              disabled={createRoute}
+              disabled ={createRoute}
               onPress={() => {this.routeGenerator(wantedDistance), 
               this.setState({ startButton: false }), Keyboard.dismiss}}>
                 <Text style={{ fontSize: 14 }}>Create Route</Text>
@@ -373,7 +370,7 @@ class Map extends Component {
     } 
     else {
       return(
-        <View >
+        <View style={{backgroundColor: '#5c688c'}}>
           <View style={createRouteContainerStyle}>
             <Text style={distanceTravelledStyle}>
               {distanceTravelled.toFixed(2)} km 
@@ -611,7 +608,7 @@ const styles = {
   createRouteButtonStyle: {
     width: '30%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   startButtonStyle: {
     margin: 10,
@@ -664,7 +661,7 @@ class TheSummary extends React.Component {
     const date= new Date().toDateString()
 
     return (
-        <View style={{  height: '85%' }}>
+        <View style={{  height: '100%', backgroundColor: '#5c688c' }}>
         <View style={{ marginLeft: 15, marginTop: 10 }}>
         <Icon name='close' 
         onPress={() => {this.props.navigation.navigate('Home')}} 
@@ -686,7 +683,7 @@ class TheSummary extends React.Component {
           </CardItem>
           <CardItem>
               <Icon name= "ios-walk-outline"/>
-              <Text>{totalDistance}</Text>
+              <Text>{totalDistance} km</Text>
           </CardItem> 
 
         </View>
