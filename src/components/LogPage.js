@@ -48,7 +48,8 @@ class LogPage extends React.Component {
 
     renderRow(route){
         console.log('renderrow?')
-        return <ListItem route={route} />;
+            return <ListItem route={route} />;
+       
     }
 
     render() {
