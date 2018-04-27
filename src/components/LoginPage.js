@@ -100,7 +100,7 @@ const styles = {
     },
     loginButton: {
         marginTop: 10,
-        height: 35,
+        height: 40,
         alignSelf: 'center',
         width: '134%',
         backgroundColor: '#7785ad'

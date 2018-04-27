@@ -6,9 +6,9 @@ and the GoBack function / JF (11/4) */
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
-import { Button, Icon, Header, Body } from 'native-base';
+import { Button, Icon } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { MyCard, MyCardSection, MyInput, MySpinner } from './common';
+import { MyCardSection, MyInput, MySpinner } from './common';
 import StartPage from './StartPage';
 import firebase from 'firebase';
 
@@ -30,7 +30,7 @@ class CreateAccount extends React.Component {
         else{
             console.log('not same pass')
             return(
-            (this.onCreateAccountFailed.bind(this))
+                (this.onCreateAccountFailed.bind(this))
             );
         }
     }
@@ -47,7 +47,7 @@ class CreateAccount extends React.Component {
              error: '' //overkill, is not needed.. 
        });
     }
-    
+
     onCreateAccountFailed() {
         console.log('failed to create account')
         this.setState({
@@ -56,84 +56,84 @@ class CreateAccount extends React.Component {
         });
     }
 
-
     renderButton() {
         if (this.state.loading) {
             return <MySpinner size="small" />
         }
 
         return (
-                <Button block style={styles.createAccountButton} onPress={this.onButtonPress.bind(this)}>
-                    <Text style={styles.createAccountButtonText}>Create Account</Text>
+            <View style={styles.createAccountView}>
+                <Button full style={styles.createAccountButton} onPress={this.onButtonPress.bind(this)}>
+                    <Text style={styles.createAccountText}>Create Account</Text>
                 </Button>
+            </View>
         );
-         
     }
 
     render () {
-            return (
+        return (
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 contentContainerStyle={styles.container}
                 scrollEnabled={true}>
                 <View>
-                    <Header style={styles.headerStyle}>
-                        <Body>
-                            <Text style={styles.headerStyleText}>Create account</Text>
-                        </Body>
-                    </Header>
-                
-                    <View style={{justifyContent: 'center'}}>
-                        <View style={styles.inputContainer}>
-                            <Icon type="SimpleLineIcons" name="user-follow" style={styles.iconStyle} />
-                                <MyCardSection>
-                                    <MyInput
+                    <View style={styles.inputContainer}>
+                        <Icon type="SimpleLineIcons" name="user-follow" style={styles.iconStyle} />
+                            <MyCardSection>
+                                <MyInput
                                     placeholder="name"
                                     value={this.state.name}
-                                    onChangeText={name => this.setState({ name })}/>
-                                </MyCardSection>
+                                    onChangeText={name => this.setState({ name })}
+                                    iconType={"SimpleLineIcons"} 
+                                    iconName={'user-follow'} 
+                                />
+                            </MyCardSection>
 
-                                <MyCardSection>
-                                    <MyInput 
+                            <MyCardSection>
+                                <MyInput 
                                     placeholder="user@gmail.com"
                                     value={this.state.email}
                                     onChangeText={email => this.setState({ email })}
-                                    />
-                                </MyCardSection>
+                                    iconType={"SimpleLineIcons"} 
+                                    iconName={'user'} 
+                                />
+                            </MyCardSection>
                 
-                                <MyCardSection>
-                                    <MyInput 
+                            <MyCardSection>
+                                <MyInput 
                                     placeholder="password, min 6 characters"
                                     label="Password: "
                                     secureTextEntry={true}
                                     value={this.state.password}
                                     onChangeText={password => this.setState({ password })}
-                                    />
-                                </MyCardSection>
+                                    iconType={"SimpleLineIcons"} 
+                                    iconName={'lock'} 
+                                />
+                            </MyCardSection>
 
-                                <MyCardSection>
-                                    <MyInput 
+                            <MyCardSection>
+                                <MyInput 
                                     placeholder="repeat password"
                                     label="Password: "
                                     secureTextEntry={true}
                                     value={this.state.repPassword}
                                     onChangeText={repPassword => this.setState({ repPassword })}
-                                    />
-                                </MyCardSection>
-                                
-                                <MyCardSection>
-                                    {this.renderButton()}
-                                </MyCardSection>
-                            </View>
-                            
-
-                            <MyCardSection>
-                                <Button block style={styles.goBackButton} onPress={this.GoBack}>
-                                    <Icon type="Ionicons" name="ios-arrow-back" style={{color:'black', fontSize: 15}}/> 
-                                    <Text style={styles.goBackButtonText}>Go back</Text>
-                                </Button>
+                                    iconType={"SimpleLineIcons"} 
+                                    iconName={'lock'} 
+                                />
                             </MyCardSection>
-                    </View>
+                                
+                            <MyCardSection>
+                                {this.renderButton()}
+                            </MyCardSection>
+                        </View>
+                            
+                        <MyCardSection>
+                            <Button full style={styles.goBackButton} onPress={this.GoBack}>
+                                <Icon type="Ionicons" name="ios-arrow-back" style={{color:'black', fontSize: 15}}/> 
+                                <Text style={styles.goBackButtonText}>Go Back</Text>
+                            </Button>
+                        </MyCardSection>
                 </View>
             </KeyboardAwareScrollView>
         );
@@ -156,35 +156,38 @@ class GoBackStartPage extends React.Component {
 }
 
 const styles = {
-    headerStyle: {
-        height: 80
-    },
-    headerStyleText: {
-        fontFamily: 'GillSans',
-        fontSize: 35,
-    },
     iconStyle: {
         fontSize: 60,
-        color: '#eaeaea',
+        marginTop: 50,
+        marginBottom: 50,
+        color: 'white',
         alignSelf: 'center'
     },
-    createAccountButton: { 
-        backgroundColor: '#65bc58',
-        width: '50%',
-        alignSelf: 'center',
+    createAccountView: {
+        flex: 1, 
+        justifyContent: 'center' 
     },
-    createAccountButtonText: {
-        color: 'white',
-        fontSize: 20,
+    createAccountButton: {
+        height: 40, 
+        marginTop: 10,
+        backgroundColor: '#7785ad' 
+    },
+    createAccountText: {
+        fontSize: 17,
         fontFamily: 'GillSans-Light',
+        color: 'white'
     },
     inputContainer: {
-        width: '80%'
+        width: '80%',
+        alignSelf: 'center',
+        marginTop: 50
     },
     goBackButton: {
-        backgroundColor: '#fcfcfc',
+        backgroundColor: 'white',
+        opacity: 0.75,
         alignSelf: 'center',
-        width: '40%',
+        height: 35,
+        width: '30%',
     },
     goBackButtonText: {
         fontFamily: 'GillSans',
