@@ -112,9 +112,9 @@ class TheMap extends React.Component {
             contentContainerStyle={styles.container}
             scrollEnabled={false}
             >
-            <Container>
-                <MyApp /> 
-            </Container>
+                <Container>
+                    <MyApp /> 
+                </Container>
             </KeyboardAwareScrollView>       
         );
     }
