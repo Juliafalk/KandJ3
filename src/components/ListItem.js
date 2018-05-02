@@ -92,69 +92,7 @@ class ListItem extends Component {
             welcome 
         } = styles;
         
-        if(route.favorite)
-            return(
-                <View style={viewStyle} >
-                <LogCard>
-                    <LogCardItem>
-                        <Text style={labelStyle}>{route.date.toUpperCase()}</Text>
-                        <Icon type="FontAwesome" name="remove" onPress={() => 
-                               Alert.alert(
-                                'Delete route?',
-                                'The route is not possible restore!', 
-                                [
-                                  {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                  {text: 'Yes', onPress: () => {this.deleteRoute(route)}
-                                  },
-                                ],
-                                { cancelable: false }
-                              )}>
-                        </Icon>
-                    </LogCardItem>
-                    <View style={lineStyle} />
-                    <View style={{
-                        flexDirection: 'row'
-                        }}>
-                        <View style={{
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-start',
-                            width: '65%'
-                        }}>
-                            <LogCardItem>
-                                <View style={viewIconStyle}>
-                                    <Icon name='ios-stopwatch-outline'/>
-                                </View>
-                                <Text style={textStyle}>Duration: {route.TOTAL_DURATION}</Text>
-                            </LogCardItem>
-                            <LogCardItem >
-                                <View style={viewIconStyle}>
-                                    <Icon name="ios-walk-outline"/>
-                                </View>
-                                <Text style={textStyle}>Route distance: {route.actualDistance.toFixed(2)} km</Text>
-                            </LogCardItem>
-                            <LogCardItem >
-                                <View style={viewIconStyle} />
-                                <Text style={textStyle}>Your distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
-                            </LogCardItem>
-                        </View>
-                        <View style= {favoriteRunView}>
-                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route)}}>>
-                                <Icon type="MaterialIcons" name="favorite" style={{ color:'black'}} />
-                                <Text style={favoriteStyle}>Already favorite</Text>
-                            </Button>
-                            <Button full 
-                            style={buttonStyle} 
-                            onPress={() => {this.runAgain(route)}}>
-                                <Text style={textButtonStyle}>Run again</Text>
-                            </Button>
-                          
-                        </View>
-                    </View>
-                </LogCard>        
-            </View>
-            );
-        
-        else
+     
         return (
             <View style={viewStyle} >
                 <LogCard>
