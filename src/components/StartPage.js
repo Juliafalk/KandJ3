@@ -91,7 +91,7 @@ class CreateAccountScreen extends React.Component {
             style={{ height: '100%'}}>
             <Wallpaper>
                 <CreateAccount />
-                </Wallpaper>
+            </Wallpaper>
             </View>
         );
     }
@@ -151,7 +151,7 @@ const CustomDrawerContentComponent = (props) => (
             <Body>
                 <Image
                 style={otherStyles.drawerImage}
-                source={require('./Runit_logo.png')}/>
+                />
             </Body>
         </Header>
         <Content>

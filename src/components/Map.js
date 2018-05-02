@@ -704,7 +704,7 @@ class TheSummary extends React.Component {
         </View>
         <View style={styles.divideSection}>
             < Image style={{ height: 90, width: 90}}  
-            source={require('./finisher.png')}/>
+            source={require('./images/finisher.png')}/>
         </View>
         <View style={styles.summaryCard}>
         <LogCard>
