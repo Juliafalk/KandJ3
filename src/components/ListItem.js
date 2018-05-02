@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import firebase from 'firebase'; 
 import { 
     Icon, 
     Button, 
@@ -10,7 +11,26 @@ import {
 } from './common';
 
 class ListItem extends Component {
+
+    runAgain (){
+        console.log('pressed runAgain')
+        console.log(theRoute)
+    }
+
+    addFavorite (){
+
+        const { currentUser } = firebase.auth();
+        console.log('add favorite?')
+        console.log(this.props.route.favorite)
+        this.props.route.favorite = true;
+        console.log(this.props.route.favorite)
+        /*firebase.database().ref(`/users/${currentUser.uid}/routes`)
+        .push({ this.props.route.favorite });*/
+    }
+        
     render() {
+
+        
         
         const { route } = this.props;
         const { 
@@ -20,6 +40,7 @@ class ListItem extends Component {
             textStyle,
             viewIconStyle,
             iconStyle,
+            favoriteRunView,
             buttonStyle,
             textButtonStyle,
             favoriteButtonStyle,
@@ -36,8 +57,7 @@ class ListItem extends Component {
                     <View style={lineStyle} />
                     <View style={{
                         flexDirection: 'row'
-
-                    }}>
+                        }}>
                         <View style={{
                             alignItems: 'flex-start',
                             justifyContent: 'flex-start',
@@ -60,18 +80,14 @@ class ListItem extends Component {
                                 <Text style={textStyle}>Your distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
                             </LogCardItem>
                         </View>
-                        <View style= {{
-                            width: '35%',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginTop: '2%',
-                            marginRight: '2%'
-                            }}>
-                            <Button transparent style={favoriteButtonStyle}>
+                        <View style= {favoriteRunView}>
+                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route)}}>>
                                 <Icon type="MaterialIcons" name="favorite-border" style={{ color:'black'}} />
                                 <Text style={favoriteStyle}>Add to favorite</Text>
                             </Button>
-                            <Button full style={buttonStyle}>
+                            <Button full 
+                            style={buttonStyle} 
+                            onPress={() => {this.runAgain(route)}}>
                                 <Text style={textButtonStyle}>Run again</Text>
                             </Button>
                         </View>
@@ -79,6 +95,7 @@ class ListItem extends Component {
                 </LogCard>        
             </View>
         )};
+       
 }
 
 const styles = {
@@ -103,6 +120,11 @@ const styles = {
         fontSize: 15,
         fontFamily: 'GillSans-Light',
         paddingLeft: 10
+    },
+    favoriteRunView: {
+        width: '35%',
+        marginTop: '2%',
+        marginRight: '2%'
     },
     buttonStyle: {
         marginTop: 10,

@@ -69,6 +69,7 @@ class Map extends Component {
       chosenStartpoint: '',
       distanceTravelled: 0,
       actualDistance: 0,
+      favorite: false,
       prevLatLng: {},
       wayPoints: [],
       wantedDistance: '',
@@ -234,10 +235,10 @@ class Map extends Component {
   //JG 18/4 will send information about the route to the database
   toDatabase() {
     var date= new Date().toDateString()
-    const { wayPoints, totalDuration, actualDistance } = this.state;
+    const { wayPoints, totalDuration, actualDistance, favorite } = this.state;
     const { currentUser } = firebase.auth();
     firebase.database().ref(`/users/${currentUser.uid}/routes`)
-        .push({ wayPoints, TOTAL_DURATION, DISTANCE_TRAVELLED, date, actualDistance });
+        .push({ wayPoints, TOTAL_DURATION, DISTANCE_TRAVELLED, date, actualDistance, favorite });
     return(
       this.setState({
           wayPoints: [],
