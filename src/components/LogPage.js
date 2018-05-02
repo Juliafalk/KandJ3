@@ -43,11 +43,11 @@ class LogPage extends React.Component {
         });
 
         this.dataSource = ds.cloneWithRows(routes)
-        console.log('dataSource' + this.dataSource)
+        
     }
 
     renderRow(route){
-        console.log('renderrow?')
+            console.log(route)
             return <ListItem route={route} />;
        
     }
@@ -97,8 +97,8 @@ const mapStateToProps = state => {
 const styles = {
     viewStyle: {
         backgroundColor: '#5c688c',
-        zIndex: -5,
-        paddingBottom: 80
+        height: '100%',
+       
         //Padding because of styling and bugs in scrollview 
     },
     headerStyle: {

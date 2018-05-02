@@ -24,7 +24,7 @@ import {
   LogCardItem,
   MyInput
 } from './common';
-//import SummaryPage from './SummaryPage';
+
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -33,7 +33,7 @@ const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.00922; //JL 13/4: 'the angle in which you're viewing', a universal value
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO*0.1;
 const DISTANCE_TRAVELLED = 0; //This is to calculate how long distance that has been travelled / JF (18/4)
-
+//const favorite = false;
 //JL 11/4: the points the route should go through (including start and end point)
 const waypoints = [];
 
@@ -554,6 +554,7 @@ class Map extends Component {
 
 //****STYLING*****//
 //Obs, styling for clock is in the bottom under const options / JF (18/4)
+//Obs2, styling for summarypages is under the class TheSummary
 const styles = {
   mapPageContainer: {
     height: '96%',
@@ -629,14 +630,116 @@ const styles = {
     marginRight: 5,
     marginLeft: 5
   },
+  chooseStartpointStyle: {
+    backgroundColor: 'white',
+    opacity: 0.8
+  },
+
+}
+//This is styling for the timer / JF (18/4)
+const options = {
+  container: {
+    padding: 5,
+    width: '100%'
+  },
+  text: {
+    fontSize: 25,
+    color: 'black',
+    marginLeft: 2,
+  }
+};
+ 
+/****************HERE STARTS A NEW CLASS FOR SUMMARYPAGE*****************/
+class TheSummary extends Map {
+
+
+  static navigationOptions = {
+      title: 'SummaryView'
+  };
+
+  addFavorite (){
+    const { currentUser } = firebase.auth();
+    
+    console.log(this.props)
+    console.log(currentUser)
+    //const UID = route.uid;
+    firebase.database().ref(`/users/${currentUser.uid}/routes/`)
+        .update({ favorite: true });
+  }
+
+  render() {
+
+    const {
+      divideSection,
+      summary,
+      summaryCard,
+      summaryLabel,
+      iconSummary,
+      summaryText,
+      favoriteButtonStyle,
+      favoriteStyle,
+    } = summaryStyle
+
+    const { params } = this.props.navigation.state;
+    const durationTime = params ? params.durationTime : null;
+    const totalDistance = params ? params.totalDistance : null;
+    const date= new Date().toDateString()
+
+
+    return (
+        <View style={summary} >
+        <View style={{ marginLeft: 15, marginTop: 10 }}>
+        <Icon name='close' 
+          onPress={() => {this.props.navigation.navigate('Home')}} 
+          style={{ fontSize: 50, color: 'red' }}
+        />
+        </View>
+        <View style={divideSection}>
+            < Image style={{ height: 90, width: 90}}  
+            source={require('./finisher.png')}/>
+        </View>
+        <View style={summaryCard}>
+        <LogCard>
+            <LogCardItem>
+              <Text style={summaryLabel} >
+              {date.toUpperCase()}</Text>
+            </LogCardItem>
+
+            <View style={{ backgroundColor: 'black', height: 0.5,  
+              width: '100%',marginBottom: 8,}} />
+
+            <LogCardItem>
+              <View style={iconSummary} >
+                <Icon  name='ios-stopwatch-outline'/>
+              </View>
+              <Text style={summaryText}>Duration: {durationTime}</Text>
+            </LogCardItem>
+            
+            <LogCardItem block >
+              <View style={iconSummary} >
+                <Icon  name="ios-walk-outline"/>
+              </View>
+              <Text style={summaryText} >Your distance: {totalDistance} km</Text>
+            </LogCardItem>
+          </LogCard>
+        </View>
+
+        <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite()}}>
+            <Icon type="MaterialIcons" name="favorite-border" style={{ color:'#fff', fontSize: 50}} />
+            <Text style={favoriteStyle}>Add to favorite</Text>
+        </Button>
+
+        </View>
+
+    );  
+  }
+};
+
+const summaryStyle = {
   divideSection: {
     //height: '30%',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  chooseStartpointStyle: {
-    backgroundColor: 'white',
-    opacity: 0.8
   },
   summary: {
     height: '100%',
@@ -665,74 +768,21 @@ const styles = {
     fontSize: 17,
     fontFamily: 'GillSans-Light',
     paddingLeft: 10
-  }
+  },
+  favoriteButtonStyle: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    height: '10%',
+
+  },
+  favoriteStyle: {
+    fontFamily: 'GillSans-Light',
+    fontSize: 20,
+    color: '#fff' 
+  },
 }
 
-//This is styling for the timer / JF (18/4)
-const options = {
-  container: {
-    padding: 5,
-    width: '100%'
-  },
-  text: {
-    fontSize: 25,
-    color: 'black',
-    marginLeft: 2,
-  }
-};
- 
-/****************HERE STARTS A NEW CLASS FOR SUMMARYPAGE*****************/
-class TheSummary extends React.Component {
-  static navigationOptions = {
-      title: 'SummaryView'
-  };
-  render() {
-    const { params } = this.props.navigation.state;
-    const durationTime = params ? params.durationTime : null;
-    const totalDistance = params ? params.totalDistance : null;
-    const date= new Date().toDateString()
-
-    return (
-        <View style={styles.summary} >
-        <View style={{ marginLeft: 15, marginTop: 10 }}>
-        <Icon name='close' 
-          onPress={() => {this.props.navigation.navigate('Home')}} 
-          style={{ fontSize: 50, color: 'red' }}
-        />
-        </View>
-        <View style={styles.divideSection}>
-            < Image style={{ height: 90, width: 90}}  
-            source={require('./finisher.png')}/>
-        </View>
-        <View style={styles.summaryCard}>
-        <LogCard>
-                    <LogCardItem>
-                        <Text style={styles.summaryLabel} >
-                        {date.toUpperCase()}</Text>
-                    </LogCardItem>
-                    <View style={{ backgroundColor: 'black', height: 0.5,  
-                    width: '100%',marginBottom: 8,}} />
-                    <LogCardItem>
-                    <View style={styles.iconSummary} >
-                        <Icon  name='ios-stopwatch-outline'/>
-                    </View>
-                        <Text style={styles.summaryText}>Duration: {durationTime}</Text>
-                    </LogCardItem>
-                    <LogCardItem block >
-                    <View style={styles.iconSummary} >
-                        <Icon  name="ios-walk-outline"/>
-                    </View>
-                        <Text style={styles.summaryText} >Your distance: {totalDistance} km</Text>
-                    </LogCardItem>
-                </LogCard>
-
-        </View>
-
-        </View>
-
-    );  
-  }
-};
 
 export default SwitchNavigator({
   Home: { screen: Map },
