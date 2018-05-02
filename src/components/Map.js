@@ -660,6 +660,7 @@ class TheSummary extends Map {
       title: 'SummaryView'
   };
 
+  //Does not work yet, therefore nothing will happen when pressing add to favorite / JF (2/5)
   addFavorite (){
     const { currentUser } = firebase.auth();
     
@@ -727,7 +728,7 @@ class TheSummary extends Map {
           </LogCard>
         </View>
 
-        <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite()}}>
+        <Button transparent style={favoriteButtonStyle} /*onPress={() => {this.addFavorite()}}*/>
             <Icon type="MaterialIcons" name="favorite-border" style={{ color:'#fff', fontSize: 50}} />
             <Text style={favoriteStyle}>Add to favorite</Text>
         </Button>
