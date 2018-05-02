@@ -49,7 +49,6 @@ class LogPage extends React.Component {
     renderRow(route){
         console.log('renderrow?')
             return <ListItem route={route} />;
-       
     }
 
     render() {
@@ -67,7 +66,7 @@ class LogPage extends React.Component {
                             this.props.navigation.navigate('DrawerOpen')}/>
                         </Left>
                         <Body>
-                            <Title style={headerTextStyle}>L O G</Title>
+                            <Title style={headerTextStyle}>Log</Title>
                         </Body>
                         <Right />
                     </Header>
