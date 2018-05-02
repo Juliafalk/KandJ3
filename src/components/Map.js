@@ -343,6 +343,7 @@ class Map extends Component {
             <View style={inputContainerStyle}>
               <TextInput
                 keyboardType='number-pad'
+                placeholder='..km'
                 style={textInputStyle}
                 maxLength={2}
                 value={wantedDistance}
@@ -354,7 +355,7 @@ class Map extends Component {
             </View>
             <Button
               info
-              full
+              
               style={createRouteButtonStyle}
               disabled ={createRoute}
               onPress={() => {this.routeGenerator(wantedDistance), 
@@ -601,9 +602,11 @@ const styles = {
     paddingBottom: 5,
     fontSize: 20,
     color: 'white',
+    backgroundColor: '#7785ad',
     textAlign: 'center',
     marginRight: 5,
     borderWidth: 1,
+    borderRadius: 5,
     borderColor: 'white'
   },
   actualDistanceStyle: {
@@ -696,7 +699,7 @@ class TheSummary extends Map {
         </View>
         <View style={divideSection}>
             < Image style={{ height: 90, width: 90}}  
-            source={require('./finisher.png')}/>
+            source={require('./images/finisher.png')}/>
         </View>
         <View style={summaryCard}>
         <LogCard>
