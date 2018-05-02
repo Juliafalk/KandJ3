@@ -36,15 +36,15 @@ const styles = {
     },
     iconStyle: {
         fontSize: 22,
+        fontFamily: 'GillSans-Light',
         width: 30,
         paddingRight: 8
     },
     inputField: {
-        fontSize: 18,
+        fontSize: 15,
         paddingLeft: 10,
         borderLeftWidth: 1,
         borderLeftColor: '#5c688c',
-        lineHeight: 24, //how much space is inbetween each line of text
         flex: 1
     }
 };

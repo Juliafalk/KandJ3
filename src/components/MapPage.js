@@ -23,7 +23,7 @@ class MapPage extends React.Component {
     
     render() {
         return (
-        <View>
+        <View style={{ height: '100%' }}>
             <Header style={{ height: 60}} style={{ backgroundColor: '#7785ad'}}>
                 <Left>
                     <Icon name='ios-menu' style={{color:'white'}}

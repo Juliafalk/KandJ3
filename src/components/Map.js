@@ -19,6 +19,11 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import Geocoder from 'react-native-geocoding';
 import firebase from 'firebase';
 import haversine from 'haversine';
+import {
+  LogCard,
+  LogCardItem,
+  MyInput
+} from './common';
 //import SummaryPage from './SummaryPage';
 
 const { width, height } = Dimensions.get('window');
@@ -329,11 +334,11 @@ class Map extends Component {
 
     if (!this.state.startRunning){
       return(
-        <View style={{backgroundColor: '#5c688c'}}>
+        <View>
           <View style={createRouteContainerStyle}>
             <View style={actualDistanceStyle}>
-              <Text style={{ fontSize: 12}}>This Route:</Text>
-              <Text>{actualDistance.toFixed(2)} km</Text>
+              <Text style={{ fontSize: 12, color: 'white'}}>This Route:</Text>
+              <Text style={{ color: 'white'}}>{actualDistance.toFixed(2)} km</Text>
             </View>
             <View style={inputContainerStyle}>
               <TextInput
@@ -346,10 +351,10 @@ class Map extends Component {
                   wantedDistance: userInput}),
                   this.changeDistance(userInput)}}
               />
-              <Text>km</Text>
             </View>
             <Button
               info
+              full
               style={createRouteButtonStyle}
               disabled ={createRoute}
               onPress={() => {this.routeGenerator(wantedDistance), 
@@ -358,7 +363,7 @@ class Map extends Component {
             </Button>
           </View>
           <Button
-          block
+          full
           success
           disabled={startButton}
           style={startButtonStyle}
@@ -411,7 +416,6 @@ class Map extends Component {
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                     {text: 'OK', onPress: () => {this.SummaryPage(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase()}
-            
                     },
                   ],
                   { cancelable: false }
@@ -449,12 +453,8 @@ class Map extends Component {
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
     const {
-      createRouteContainerStyle,
-      createRouteButtonStyle,
       inputContainerStyle,
       distanceContainer,
-      textInputStyle,
-      actualDistanceStyle,
       startButtonStyle,
       distanceTravelledStyle,
       timeContainer,
@@ -474,7 +474,7 @@ class Map extends Component {
     } = this.state;
 
     return (
-      <View>
+      <View style={styles.mapPageContainer}>
         <MapView
           provider={"google"}
           showsUserLocation={true}
@@ -487,8 +487,7 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
          >
-          <View
-          style={{ height: '37%' }}>
+          <View>
             {this.chooseStartpoint()}
           </View>
           <MapView.Marker 
@@ -539,7 +538,7 @@ class Map extends Component {
           )}
 
         </MapView>
-        {this.startRunning()}
+          {this.startRunning()}
       </View>
     );
   }
@@ -556,15 +555,18 @@ class Map extends Component {
 //****STYLING*****//
 //Obs, styling for clock is in the bottom under const options / JF (18/4)
 const styles = {
+  mapPageContainer: {
+    height: '96%',
+    backgroundColor: '#5c688c'
+  },
   mapStyle: {
-    height: '67%'
+    height: '80%'
   },
   createRouteContainerStyle: {
-    height: '22%',
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',  
+    //alignItems: 'center',
   },
   distanceContainer: {
     width: '35%',
@@ -592,19 +594,22 @@ const styles = {
     alignItems: 'center'
   },
   textInputStyle: {
-    width: '40%',
+    width: '60%',
+    height: 40,
     paddingTop: 5,
     paddingBottom: 5,
+    fontSize: 20,
+    color: 'white',
     textAlign: 'center',
     marginRight: 5,
     borderWidth: 1,
-    borderRadius: 5
+    borderColor: 'white'
   },
   actualDistanceStyle: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 15
+    marginRight: 15,
   },
   createRouteButtonStyle: {
     width: '30%',
@@ -612,9 +617,7 @@ const styles = {
     alignItems: 'center',
   },
   startButtonStyle: {
-    margin: 10,
-    //marginLeft: -1,
-    //marginRight: -1
+    marginTop: 10
   },
   pauseDoneContainer: {
     flexDirection: 'row',
@@ -627,17 +630,45 @@ const styles = {
     marginLeft: 5
   },
   divideSection: {
-    height: '30%',
+    //height: '30%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   chooseStartpointStyle: {
     backgroundColor: 'white',
     opacity: 0.8
+  },
+  summary: {
+    height: '100%',
+    backgroundColor: '#5c688c'
+  },
+  summaryCard: {
+    alignItems: 'center',
+    backgroundColor: '#5c688c',
+    zIndex: -1
+  },
+  summaryLabel: {
+    fontSize: 17, 
+    paddingLeft: 1, 
+    flex: 1, 
+    fontFamily: 'GillSans-Light',
+    color: 'black'
+  },
+  iconSummary: { 
+    width: '7%',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  summaryText:{
+    marginTop: 5,
+    fontSize: 17,
+    fontFamily: 'GillSans-Light',
+    paddingLeft: 10
   }
 }
 
-//This is styling for the clock / JF (18/4)
+//This is styling for the timer / JF (18/4)
 const options = {
   container: {
     padding: 5,
@@ -649,7 +680,7 @@ const options = {
     marginLeft: 2,
   }
 };
-
+ 
 /****************HERE STARTS A NEW CLASS FOR SUMMARYPAGE*****************/
 class TheSummary extends React.Component {
   static navigationOptions = {
@@ -662,30 +693,38 @@ class TheSummary extends React.Component {
     const date= new Date().toDateString()
 
     return (
-        <View style={{  height: '100%', backgroundColor: '#5c688c' }}>
+        <View style={styles.summary} >
         <View style={{ marginLeft: 15, marginTop: 10 }}>
         <Icon name='close' 
-        onPress={() => {this.props.navigation.navigate('Home')}} 
-        style={{ fontSize: 50, color: 'red' }}
+          onPress={() => {this.props.navigation.navigate('Home')}} 
+          style={{ fontSize: 50, color: 'red' }}
         />
         </View>
         <View style={styles.divideSection}>
             < Image style={{ height: 90, width: 90}}  
             source={require('./finisher.png')}/>
         </View>
-        <View style={styles.divideSection}>
-
-          <CardItem>
-              <Text style={{ fontWeight: 'bold' }}>{date}</Text>
-          </CardItem>
-          <CardItem>
-              <Icon name='ios-stopwatch-outline'/>
-              <Text>{durationTime}</Text>
-          </CardItem>
-          <CardItem>
-              <Icon name= "ios-walk-outline"/>
-              <Text>{totalDistance} km</Text>
-          </CardItem> 
+        <View style={styles.summaryCard}>
+        <LogCard>
+                    <LogCardItem>
+                        <Text style={styles.summaryLabel} >
+                        {date.toUpperCase()}</Text>
+                    </LogCardItem>
+                    <View style={{ backgroundColor: 'black', height: 0.5,  
+                    width: '100%',marginBottom: 8,}} />
+                    <LogCardItem>
+                    <View style={styles.iconSummary} >
+                        <Icon  name='ios-stopwatch-outline'/>
+                    </View>
+                        <Text style={styles.summaryText}>Duration: {durationTime}</Text>
+                    </LogCardItem>
+                    <LogCardItem block >
+                    <View style={styles.iconSummary} >
+                        <Icon  name="ios-walk-outline"/>
+                    </View>
+                        <Text style={styles.summaryText} >Your distance: {totalDistance} km</Text>
+                    </LogCardItem>
+                </LogCard>
 
         </View>
 
