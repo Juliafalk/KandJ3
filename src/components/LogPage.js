@@ -38,6 +38,8 @@ class LogPage extends React.Component {
     }
 
     createDataSource({ routes }) {
+        routes.reverse();  
+        //console.log(routes)  
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
@@ -47,7 +49,7 @@ class LogPage extends React.Component {
     }
 
     renderRow(route){
-            console.log(route)
+            //console.log(route)
             return <ListItem route={route} />;
        
     }
@@ -77,12 +79,6 @@ class LogPage extends React.Component {
                     enableEmptySections
                     dataSource={this.dataSource}
                     renderRow={this.renderRow}
-                    /*style={{
-                        //flex: 1,
-                        transform: [
-                          { scaleY: -1},
-                        ]
-                      }}*/
                     />
                     </View>
                     </ScrollView>
