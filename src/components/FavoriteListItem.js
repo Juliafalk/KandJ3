@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import { 
-    Text, 
-    View, 
-    StyleSheet,
-    Alert,
-    TouchableHighlight 
-} from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import firebase from 'firebase'; 
 import { 
     Icon, 
@@ -16,65 +10,25 @@ import {
     LogCardItem
 } from './common';
 
-class ListItem extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = { 
-            onClicked: false
-        }
-        this.handlerButtonOnClick = this.handlerButtonOnClick.bind(this)
-    }
-
-    handlerButtonOnClick() {
-        this.setState({
-            onClicked: true
-        });
-    }
-
-   
+class FavoriteListItem extends Component {
 
     runAgain (){
         console.log('pressed runAgain')
         console.log(theRoute)
     }
 
-    addFavorite (route){
+    removeFavorite (route){
         const { currentUser } = firebase.auth();
         const UID = route.uid;
         firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
-           .update({ favorite: true });
+           .update({ favorite: false });
     }
-
-    deleteRoute(route){
-        const { currentUser } = firebase.auth();
-        const UID = route.uid;
-        firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
-           .remove();
-    }
-        
-    render() {    
-        
-        var favoriteText;
-        var iconName;
+ 
+    render() {        
         const { route } = this.props;
-         
-        if(this.state.onClicked || route.favorite == true ) {
-            favoriteText = "Already favorite",
-            iconName = "favorite"
-
-        }
-        else{
-            favoriteText = "Add to favorite",
-            iconName = "favorite-border"
-        }
-
-        
         const { 
             viewStyle,
             labelStyle,
-            deleteRouteStyle,
-            deleteText,
             lineStyle, 
             textStyle,
             viewIconStyle,
@@ -83,27 +37,14 @@ class ListItem extends Component {
             buttonStyle,
             textButtonStyle,
             favoriteButtonStyle,
-            favoriteStyle,
+            favoriteStyle 
         } = styles;
         
-     
         return (
-            <View style={viewStyle} >
+            <View style={viewStyle}>
                 <LogCard>
                     <LogCardItem>
                         <Text style={labelStyle}>{route.date.toUpperCase()}</Text>
-                        <Icon type="FontAwesome" name="remove" onPress={() => 
-                               Alert.alert(
-                                'Delete route?',
-                                'The route is not possible restore!', 
-                                [
-                                  {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                  {text: 'Yes', onPress: () => {this.deleteRoute(route)}
-                                  },
-                                ],
-                                { cancelable: false }
-                              )}>
-                        </Icon>
                     </LogCardItem>
                     <View style={lineStyle} />
                     <View style={{
@@ -132,10 +73,9 @@ class ListItem extends Component {
                             </LogCardItem>
                         </View>
                         <View style= {favoriteRunView}>
-                        
-                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route), this.handlerButtonOnClick()}}>>
-                                <Icon type="MaterialIcons" name={iconName} style={{ color:'black'}} />
-                                <Text style={favoriteStyle}>{favoriteText}</Text>
+                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.removeFavorite(route)}}>>
+                                <Icon type="MaterialIcons" name="delete" style={{ color:'black'}} />
+                                <Text style={favoriteStyle}>Remove favorite</Text>
                             </Button>
                             <Button full 
                             style={buttonStyle} 
@@ -161,16 +101,6 @@ const styles = {
         flex: 1, 
         fontFamily: 'GillSans-Light',
         color: 'black',
-    },
-    deleteRouteStyle: {
-        height: 25,
-        width: 60,
-        backgroundColor: '#666666'
-    },
-    deleteText: {
-        fontSize: 15,
-        fontFamily: 'GillSans-Light',
-        color: '#fff'
     },
     lineStyle: {
         backgroundColor: 'black',
@@ -208,7 +138,7 @@ const styles = {
     },
     favoriteStyle: {
         fontFamily: 'GillSans-Light',
-        fontSize: 10, 
+        fontSize: 12, 
     },
     viewIconStyle: { 
         width: '12%',
@@ -216,19 +146,7 @@ const styles = {
         flexDirection: 'row',
         alignItems: 'center',
     },
-    button: {
-        backgroundColor: 'red'
-    },
-    buttonPress: {
-        backgroundColor: 'green'
-    },
-    welcomePress: {
-        color: 'blue',
-    },
-    welcome: {
-        color: 'pink'
-    }
 };
 
 
-export default ListItem;
+export default FavoriteListItem;
