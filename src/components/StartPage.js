@@ -17,7 +17,6 @@ import LogPage from './LogPage';
 import FavoritePage from './FavoritePage';
 import SettingsScreen from './SettingsScreen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
 import Wallpaper from './Wallpaper';
 
 //This is the first page / JF (11/4)

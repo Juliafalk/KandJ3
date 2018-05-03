@@ -67,7 +67,7 @@ class LogPage extends React.Component {
                             this.props.navigation.navigate('DrawerOpen')}/>
                         </Left>
                         <Body>
-                            <Title style={headerTextStyle}>L O G</Title>
+                            <Title style={{color:'white'}} /*style={headerTextStyle}*/>Log</Title>
                         </Body>
                         <Right />
                     </Header>
@@ -75,6 +75,12 @@ class LogPage extends React.Component {
                     enableEmptySections
                     dataSource={this.dataSource}
                     renderRow={this.renderRow}
+                    /*style={{
+                        //flex: 1,
+                        transform: [
+                          { scaleY: -1},
+                        ]
+                      }}*/
                     />
                      <CardItem>
                     </CardItem>
