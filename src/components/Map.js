@@ -85,7 +85,8 @@ class Map extends Component {
       stopwatchReset: false,
       totalDuration: 0,
       date: 0, 
-      pauseRunning: false
+      pauseRunning: false,
+      createdRoute: false
     }
 
     this.mapView = null;  
@@ -329,7 +330,8 @@ class Map extends Component {
       stopwatchStart,
       stopwatchReset,
       pauseRunning,
-      totalDuration
+      totalDuration,
+      createdRoute
     } = this.state;
 
     if (!this.state.startRunning){
@@ -355,12 +357,11 @@ class Map extends Component {
             </View>
             <Button
               info
-              
               style={createRouteButtonStyle}
               disabled ={createRoute}
               onPress={() => {this.routeGenerator(wantedDistance), 
-              this.setState({ startButton: false }), Keyboard.dismiss}}>
-                <Text style={{ fontSize: 14 }}>Create Route</Text>
+              this.setState({ startButton: false, createdRoute: true }), Keyboard.dismiss}}>
+                <Text style={{ fontSize: 12, textAlign: 'center' }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
           <Button

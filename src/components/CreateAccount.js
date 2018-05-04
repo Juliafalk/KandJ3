@@ -71,7 +71,7 @@ class CreateAccount extends React.Component {
     }
 
     render () {
-        return (
+        return ( 
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 contentContainerStyle={styles.container}
