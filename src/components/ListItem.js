@@ -7,14 +7,11 @@ import {
     TouchableHighlight 
 } from 'react-native';
 import firebase from 'firebase'; 
-import { 
-    Icon, 
-    Button, 
-} from 'native-base';
-import {
-    LogCard,
-    LogCardItem
-} from './common';
+import { Icon, Button, Container } from 'native-base';
+import { SwitchNavigator } from 'react-navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { LogCard, LogCardItem } from './common';
+import TheMap from './StartPage'; 
 
 class ListItem extends Component {
 
@@ -29,20 +26,21 @@ class ListItem extends Component {
     handlerButtonOnClick() {
         this.setState({
             onClicked: true
-        });
+        }); 
+    }
+    
+    //JL 2/5: vill här ändra sida till kartan och skicka med waypoints
+    runAgain(route) {
+        console.log(route.wayPoints)
+        //this.props.navigation.navigate('Map');
+        //this.SeeMap;
     }
 
-   
-    
-
-    
-
-    runAgain (){
-        console.log('pressed runAgain')
-        console.log(theRoute)
+    SeeMap = () => {
+        this.props.navigation.navigate('Map');
     }
 
-    addFavorite (route){
+    addFavorite(route) {
         const { currentUser } = firebase.auth();
         const UID = route.uid;
         firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
@@ -57,17 +55,15 @@ class ListItem extends Component {
     }
         
     render() {    
-        
         var favText;
         var iconName;
          
         if(this.state.onClicked) {
-            favText = "Already favorite",
+            favText = "Added!",
             iconName = "favorite"
-
         }
         else{
-            favText = "Add to favorite",
+            favText = "Add to favorites!",
             iconName = "favorite-border"
         }
 
@@ -92,7 +88,6 @@ class ListItem extends Component {
             welcome 
         } = styles;
         
-     
         return (
             <View style={viewStyle} >
                 <LogCard>
@@ -101,7 +96,7 @@ class ListItem extends Component {
                         <Icon type="FontAwesome" name="remove" onPress={() => 
                                Alert.alert(
                                 'Delete route?',
-                                'The route is not possible restore!', 
+                                'It cannot be restored later!', 
                                 [
                                   {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                                   {text: 'Yes', onPress: () => {this.deleteRoute(route)}
@@ -119,7 +114,7 @@ class ListItem extends Component {
                             alignItems: 'flex-start',
                             justifyContent: 'flex-start',
                             width: '65%'
-                        }}>
+                            }}>
                             <LogCardItem>
                                 <View style={viewIconStyle}>
                                     <Icon name='ios-stopwatch-outline'/>
@@ -139,7 +134,7 @@ class ListItem extends Component {
                         </View>
                         <View style= {favoriteRunView}>
                         
-                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route), this.handlerButtonOnClick()}}>>
+                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route), this.handlerButtonOnClick()}}>
                                 <Icon type="MaterialIcons" name={iconName} style={{ color:'black'}} />
                                 <Text style={favoriteStyle}>{favText}</Text>
                             </Button>
@@ -153,8 +148,8 @@ class ListItem extends Component {
                     </View>
                 </LogCard>        
             </View>
-        )};
-       
+        )
+    };
 }
 
 const styles = {
@@ -236,5 +231,11 @@ const styles = {
     }
 };
 
+/*
+export default SwitchNavigator({
+    ListItem: { screen: ListItem },
+    Map: { screen: ShowMap }
+});
+*/
 
 export default ListItem;

@@ -148,5 +148,4 @@ const styles = {
     },
 };
 
-
 export default FavoriteListItem;

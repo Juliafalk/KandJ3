@@ -7,17 +7,16 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { DrawerNavigator, DrawerItems, SwitchNavigator } from 'react-navigation';
 import { Container, Content, Header, Body, Button, Icon, Footer } from 'native-base';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MyCard, MyCardSection, MyButton } from './common';
 //JL: should add an index file to reduce imports below
 import MapPage from './MapPage'; 
-//import MyApp from './MyApp';
 import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
 import LogPage from './LogPage';
 import FavoritePage from './FavoritePage';
 import SettingsScreen from './SettingsScreen';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import ListItem from './ListItem';
 import Wallpaper from './Wallpaper';
 
 //This is the first page / JF (11/4)
@@ -36,7 +35,7 @@ class StartPage extends React.Component {
                         </MyCardSection>
                             
                         <LoginPage />
-                            
+                             
                         <MyCardSection>
                             <View>
                                 <Button 

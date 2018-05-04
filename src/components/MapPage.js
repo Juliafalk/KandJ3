@@ -16,6 +16,7 @@ class MapPage extends React.Component {
             <Icon name='ios-map-outline' style={{ color: 'white'}} />
         )
     }
+
     //Button to sign out. 
     onButtonPress() {
         firebase.auth().signOut()
@@ -44,15 +45,3 @@ class MapPage extends React.Component {
 }
 
 export default MapPage;
-
-
-//this log out button should be on the side menu
-/*
-
-                <View style={{ height: '7%'}}>
-                <MyButton onPress={this.onButtonPress.bind(this)}>
-                    <Text>Log out</Text>
-                </MyButton>
-            </View>
-
-*/

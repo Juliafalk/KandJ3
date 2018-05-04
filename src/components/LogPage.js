@@ -8,7 +8,8 @@ import {
     Body, 
     Title, 
     Right,
-    CardItem 
+    CardItem,
+    Button 
 } from 'native-base';
 import Moment from 'react-moment';
 import firebase from 'firebase';
@@ -43,12 +44,12 @@ class LogPage extends React.Component {
         });
 
         this.dataSource = ds.cloneWithRows(routes)
-        
     }
 
     renderRow(route){
-            console.log(route)
-            return <ListItem route={route} />;
+        return (
+            <ListItem route={route} />
+        );
     }
 
     render() {
@@ -77,6 +78,11 @@ class LogPage extends React.Component {
                         dataSource={this.dataSource}
                         renderRow={this.renderRow}
                         />
+                        <Button
+                            onPress={() =>
+                                this.props.navigation.navigate('Map')}>
+                            <Text>To Map</Text>
+                        </Button>
                     </View>
                 </ScrollView>
             </View>

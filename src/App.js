@@ -62,16 +62,15 @@ class App extends React.Component {
         switch(this.state.loggedIn) {
             case true:
                 return(
-                <KeyboardAwareScrollView
-                resetScrollToCoords={{ x: 0, y: 0 }}
-                contentContainerStyle={styles.container}
-                scrollEnabled={false}
-                >
-                <Container>
-                <MyApp /> 
-                
-                 </Container>
-                </KeyboardAwareScrollView>);
+                    <KeyboardAwareScrollView
+                        resetScrollToCoords={{ x: 0, y: 0 }}
+                        contentContainerStyle={styles.container}
+                        scrollEnabled={false}>
+                        <Container>
+                            <MyApp /> 
+                        </Container>
+                    </KeyboardAwareScrollView>
+                );
             case false:
                 return <StartPage />;
             default:
@@ -80,14 +79,12 @@ class App extends React.Component {
     }
 
     render()  {
-
-        
         return(
             <Provider store={ store }>
-            <Container>
-           {this.renderContent()};    
-           </Container>
-           </Provider>
+                <Container>
+                    {this.renderContent()};    
+                </Container>
+            </Provider>
         );
     }
 }
@@ -143,14 +140,12 @@ const MyApp = DrawerNavigator({
     drawerOpenRoute: 'DrawerOpen',
     drawerCloseRoute: 'DrawerClose',
     drawerToggleRoute: 'DrawerToggle' 
-    
 })
 
 const styles = {
 
 };
 export default App;
-
 
 otherStyles = StyleSheet.create({
     container: {

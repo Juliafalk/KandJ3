@@ -488,7 +488,8 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
          >
-          <View>
+          <View
+            style={{ height: '36%'}}>
             {this.chooseStartpoint()}
           </View>
           <MapView.Marker 
@@ -655,7 +656,6 @@ const options = {
 /****************HERE STARTS A NEW CLASS FOR SUMMARYPAGE*****************/
 class TheSummary extends Map {
 
-
   static navigationOptions = {
       title: 'SummaryView'
   };
@@ -730,7 +730,7 @@ class TheSummary extends Map {
 
         <Button transparent style={favoriteButtonStyle} /*onPress={() => {this.addFavorite()}}*/>
             <Icon type="MaterialIcons" name="favorite-border" style={{ color:'#fff', fontSize: 50}} />
-            <Text style={favoriteStyle}>Add to favorite</Text>
+            <Text style={favoriteStyle}>Add to favorites!</Text>
         </Button>
 
         </View>
@@ -786,7 +786,6 @@ const summaryStyle = {
     color: '#fff' 
   },
 }
-
 
 export default SwitchNavigator({
   Home: { screen: Map },
