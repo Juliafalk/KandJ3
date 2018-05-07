@@ -144,7 +144,7 @@ const styles = {
 };
 
 //layout on sidemenu/ JG 13/4 
-const CustomDrawerContentComponent = (props) => (
+/*const CustomDrawerContentComponent = (props) => (
     <Container>
         <Header style={{ height: 200, backgroundColor: 'white' }}>
             <Body>
@@ -161,7 +161,7 @@ const CustomDrawerContentComponent = (props) => (
 
 /*Sidemenu with directions to which page if clicking on an option
 InitialRouteName is which page to start on when calling MyApp/JG 13/4 */
-const MyApp = DrawerNavigator({
+/*const MyApp = DrawerNavigator({
 
     Map: {
         screen: MapPage
@@ -182,7 +182,7 @@ const MyApp = DrawerNavigator({
     drawerCloseRoute: 'DrawerClose',
     drawerToggleRoute: 'DrawerToggle' 
     
-});
+});*/
 
 //Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)
 export default SwitchNavigator({
@@ -197,11 +197,6 @@ otherStyles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    drawerImage: {
-        height: 150,
-        width: 150,
-        borderRadius: 75
     }
 })
 

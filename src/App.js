@@ -157,11 +157,5 @@ otherStyles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-    },
-
-    drawerImage: {
-        height: 150,
-        width: 150,
-        borderRadius: 75
     }
 })

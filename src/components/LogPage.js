@@ -30,15 +30,15 @@ class LogPage extends React.Component {
     componentWillMount() {
         this.props.routesFetch();
         this.createDataSource(this.props);
+        console.log('körs')
     }
 
     componentWillReceiveProps(nextProps){
         this.createDataSource(this.props);
+        
     }
 
     createDataSource({ routes }) {
-            routes.reverse();  
-            //console.log(routes)  
             const ds = new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2
             });
@@ -48,7 +48,6 @@ class LogPage extends React.Component {
     }
 
     renderRow(route){
-            console.log(route)
             return <ListItem route={route} />;
     }
 

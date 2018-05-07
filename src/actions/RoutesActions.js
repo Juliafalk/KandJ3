@@ -10,7 +10,10 @@ export const routesFetch = () => {
         firebase.database().ref(`/users/${currentUser.uid}/routes`)
             .on('value', snapshot => {
                 snapshot.forEach((child) => {
-                dispatch({ type: ROUTES_FETCH_SUCCESS, payload: snapshot.val() });  
+                dispatch({ 
+                    type: ROUTES_FETCH_SUCCESS, 
+                    payload: snapshot.val() 
+                });  
             });
         })
             
