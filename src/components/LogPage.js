@@ -50,7 +50,6 @@ class LogPage extends React.Component {
     renderRow(route){
             console.log(route)
             return <ListItem route={route} />;
-       
     }
 
     render() {
@@ -61,10 +60,10 @@ class LogPage extends React.Component {
            viewStyle
         } = styles;
         return (
-                <View style={viewStyle}>
-                    <Header style={headerStyle}>
-                        <Left>
-                            <Icon name="ios-menu" style={iconStyle} onPress={() =>
+            <View style={viewStyle}>
+                <Header style={headerStyle}>
+                    <Left>
+                        <Icon name="ios-menu" style={iconStyle} onPress={() =>
                             this.props.navigation.navigate('DrawerOpen')}/>
                         </Left>
                         <Body>
@@ -74,15 +73,14 @@ class LogPage extends React.Component {
                     </Header>
                     <ScrollView>
                     <View>
-                    <ListView
-                    enableEmptySections
-                    dataSource={this.dataSource}
-                    renderRow={this.renderRow}
-                    />
+                        <ListView
+                        enableEmptySections
+                        dataSource={this.dataSource}
+                        renderRow={this.renderRow}
+                        />
                     </View>
-                    </ScrollView>
-                </View>
-             
+                </ScrollView>
+            </View>
         )
     }
 }
@@ -113,13 +111,7 @@ const styles = {
     iconStyle: {
         color: 'white'
     }, 
- 
 }
-
-
 
 export default connect(mapStateToProps, { routesFetch })(LogPage); 
     
-
-
-
