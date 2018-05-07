@@ -60,7 +60,7 @@ class ListItem extends Component {
         const { route } = this.props;
          
         if(this.state.onClicked || route.favorite == true ) {
-            favoriteText = "Already favorite",
+            favoriteText = "Favorite",
             iconName = "favorite"
 
         }

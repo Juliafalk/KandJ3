@@ -20,7 +20,6 @@ import { connect } from 'react-redux';
 import { routesFetch } from '../actions/RoutesActions';
 import ListItem from './ListItem';
 
-
 class LogPage extends React.Component { 
     static navigationOptions = {
         drawerIcon: (
@@ -38,18 +37,18 @@ class LogPage extends React.Component {
     }
 
     createDataSource({ routes }) {
-        routes.reverse();  
-        //console.log(routes)  
-        const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2
-        });
+            routes.reverse();  
+            //console.log(routes)  
+            const ds = new ListView.DataSource({
+                rowHasChanged: (r1, r2) => r1 !== r2
+            });
 
-        this.dataSource = ds.cloneWithRows(routes)
-        
+            this.dataSource = ds.cloneWithRows(routes)
+         
     }
 
     renderRow(route){
-            //console.log(route)
+            console.log(route)
             return <ListItem route={route} />;
        
     }

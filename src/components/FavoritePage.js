@@ -38,10 +38,11 @@ class FavoritePage extends React.Component {
     }
 
     createDataSource({ routes }) {
-        routes.reverse();
+        
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
+        //console.log(ds)
 
         this.dataSource = ds.cloneWithRows(routes)
         
