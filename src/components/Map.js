@@ -493,14 +493,12 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
          >
-<<<<<<< HEAD
+
           <View
             style={{ height: '27%' }}>
-=======
-          <View style={{height: '36%'}}>
->>>>>>> eb126480f0a6c762d5eb64f10cd3a41b10ac24ec
             {this.chooseStartpoint()}
           </View>
+          
           <MapView.Marker 
             coordinate={this.state.initialPositionMarker} 
           />
