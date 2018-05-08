@@ -12,6 +12,9 @@ import { SwitchNavigator } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LogCard, LogCardItem } from './common';
 import TheMap from './StartPage'; 
+import reducers from '../reducers';
+import { connect } from 'react-redux';
+import { runAgain } from '../actions';
 
 class ListItem extends Component {
 
@@ -32,6 +35,7 @@ class ListItem extends Component {
     //JL 2/5: vill här ändra sida till kartan och skicka med waypoints
     runAgain(route) {
         console.log(route.wayPoints)
+        this.props.runAgain(route.wayPoints);
         //this.props.navigation.navigate('Map');
         //this.SeeMap;
     }
@@ -68,6 +72,7 @@ class ListItem extends Component {
         }
 
         const { route } = this.props;
+
         const { 
             viewStyle,
             labelStyle,
@@ -231,11 +236,10 @@ const styles = {
     }
 };
 
-/*
-export default SwitchNavigator({
-    ListItem: { screen: ListItem },
-    Map: { screen: ShowMap }
-});
-*/
+const mapStateToProps = state => {
+    return {
+        wayPoints: state.routes.wayPoints
+    };
+};
 
-export default ListItem;
+export default connect(mapStateToProps, { runAgain })(ListItem); 

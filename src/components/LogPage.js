@@ -14,11 +14,9 @@ import {
 import Moment from 'react-moment';
 import firebase from 'firebase';
 import { MyInputCreateAccount, MyButton } from './common';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import reducers from '../reducers';
 import { connect } from 'react-redux';
-import { routesFetch } from '../actions/RoutesActions';
+import { routesFetch } from '../actions';
 import ListItem from './ListItem';
 
 
@@ -92,7 +90,10 @@ class LogPage extends React.Component {
 
 const mapStateToProps = state => {
     const routes = _.map(state.routes, (val, uid) => {
-        return {...val, uid};
+        return {
+            db: {...val, uid},
+            wayPoints: ''
+        };
     });
 
     return { routes };
