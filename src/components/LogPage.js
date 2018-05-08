@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, ListView, ScrollView, Text} from 'react-native';
+import { View, ListView, ScrollView, Text, ActivityIndicator} from 'react-native';
 import { 
     Icon, 
     Header,  
@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import Moment from 'react-moment';
 import firebase from 'firebase';
-import { MyInputCreateAccount, MyButton } from './common';
+import { MyInputCreateAccount, MyButton, MySpinner } from './common';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from '../reducers';
@@ -26,11 +26,12 @@ class LogPage extends React.Component {
             <Icon name='ios-list-box-outline' style={{ color: 'white'}}/>
         )
     }
+    state = { loading: true}
 
     componentWillMount() {
+        this.setState= ({loading: false})
         this.props.routesFetch();
         this.createDataSource(this.props);
-        console.log('körs')
     }
 
     componentWillReceiveProps(nextProps){
@@ -39,6 +40,8 @@ class LogPage extends React.Component {
     }
 
     createDataSource({ routes }) {
+            //this.setState= ({loading: false})
+            //console.log(this.state.loading)
             const ds = new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2
             });
@@ -49,6 +52,12 @@ class LogPage extends React.Component {
 
     renderRow(route){
             return <ListItem route={route} />;
+    }
+
+    renderSpinner() {
+        if (this.state.loading) {
+            return <MySpinner size="large" />
+        }
     }
 
     render() {
@@ -72,6 +81,9 @@ class LogPage extends React.Component {
                     </Header>
                     <ScrollView>
                     <View>
+                        <View>
+                        {this.renderSpinner()}
+                        </View>
                         <ListView
                         enableEmptySections
                         dataSource={this.dataSource}

@@ -6,7 +6,6 @@ export const routesFetch = () => {
     const {currentUser} = firebase.auth();
 
     return(dispatch) => {
-        console.log('hämtar från db')
         firebase.database().ref(`/users/${currentUser.uid}/routes`)
             .on('value', snapshot => {
                 snapshot.forEach((child) => {

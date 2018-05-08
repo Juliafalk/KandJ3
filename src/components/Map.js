@@ -43,6 +43,7 @@ const TOTAL_DURATION = 0;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 Geocoder.init(GOOGLE_MAPS_APIKEY);
 
+
 class Map extends Component {
 
   constructor(props) {
@@ -157,7 +158,6 @@ class Map extends Component {
   }
 
   componentWillUnmount() {
-    //console.log(this.wacthID)
     navigator.geolocation.clearWatch(this.watchID)
   }
 
@@ -283,8 +283,17 @@ class Map extends Component {
                   initialPositionMarker: {
                     latitude: location.lat,
                     longitude: location.lng
+                  },
+                  currentPosition: {
+                    latitude: location.lat,
+                    longitude: location.lng,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUDE_DELTA
                   }
+                
+                  
                 });
+                
               })
               .catch(error => console.warn(error))
           }}
@@ -293,6 +302,11 @@ class Map extends Component {
             key: GOOGLE_MAPS_APIKEY,
             language: 'en', // language of the results
           }}
+          /*nearbyPlacesAPI='GooglePlacesSearch'
+          GooglePlacesSearchQuery={{
+            rankby: 'distance',
+            types: 'street_address'
+          }}*/
           renderLeftButton={() => <Icon type='EvilIcons' name='location' 
             style={{marginTop: 8, marginLeft: 3, color: 'white'}}/>}
         />
@@ -489,13 +503,12 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
          >
-          <View>
+          <View style={{height: '36%'}}>
             {this.chooseStartpoint()}
           </View>
           <MapView.Marker 
             coordinate={this.state.initialPositionMarker} 
           />
-
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}
