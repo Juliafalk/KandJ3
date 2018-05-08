@@ -16,7 +16,6 @@ export default (state = INITIAL_STATE, action) => {
                 var value = action.payload[keys[i]];
                 newObject[keys[i]]=value;
             }
-            console.log(newObject)
         
             return newObject;
         default:

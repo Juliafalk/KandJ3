@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, ListView, ScrollView, Text} from 'react-native';
+import { View, ListView, ScrollView, Text, ActivityIndicator} from 'react-native';
 import { 
     Icon, 
     Header,  
@@ -26,14 +26,17 @@ class LogPage extends React.Component {
             <Icon name='ios-list-box-outline' style={{ color: 'white'}}/>
         )
     }
+    state = { loading: true };
 
     componentWillMount() {
+        //this.setState({loading: true})
+        //console.log(this.state.loading)
         this.props.routesFetch();
         this.createDataSource(this.props);
-        console.log('körs')
     }
 
     componentWillReceiveProps(nextProps){
+        this.setState({loading: false})
         this.createDataSource(this.props);
         
     }
@@ -42,7 +45,6 @@ class LogPage extends React.Component {
             const ds = new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2
             });
-
             this.dataSource = ds.cloneWithRows(routes)
          
     }
@@ -51,12 +53,24 @@ class LogPage extends React.Component {
             return <ListItem route={route} />;
     }
 
+
+    renderSpinner() {
+        if (this.state.loading) {
+            return (
+            <View style={styles.spinnerStyle} >
+            <ActivityIndicator size="large"  />
+            </View>
+            );
+        }
+    }
+
     render() {
         const { 
            headerStyle, 
            headerTextStyle,
            iconStyle,
-           viewStyle
+           viewStyle,
+           spinnerView
         } = styles;
         return (
             <View style={viewStyle}>
@@ -72,6 +86,9 @@ class LogPage extends React.Component {
                     </Header>
                     <ScrollView>
                     <View>
+                        <View >
+                        {this.renderSpinner()}
+                        </View>
                         <ListView
                         enableEmptySections
                         dataSource={this.dataSource}
@@ -110,6 +127,16 @@ const styles = {
     iconStyle: {
         color: 'white'
     }, 
+    /*spinnerView: {
+        flex: 1,   
+    },*/
+    spinnerStyle: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '60%'
+    }
+
 }
 
 export default connect(mapStateToProps, { routesFetch })(LogPage); 
