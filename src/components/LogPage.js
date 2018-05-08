@@ -91,8 +91,7 @@ class LogPage extends React.Component {
 const mapStateToProps = state => {
     const routes = _.map(state.routes, (val, uid) => {
         return {
-            db: {...val, uid},
-            wayPoints: ''
+            ...val, uid
         };
     });
 

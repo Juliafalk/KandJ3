@@ -7,17 +7,10 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import reducers from './reducers';
 import ReduxThunk from 'redux-thunk';
 import firebase from 'firebase';
-import StartPage from './components/StartPage';
-import MapPage from './components/MapPage';
-import LogPage from './components/LogPage';
-import FavoritePage from './components/FavoritePage';
-import SettingsScreen from './components/SettingsScreen';
-import WaitingPage from './components/WaitingPage'
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import { 
+import {  
     Container, 
     Content, 
     Header, 
@@ -28,6 +21,13 @@ import {
     FooterTab
 } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import reducers from './reducers';
+import StartPage from './components/StartPage';
+import MapPage from './components/MapPage';
+import LogPage from './components/LogPage';
+import FavoritePage from './components/FavoritePage';
+import SettingsScreen from './components/SettingsScreen';
+import WaitingPage from './components/WaitingPage'
 
 const store = createStore(reducers , {}, applyMiddleware(ReduxThunk))
 

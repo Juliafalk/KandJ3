@@ -5,7 +5,7 @@ import {
     StyleSheet,
     Alert,
     TouchableHighlight 
-} from 'react-native';
+} from 'react-native'; 
 import firebase from 'firebase'; 
 import { Icon, Button, Container } from 'native-base';
 import { SwitchNavigator } from 'react-navigation';
@@ -38,6 +38,7 @@ class ListItem extends Component {
         this.props.runAgain(route.wayPoints);
         //this.props.navigation.navigate('Map');
         //this.SeeMap;
+        console.log('props: ', this.props.wayPoints)
     }
 
     SeeMap = () => {
@@ -145,7 +146,7 @@ class ListItem extends Component {
                             </Button>
                             <Button full 
                             style={buttonStyle} 
-                            onPress={() => {this.runAgain(route)}}>
+                            onPress={() => this.runAgain(route)}>
                                 <Text style={textButtonStyle}>Run again</Text>
                             </Button>
                           
@@ -238,7 +239,7 @@ const styles = {
 
 const mapStateToProps = state => {
     return {
-        wayPoints: state.routes.wayPoints
+        wayPoints: state.runAgain.wayPoints
     };
 };
 

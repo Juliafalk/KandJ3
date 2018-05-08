@@ -3,7 +3,7 @@ import { Actions } from 'react-native-router-flux';
 import { 
     ROUTES_FETCH_SUCCESS ,
     RUN_AGAIN
-} from './types';
+} from './types'; 
 
 export const routesFetch = () => {
     const {currentUser} = firebase.auth();
@@ -15,12 +15,10 @@ export const routesFetch = () => {
                 dispatch({ type: ROUTES_FETCH_SUCCESS, payload: snapshot.val() });  
             });
         })
-            
     };
 };
 
 export const runAgain = (wayPoints) => {
-
     return{ 
         type: RUN_AGAIN, 
         payload: wayPoints

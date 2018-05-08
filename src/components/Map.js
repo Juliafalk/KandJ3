@@ -24,6 +24,8 @@ import {
   LogCardItem,
   MyInput
 } from './common';
+import { connect } from 'react-redux';
+import { runAgain } from '../actions';
 
 
 const { width, height } = Dimensions.get('window');
@@ -220,6 +222,7 @@ class Map extends Component {
       wayPoints: waypoints
     });
     console.log(waypoints)
+    console.log('comeON: ', this.props.WAYPOINTS)
   }
 
   //JL 17/4: disable and enable the footer buttons
@@ -787,7 +790,17 @@ const summaryStyle = {
   },
 }
 
+/*
 export default SwitchNavigator({
   Home: { screen: Map },
   SummaryView: {screen: TheSummary}
 });
+*/
+
+const mapStateToProps = state => {
+  return {
+      WAYPOINTS: state.runAgain.wayPoints
+  };
+};
+
+export default connect(mapStateToProps, { runAgain })(Map); 
