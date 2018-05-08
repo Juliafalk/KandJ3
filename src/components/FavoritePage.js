@@ -24,7 +24,7 @@ import FavoriteListItem from './FavoriteListItem';
 class FavoritePage extends React.Component { 
     static navigationOptions = {
         drawerIcon: (
-            <Icon name='ios-star-outline' style={{ color: 'white'}}/>
+            <Icon name='ios-heart-outline' style={{ color: 'white', fontSize: 29 }}/>
         )
     }
 
