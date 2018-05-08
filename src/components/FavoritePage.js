@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, ListView, ScrollView, Text} from 'react-native';
+import { View, ListView, ScrollView, Text, ActivityIndicator } from 'react-native';
 import { 
     Icon, 
     Header,  
@@ -8,7 +8,7 @@ import {
     Body, 
     Title, 
     Right,
-    CardItem 
+    CardItem,
 } from 'native-base';
 import Moment from 'react-moment';
 import firebase from 'firebase';
@@ -24,9 +24,11 @@ import FavoriteListItem from './FavoriteListItem';
 class FavoritePage extends React.Component { 
     static navigationOptions = {
         drawerIcon: (
-            <Icon name='ios-star-outline' style={{ color: 'white'}}/>
+            <Icon name='ios-heart-outline' style={{ color: 'white', fontSize: 29 }}/>
         )
     }
+
+    state = {loading: true }
 
     componentWillMount() {
         this.props.routesFetch();
@@ -34,13 +36,16 @@ class FavoritePage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
+        this.setState({loading: false})
         this.createDataSource(this.props);
     }
 
     createDataSource({ routes }) {
+        
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
+        //console.log(ds)
 
         this.dataSource = ds.cloneWithRows(routes)
         
@@ -52,6 +57,16 @@ class FavoritePage extends React.Component {
             else
              return null;
        
+    }
+
+    renderSpinner() {
+        if (this.state.loading) {
+            return (
+            <View style={styles.spinnerStyle} >
+            <ActivityIndicator size="large"  />
+            </View>
+            );
+        }
     }
 
     render() {
@@ -75,6 +90,9 @@ class FavoritePage extends React.Component {
                     </Header>
                     <ScrollView>
                     <View>
+                    <View >
+                        {this.renderSpinner()}
+                    </View>
                     <ListView
                     enableEmptySections
                     dataSource={this.dataSource}
@@ -114,6 +132,12 @@ const styles = {
     iconStyle: {
         color: 'white'
     }, 
+    spinnerStyle: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '60%'
+    }
 }
 export default connect(mapStateToProps, { routesFetch })(FavoritePage); 
 

@@ -45,6 +45,7 @@ const TOTAL_DURATION = 0;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 Geocoder.init(GOOGLE_MAPS_APIKEY);
 
+
 class Map extends Component {
 
   constructor(props) {
@@ -54,17 +55,13 @@ class Map extends Component {
       //intialPosition - to generate routes, it is the start position / JF (16/4)
       initialPosition: {
         latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        longitude: LONGITUDE
       },
       //initialPositionMarker - to place the marker at the initialPosition, 
       //ev. could be same as initialPosition / JF (16/4)
       initialPositionMarker: {
         latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        longitude: LONGITUDE
       },
       //currentPosition - to update the users current position / JF (16/4)
       currentPosition: {
@@ -87,7 +84,8 @@ class Map extends Component {
       stopwatchReset: false,
       totalDuration: 0,
       date: 0, 
-      pauseRunning: false
+      pauseRunning: false,
+      createdRoute: false
     }
 
     this.mapView = null;  
@@ -103,15 +101,11 @@ class Map extends Component {
      this.setState({ 
       initialPosition: {
         latitude: position.coords.latitude,
-        longitude: position.coords.longitude, 
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        longitude: position.coords.longitude
       }, 
       initialPositionMarker: {
         latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+        longitude: position.coords.longitude
       },
       currentPosition: {
         latitude: position.coords.latitude,
@@ -135,9 +129,7 @@ class Map extends Component {
         this.setState({
           initialPosition: {
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
+            longitude: position.coords.longitude
           },
           currentPosition: {
             latitude: position.coords.latitude,
@@ -158,7 +150,6 @@ class Map extends Component {
   }
 
   componentWillUnmount() {
-    //console.log(this.wacthID)
     navigator.geolocation.clearWatch(this.watchID)
   }
 
@@ -285,8 +276,17 @@ class Map extends Component {
                   initialPositionMarker: {
                     latitude: location.lat,
                     longitude: location.lng
+                  },
+                  currentPosition: {
+                    latitude: location.lat,
+                    longitude: location.lng,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUDE_DELTA
                   }
+                
+                  
                 });
+                
               })
               .catch(error => console.warn(error))
           }}
@@ -295,6 +295,11 @@ class Map extends Component {
             key: GOOGLE_MAPS_APIKEY,
             language: 'en', // language of the results
           }}
+          /*nearbyPlacesAPI='GooglePlacesSearch'
+          GooglePlacesSearchQuery={{
+            rankby: 'distance',
+            types: 'street_address'
+          }}*/
           renderLeftButton={() => <Icon type='EvilIcons' name='location' 
             style={{marginTop: 8, marginLeft: 3, color: 'white'}}/>}
         />
@@ -332,7 +337,8 @@ class Map extends Component {
       stopwatchStart,
       stopwatchReset,
       pauseRunning,
-      totalDuration
+      totalDuration,
+      createdRoute
     } = this.state;
 
     if (!this.state.startRunning){
@@ -358,12 +364,11 @@ class Map extends Component {
             </View>
             <Button
               info
-              
               style={createRouteButtonStyle}
               disabled ={createRoute}
               onPress={() => {this.routeGenerator(wantedDistance), 
-              this.setState({ startButton: false }), Keyboard.dismiss}}>
-                <Text style={{ fontSize: 14 }}>Create Route</Text>
+              this.setState({ startButton: false, createdRoute: true }), Keyboard.dismiss}}>
+                <Text style={{ fontSize: 12, textAlign: 'center' }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
           <Button
@@ -491,14 +496,15 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
          >
+
           <View
-            style={{ height: '36%'}}>
+            style={{ height: '27%' }}>
             {this.chooseStartpoint()}
           </View>
+          
           <MapView.Marker 
             coordinate={this.state.initialPositionMarker} 
           />
-
           {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
               origin={this.state.wayPoints[0]}

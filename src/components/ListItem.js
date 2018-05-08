@@ -60,20 +60,20 @@ class ListItem extends Component {
     }
         
     render() {    
-        var favText;
+        
+        var favoriteText;
         var iconName;
+        const { route } = this.props;
          
-        if(this.state.onClicked) {
-            favText = "Added!",
+        if(this.state.onClicked || route.favorite == true ) {
+            favoriteText = "Favorite!",
             iconName = "favorite"
         }
         else{
-            favText = "Add to favorites!",
+            favoriteText = "Add to favorites!",
             iconName = "favorite-border"
         }
-
-        const { route } = this.props;
-
+        
         const { 
             viewStyle,
             labelStyle,
@@ -88,10 +88,6 @@ class ListItem extends Component {
             textButtonStyle,
             favoriteButtonStyle,
             favoriteStyle,
-            button,
-            buttonPress, 
-            welcomePress,
-            welcome 
         } = styles;
         
         return (
@@ -142,7 +138,7 @@ class ListItem extends Component {
                         
                             <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route), this.handlerButtonOnClick()}}>
                                 <Icon type="MaterialIcons" name={iconName} style={{ color:'black'}} />
-                                <Text style={favoriteStyle}>{favText}</Text>
+                                <Text style={favoriteStyle}>{favoriteText}</Text>
                             </Button>
                             <Button full 
                             style={buttonStyle} 
