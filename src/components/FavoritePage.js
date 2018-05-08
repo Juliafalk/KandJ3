@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, ListView, ScrollView, Text} from 'react-native';
+import { View, ListView, ScrollView, Text, ActivityIndicator } from 'react-native';
 import { 
     Icon, 
     Header,  
@@ -8,7 +8,7 @@ import {
     Body, 
     Title, 
     Right,
-    CardItem 
+    CardItem,
 } from 'native-base';
 import Moment from 'react-moment';
 import firebase from 'firebase';
@@ -28,12 +28,15 @@ class FavoritePage extends React.Component {
         )
     }
 
+    state = {loading: true }
+
     componentWillMount() {
         this.props.routesFetch();
         this.createDataSource(this.props);
     }
 
     componentWillReceiveProps(nextProps){
+        this.setState({loading: false})
         this.createDataSource(this.props);
     }
 
@@ -54,6 +57,16 @@ class FavoritePage extends React.Component {
             else
              return null;
        
+    }
+
+    renderSpinner() {
+        if (this.state.loading) {
+            return (
+            <View style={styles.spinnerStyle} >
+            <ActivityIndicator size="large"  />
+            </View>
+            );
+        }
     }
 
     render() {
@@ -77,6 +90,9 @@ class FavoritePage extends React.Component {
                     </Header>
                     <ScrollView>
                     <View>
+                    <View >
+                        {this.renderSpinner()}
+                    </View>
                     <ListView
                     enableEmptySections
                     dataSource={this.dataSource}
@@ -116,6 +132,12 @@ const styles = {
     iconStyle: {
         color: 'white'
     }, 
+    spinnerStyle: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '60%'
+    }
 }
 export default connect(mapStateToProps, { routesFetch })(FavoritePage); 
 

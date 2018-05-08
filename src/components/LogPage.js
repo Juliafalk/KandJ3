@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import Moment from 'react-moment';
 import firebase from 'firebase';
-import { MyInputCreateAccount, MyButton, MySpinner } from './common';
+import { MyInputCreateAccount, MyButton } from './common';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from '../reducers';
@@ -62,10 +62,6 @@ class LogPage extends React.Component {
             </View>
             );
         }
-       /* return(
-            <View>
-            </View>
-        )*/
     }
 
     render() {
