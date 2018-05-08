@@ -52,17 +52,13 @@ class Map extends Component {
       //intialPosition - to generate routes, it is the start position / JF (16/4)
       initialPosition: {
         latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        longitude: LONGITUDE
       },
       //initialPositionMarker - to place the marker at the initialPosition, 
       //ev. could be same as initialPosition / JF (16/4)
       initialPositionMarker: {
         latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        longitude: LONGITUDE
       },
       //currentPosition - to update the users current position / JF (16/4)
       currentPosition: {
@@ -102,15 +98,11 @@ class Map extends Component {
      this.setState({ 
       initialPosition: {
         latitude: position.coords.latitude,
-        longitude: position.coords.longitude, 
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        longitude: position.coords.longitude
       }, 
       initialPositionMarker: {
         latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+        longitude: position.coords.longitude
       },
       currentPosition: {
         latitude: position.coords.latitude,
@@ -134,9 +126,7 @@ class Map extends Component {
         this.setState({
           initialPosition: {
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
+            longitude: position.coords.longitude
           },
           currentPosition: {
             latitude: position.coords.latitude,
@@ -489,7 +479,8 @@ class Map extends Component {
           style={styles.mapStyle}
           ref={c => this.mapView = c}
          >
-          <View>
+          <View
+            style={{ height: '27%' }}>
             {this.chooseStartpoint()}
           </View>
           <MapView.Marker 
