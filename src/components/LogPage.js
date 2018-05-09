@@ -18,7 +18,7 @@ import { createStore } from 'redux';
 import reducers from '../reducers';
 import { connect } from 'react-redux';
 import { routesFetch } from '../actions/RoutesActions';
-import ListItem from './ListItem';
+import {ListItem} from './ListItem';
 
 class LogPage extends React.Component { 
     static navigationOptions = {

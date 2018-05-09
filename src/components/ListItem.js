@@ -92,7 +92,7 @@ class ListItem extends Component {
                 <LogCard>
                     <LogCardItem>
                         <Text style={labelStyle}>{route.date.toUpperCase()}</Text>
-                        <Icon type="FontAwesome" name="remove" onPress={() => 
+                        <Icon name="close" style={deleteRouteStyle} onPress={() => 
                                Alert.alert(
                                 'Delete route?',
                                 'The route is not possible restore!', 
@@ -157,17 +157,24 @@ const styles = {
     viewStyle: {
         alignItems: 'center',
     },
+    cardHeaderStyle: {
+        flexDirection: 'row',
+        height: 30
+    },
     labelStyle: {
         fontSize: 17,
         paddingLeft: 1, 
         flex: 1, 
         fontFamily: 'GillSans-Light',
         color: 'black',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
     },
     deleteRouteStyle: {
-        height: 25,
-        width: 60,
-        backgroundColor: '#666666'
+        fontSize: 30,
+        alignSelf: 'center',
+        position: 'relative',
+        height: '100%', 
     },
     deleteText: {
         fontSize: 15,
@@ -176,10 +183,9 @@ const styles = {
     },
     lineStyle: {
         backgroundColor: 'black',
-        height: 1, 
+        height: 0.5, 
         width: '100%',
         marginBottom: 8,
-        marginTop: 2,
     },
     textStyle:{
         marginTop: 5,
@@ -218,18 +224,6 @@ const styles = {
         flexDirection: 'row',
         alignItems: 'center',
     },
-    button: {
-        backgroundColor: 'red'
-    },
-    buttonPress: {
-        backgroundColor: 'green'
-    },
-    welcomePress: {
-        color: 'blue',
-    },
-    welcome: {
-        color: 'pink'
-    }
 };
 
 
