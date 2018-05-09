@@ -10,8 +10,8 @@ class WaitingPage extends React.Component {
             <ImageBackground 
                 style={{width: '100%', height: '100%', justifyContent: 'center'}}
                 source={{ url: 'https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg'}}>
-            <Text style={styles.textStyle}>Welcome</Text>
-            <Text style={styles.textStyle}>Lets run!</Text>
+            
+            <Text style={styles.textStyle}>Let's run!</Text>
             <Icon type="MaterialIcons" name="directions-run" style={styles.iconStyle} />
             </ImageBackground>);
     }

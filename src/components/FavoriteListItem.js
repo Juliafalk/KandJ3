@@ -57,18 +57,20 @@ class FavoriteListItem extends Component {
                         }}>
                             <LogCardItem>
                                 <View style={viewIconStyle}>
-                                    <Icon name='ios-stopwatch-outline'/>
+                                    <Icon name='ios-stopwatch-outline'style={{fontSize: 22 }}/>
                                 </View>
                                 <Text style={textStyle}>Duration: {route.TOTAL_DURATION}</Text>
                             </LogCardItem>
                             <LogCardItem >
                                 <View style={viewIconStyle}>
-                                    <Icon name="ios-walk-outline"/>
+                                    <Icon name="ios-walk-outline" style={{fontSize: 24 }}/>
                                 </View>
                                 <Text style={textStyle}>Route distance: {route.actualDistance.toFixed(2)} km</Text>
                             </LogCardItem>
                             <LogCardItem >
-                                <View style={viewIconStyle} />
+                                <View style={viewIconStyle} >
+                                <Icon name="ios-trophy-outline" style={{fontSize: 22 }}/>
+                                </View>
                                 <Text style={textStyle}>Your distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
                             </LogCardItem>
                         </View>

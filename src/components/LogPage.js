@@ -29,8 +29,6 @@ class LogPage extends React.Component {
     state = { loading: true };
 
     componentWillMount() {
-        //this.setState({loading: true})
-        //console.log(this.state.loading)
         this.props.routesFetch();
         this.createDataSource(this.props);
     }

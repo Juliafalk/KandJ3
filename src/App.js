@@ -98,7 +98,10 @@ const CustomDrawerContentComponent = (props) => (
     <Container >
         <Header style={{ height: 200, backgroundColor: 'white' }}>
             <Body>
-                <Text style={{fontSize: 20, fontWeight: 'bold', color: 'black' }}>runRouter</Text>
+                <ImageBackground style={otherStyles.drawerImage} blurRadius= {7} 
+                source={require('./components/images/bredTrack.jpg')}>
+                <Text style={otherStyles.sideImage}>runRouter</Text>
+                </ImageBackground>
             </Body>
         </Header>
         <Content style={{ backgroundColor: '#5c688c' }}>
@@ -159,9 +162,17 @@ otherStyles = StyleSheet.create({
         alignItems: 'center'
     },
 
-    /*drawerImage: {
-        height: 150,
-        width: 150,
+    sideImage: {
+        fontSize: 25, 
+        fontWeight: 'bold', 
+        color: 'white', 
+        alignSelf: 'center', 
+        marginTop: '35%' 
+    },
+
+    drawerImage: {
+        height: 215,
+        width: 280,
         borderRadius: 75
-    }*/
+    }
 })
