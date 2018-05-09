@@ -187,12 +187,15 @@ InitialRouteName is which page to start on when calling MyApp/JG 13/4 */
 
 //Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)
 
+/*
 export default SwitchNavigator({
     Home: { screen: StartPage },
     Login: { screen: Login },
     CreateAccount: { screen: CreateAccountScreen },
     MapView: {screen: TheMap}
-});
+});*/
+
+export default TheMap;
 
 otherStyles = StyleSheet.create({
     container: {

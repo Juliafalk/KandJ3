@@ -117,8 +117,6 @@ const styles = {
     viewStyle: {
         backgroundColor: '#5c688c',
         height: '100%',
-       
-        //Padding because of styling and bugs in scrollview 
     },
     headerStyle: {
         backgroundColor: '#7785ad' 

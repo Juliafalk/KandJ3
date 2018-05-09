@@ -27,7 +27,6 @@ import {
 import { connect } from 'react-redux';
 import { runAgain } from '../actions';
 
-
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;

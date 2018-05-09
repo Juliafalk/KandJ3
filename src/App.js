@@ -79,7 +79,6 @@ class App extends React.Component {
         }
     }
 
-/*
     render()  {
         return(
             <Provider store={ store }>
@@ -87,9 +86,8 @@ class App extends React.Component {
             </Provider>
         );
     }
-*/
-
     
+    /*
     render()  {
         return(
             <Provider store={ store }>
@@ -99,6 +97,7 @@ class App extends React.Component {
             </Provider>
         );
     }
+    */
     
 }
 
