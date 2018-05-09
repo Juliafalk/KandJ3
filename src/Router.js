@@ -17,7 +17,6 @@ const RouterComponent = () => {
 
 export default RouterComponent;
 
-
 /*
                 <Scene key = "createAccount" component={LogPage} title="Please Login"/>
                 <Scene key = "mapView" component={LogPage} title="Please Login"/>

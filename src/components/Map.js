@@ -810,3 +810,4 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, { runAgain })(Map); 
+
