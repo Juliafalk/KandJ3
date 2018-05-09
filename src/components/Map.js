@@ -706,8 +706,7 @@ class TheSummary extends Map {
         />
         </View>
         <View style={divideSection}>
-            < Image style={{ height: 90, width: 90}}  
-            source={require('./images/finisher.png')}/>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>Congratulations!</Text>
         </View>
         <View style={summaryCard}>
         <LogCard>
@@ -717,18 +716,18 @@ class TheSummary extends Map {
             </LogCardItem>
 
             <View style={{ backgroundColor: 'black', height: 0.5,  
-              width: '100%',marginBottom: 8,}} />
+              width: '100%',marginBottom: 8, marginTop: 5}} />
 
             <LogCardItem>
               <View style={iconSummary} >
-                <Icon  name='ios-stopwatch-outline'/>
+                <Icon  name='ios-stopwatch-outline' style={{fontSize: 24 }}/>
               </View>
               <Text style={summaryText}>Duration: {durationTime}</Text>
             </LogCardItem>
             
             <LogCardItem block >
               <View style={iconSummary} >
-                <Icon  name="ios-walk-outline"/>
+              <Icon name="ios-trophy-outline" style={{fontSize: 22 }}/>
               </View>
               <Text style={summaryText} >Your distance: {totalDistance} km</Text>
             </LogCardItem>
@@ -749,6 +748,8 @@ class TheSummary extends Map {
 const summaryStyle = {
   divideSection: {
     //height: '30%',
+    marginTop: 20,
+    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -757,6 +758,7 @@ const summaryStyle = {
     backgroundColor: '#5c688c'
   },
   summaryCard: {
+    marginTop: 15,
     alignItems: 'center',
     backgroundColor: '#5c688c',
     zIndex: -1
