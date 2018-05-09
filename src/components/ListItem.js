@@ -5,16 +5,16 @@ import {
     StyleSheet,
     Alert,
     TouchableHighlight 
-} from 'react-native';
+} from 'react-native'; 
 import firebase from 'firebase'; 
-import { 
-    Icon, 
-    Button, 
-} from 'native-base';
-import {
-    LogCard,
-    LogCardItem
-} from './common';
+import { Icon, Button, Container } from 'native-base';
+import { SwitchNavigator } from 'react-navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { LogCard, LogCardItem } from './common';
+import TheMap from './StartPage'; 
+import reducers from '../reducers';
+import { connect } from 'react-redux';
+import { runAgain } from '../actions';
 
 class ListItem extends Component {
 
@@ -29,17 +29,23 @@ class ListItem extends Component {
     handlerButtonOnClick() {
         this.setState({
             onClicked: true
-        });
+        }); 
+    }
+    
+    //JL 2/5: vill här ändra sida till kartan och skicka med waypoints
+    runAgain(route) {
+        console.log(route.wayPoints)
+        this.props.runAgain(route.wayPoints);
+        //this.props.navigation.navigate('Map');
+        //this.SeeMap;
+        console.log('props: ', this.props.wayPoints)
     }
 
-   
-
-    runAgain (){
-        console.log('pressed runAgain')
-        console.log(theRoute)
+    SeeMap = () => {
+        this.props.navigation.navigate('Map');
     }
 
-    addFavorite (route){
+    addFavorite(route) {
         const { currentUser } = firebase.auth();
         const UID = route.uid;
         firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
@@ -60,15 +66,13 @@ class ListItem extends Component {
         const { route } = this.props;
          
         if(this.state.onClicked || route.favorite == true ) {
-            favoriteText = "Favorite",
+            favoriteText = "Favorite!",
             iconName = "favorite"
-
         }
         else{
-            favoriteText = "Add to favorite",
+            favoriteText = "Add to favorites!",
             iconName = "favorite-border"
         }
-
         
         const { 
             viewStyle,
@@ -86,7 +90,6 @@ class ListItem extends Component {
             favoriteStyle,
         } = styles;
         
-     
         return (
             <View style={viewStyle} >
                 <LogCard>
@@ -95,7 +98,7 @@ class ListItem extends Component {
                         <Icon type="FontAwesome" name="remove" onPress={() => 
                                Alert.alert(
                                 'Delete route?',
-                                'The route is not possible restore!', 
+                                'It cannot be restored later!', 
                                 [
                                   {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                                   {text: 'Yes', onPress: () => {this.deleteRoute(route)}
@@ -113,7 +116,7 @@ class ListItem extends Component {
                             alignItems: 'flex-start',
                             justifyContent: 'flex-start',
                             width: '65%'
-                        }}>
+                            }}>
                             <LogCardItem>
                                 <View style={viewIconStyle}>
                                     <Icon name='ios-stopwatch-outline' style={{fontSize: 22 }}/>
@@ -135,13 +138,13 @@ class ListItem extends Component {
                         </View>
                         <View style= {favoriteRunView}>
                         
-                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route), this.handlerButtonOnClick()}}>>
+                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route), this.handlerButtonOnClick()}}>
                                 <Icon type="MaterialIcons" name={iconName} style={{ color:'black'}} />
                                 <Text style={favoriteStyle}>{favoriteText}</Text>
                             </Button>
                             <Button full 
                             style={buttonStyle} 
-                            onPress={() => {this.runAgain(route)}}>
+                            onPress={() => this.runAgain(route)}>
                                 <Text style={textButtonStyle}>Run again</Text>
                             </Button>
                           
@@ -149,8 +152,8 @@ class ListItem extends Component {
                     </View>
                 </LogCard>        
             </View>
-        )};
-       
+        )
+    };
 }
 
 const styles = {
@@ -232,5 +235,10 @@ const styles = {
     }
 };
 
+const mapStateToProps = state => {
+    return {
+        wayPoints: state.runAgain.wayPoints
+    };
+};
 
-export default ListItem;
+export default connect(mapStateToProps, { runAgain })(ListItem); 

@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-import RouteReducer from './RoutesReducer'
+import RoutesReducer from './RoutesReducer'
+import RunAgainReducer from './RunAgainReducer'
 
 export default combineReducers({
-    routes: RouteReducer
- });
+    routes: RoutesReducer,
+    runAgain: RunAgainReducer
+ }); 

@@ -8,16 +8,15 @@ import {
     Body, 
     Title, 
     Right,
-    CardItem 
+    CardItem,
+    Button 
 } from 'native-base';
 import Moment from 'react-moment';
 import firebase from 'firebase';
 import { MyInputCreateAccount, MyButton } from './common';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import reducers from '../reducers';
 import { connect } from 'react-redux';
-import { routesFetch } from '../actions/RoutesActions';
+import { routesFetch } from '../actions';
 import ListItem from './ListItem';
 
 class LogPage extends React.Component { 
@@ -92,6 +91,11 @@ class LogPage extends React.Component {
                         dataSource={this.dataSource}
                         renderRow={this.renderRow}
                         />
+                        <Button
+                            onPress={() =>
+                                this.props.navigation.navigate('Map')}>
+                            <Text>To Map</Text>
+                        </Button>
                     </View>
                 </ScrollView>
             </View>
@@ -101,7 +105,9 @@ class LogPage extends React.Component {
 
 const mapStateToProps = state => {
     const routes = _.map(state.routes, (val, uid) => {
-        return {...val, uid};
+        return {
+            ...val, uid
+        };
     });
 
     return { routes };

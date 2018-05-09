@@ -7,21 +7,21 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { DrawerNavigator, DrawerItems, SwitchNavigator } from 'react-navigation';
 import { Container, Content, Header, Body, Button, Icon, Footer } from 'native-base';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MyCard, MyCardSection, MyButton } from './common';
 //JL: should add an index file to reduce imports below
 import MapPage from './MapPage'; 
-//import MyApp from './MyApp';
 import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
 import LogPage from './LogPage';
 import FavoritePage from './FavoritePage';
 import SettingsScreen from './SettingsScreen';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Wallpaper from './Wallpaper';
 
 //This is the first page / JF (11/4)
 //Map button will not be visible later. 
-class StartPage extends React.Component {
+export class StartPage extends React.Component {
+    
     static navigationOptions = {
         title: 'Home'
     };
@@ -35,7 +35,7 @@ class StartPage extends React.Component {
                         </MyCardSection>
                             
                         <LoginPage />
-                            
+                             
                         <MyCardSection>
                             <View>
                                 <Button 
@@ -78,6 +78,7 @@ class Login extends React.Component {
         );
     }
 };
+
 
 //This class returns the CreateAccount Screens / JF (11/4)
 class CreateAccountScreen extends React.Component {
@@ -185,6 +186,7 @@ InitialRouteName is which page to start on when calling MyApp/JG 13/4 */
 });*/
 
 //Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)
+
 export default SwitchNavigator({
     Home: { screen: StartPage },
     Login: { screen: Login },

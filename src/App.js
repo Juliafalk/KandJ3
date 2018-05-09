@@ -7,17 +7,10 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import reducers from './reducers';
 import ReduxThunk from 'redux-thunk';
 import firebase from 'firebase';
-import StartPage from './components/StartPage';
-import MapPage from './components/MapPage';
-import LogPage from './components/LogPage';
-import FavoritePage from './components/FavoritePage';
-import SettingsScreen from './components/SettingsScreen';
-import WaitingPage from './components/WaitingPage'
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import { 
+import {  
     Container, 
     Content, 
     Header, 
@@ -28,6 +21,14 @@ import {
     FooterTab
 } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import reducers from './reducers';
+import StartPage from './components/StartPage';
+import MapPage from './components/MapPage';
+import LogPage from './components/LogPage';
+import FavoritePage from './components/FavoritePage';
+import SettingsScreen from './components/SettingsScreen';
+import WaitingPage from './components/WaitingPage'
+import Router from './Router';
 
 const store = createStore(reducers , {}, applyMiddleware(ReduxThunk))
 
@@ -62,16 +63,15 @@ class App extends React.Component {
         switch(this.state.loggedIn) {
             case true:
                 return(
-                <KeyboardAwareScrollView
-                resetScrollToCoords={{ x: 0, y: 0 }}
-                contentContainerStyle={styles.container}
-                scrollEnabled={false}
-                >
-                <Container>
-                <MyApp /> 
-                
-                 </Container>
-                </KeyboardAwareScrollView>);
+                    <KeyboardAwareScrollView
+                        resetScrollToCoords={{ x: 0, y: 0 }}
+                        contentContainerStyle={styles.container}
+                        scrollEnabled={false}>
+                        <Container>
+                            <MyApp /> 
+                        </Container>
+                    </KeyboardAwareScrollView>
+                );
             case false:
                 return <StartPage />;
             default:
@@ -79,17 +79,27 @@ class App extends React.Component {
         }
     }
 
+/*
     render()  {
-
-        
         return(
             <Provider store={ store }>
-            <Container>
-           {this.renderContent()};    
-           </Container>
-           </Provider>
+                <Router />
+            </Provider>
         );
     }
+*/
+
+    
+    render()  {
+        return(
+            <Provider store={ store }>
+                <Container>
+                    {this.renderContent()};    
+                </Container>
+            </Provider>
+        );
+    }
+    
 }
 
 
@@ -146,14 +156,12 @@ const MyApp = DrawerNavigator({
     drawerOpenRoute: 'DrawerOpen',
     drawerCloseRoute: 'DrawerClose',
     drawerToggleRoute: 'DrawerToggle' 
-    
 })
 
 const styles = {
 
 };
 export default App;
-
 
 otherStyles = StyleSheet.create({
     container: {
