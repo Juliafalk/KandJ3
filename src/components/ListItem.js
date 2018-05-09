@@ -171,10 +171,11 @@ const styles = {
         justifyContent: 'flex-start',
     },
     deleteRouteStyle: {
-        fontSize: 30,
+        fontSize: 35,
         alignSelf: 'center',
         position: 'relative',
-        height: '100%', 
+        height: '160%', 
+        color:'red'
     },
     deleteText: {
         fontSize: 15,
@@ -186,6 +187,7 @@ const styles = {
         height: 0.5, 
         width: '100%',
         marginBottom: 8,
+        marginTop: -10
     },
     textStyle:{
         marginTop: 5,

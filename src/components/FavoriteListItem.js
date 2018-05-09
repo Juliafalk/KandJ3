@@ -138,10 +138,10 @@ const styles = {
     },
     lineStyle: {
         backgroundColor: 'black',
-        height: 1, 
+        height: 0.5, 
         width: '100%',
         marginBottom: 8,
-        marginTop: 2,
+        marginTop: 5,
     },
     textStyle:{
         marginTop: 5,
