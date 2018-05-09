@@ -28,6 +28,7 @@ import LogPage from './components/LogPage';
 import FavoritePage from './components/FavoritePage';
 import SettingsScreen from './components/SettingsScreen';
 import WaitingPage from './components/WaitingPage'
+import Router from './Router';
 
 const store = createStore(reducers , {}, applyMiddleware(ReduxThunk))
 
@@ -78,6 +79,17 @@ class App extends React.Component {
         }
     }
 
+/*
+    render()  {
+        return(
+            <Provider store={ store }>
+                <Router />
+            </Provider>
+        );
+    }
+*/
+
+    
     render()  {
         return(
             <Provider store={ store }>
@@ -87,6 +99,7 @@ class App extends React.Component {
             </Provider>
         );
     }
+    
 }
 
 

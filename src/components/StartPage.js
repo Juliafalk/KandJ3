@@ -20,7 +20,8 @@ import Wallpaper from './Wallpaper';
 
 //This is the first page / JF (11/4)
 //Map button will not be visible later. 
-class StartPage extends React.Component {
+export class StartPage extends React.Component {
+    
     static navigationOptions = {
         title: 'Home'
     };
@@ -77,6 +78,7 @@ class Login extends React.Component {
         );
     }
 };
+
 
 //This class returns the CreateAccount Screens / JF (11/4)
 class CreateAccountScreen extends React.Component {
@@ -184,6 +186,7 @@ InitialRouteName is which page to start on when calling MyApp/JG 13/4 */
 });*/
 
 //Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)
+
 export default SwitchNavigator({
     Home: { screen: StartPage },
     Login: { screen: Login },

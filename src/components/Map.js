@@ -75,7 +75,6 @@ class Map extends Component {
       actualDistance: 0,
       favorite: false,
       prevLatLng: {},
-      wayPoints: [],
       wantedDistance: '',
       createRoute: true,
       startButton: true,
@@ -113,7 +112,6 @@ class Map extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
-        //wayPoints: [],
         //wantedDistance: ''
       });
     },
@@ -154,6 +152,8 @@ class Map extends Component {
   }
 
   //JL 11/4: press on the map and add another point that the route will go through
+  //JL 9/5: tycker vi tar bort denna funktion, känns som att den kan förstöra mer än den ger i vårt fall...
+  /*
   onMapPress = (e) => {
     this.setState({
       wayPoints: [
@@ -162,6 +162,7 @@ class Map extends Component {
       ],
     });
   }
+  */
 
   /*JL 11/4: this is a rather complicated function but I will try to explain it in a simple way
   we create a center point of a circle with a radius that is dependent on the length of the route
@@ -209,11 +210,8 @@ class Map extends Component {
     }
     waypoints[circlePoints+1] = this.state.initialPosition;
 
-    this.setState({
-      wayPoints: waypoints
-    });
-    console.log(waypoints)
-    console.log('comeON: ', this.props.WAYPOINTS)
+    //sets the redux state
+    this.props.runAgain(waypoints);
   }
 
   //JL 17/4: disable and enable the footer buttons
@@ -234,13 +232,13 @@ class Map extends Component {
   //JG 18/4 will send information about the route to the database
   toDatabase() {
     var date= new Date().toDateString()
-    const { wayPoints, totalDuration, actualDistance, favorite } = this.state;
+    const { totalDuration, actualDistance, favorite } = this.state;
+    const { WAYPOINTS } = this.props;
     const { currentUser } = firebase.auth();
     firebase.database().ref(`/users/${currentUser.uid}/routes`)
-        .push({ wayPoints, TOTAL_DURATION, DISTANCE_TRAVELLED, date, actualDistance, favorite });
+        .push({ WAYPOINTS, TOTAL_DURATION, DISTANCE_TRAVELLED, date, actualDistance, favorite });
     return(
       this.setState({
-          wayPoints: [],
           totalDuration: 0,
           DISTANCE_TRAVELLED: 0 ,
           date: 0   
@@ -481,6 +479,9 @@ class Map extends Component {
       pauseRunning,
       totalDuration
     } = this.state;
+    const {
+      WAYPOINTS
+    } = this.props;
 
     return (
       <View style={styles.mapPageContainer}>
@@ -505,11 +506,11 @@ class Map extends Component {
           <MapView.Marker 
             coordinate={this.state.initialPositionMarker} 
           />
-          {(this.state.wayPoints.length >= 2) && (
+          {(WAYPOINTS.length >= 2) && (
             <MapViewDirections
-              origin={this.state.wayPoints[0]}
-              waypoints={ (this.state.wayPoints.length > 2) ? this.state.wayPoints.slice(1, -1): null}
-              destination={this.state.wayPoints[this.state.wayPoints.length-1]}
+              origin={WAYPOINTS[0]}
+              waypoints={ (WAYPOINTS.length > 2) ? WAYPOINTS.slice(1, -1): null}
+              destination={WAYPOINTS[WAYPOINTS.length-1]}
               mode={'walking'}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={3}
@@ -558,7 +559,7 @@ class Map extends Component {
 //to add markers at the coords for the waypoints insert this at row ish 113
 //inbetween the <MapView/> and <MapViewDirections/>
 /*
-  {this.state.wayPoints.map((coordinate, index) =>
+  {WAYPOINTS.map((coordinate, index) =>
     <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
   )}
 */
