@@ -22,10 +22,7 @@ import { Actions } from 'react-native-router-flux';
 //This is the first page / JF (11/4)
 //Map button will not be visible later. 
 export class StartPage extends React.Component {
-    /*
-    static navigationOptions = {
-        title: 'Home'
-    };*/
+
     render() {
         return (
             <View style={{ height: '100%' }}>
@@ -51,83 +48,7 @@ export class StartPage extends React.Component {
             </View>
         );
     }
-
-    //Following functions make sure that the buttons navigate to correct page / JF (11/4)
-    /*
-    Login = () => {
-        this.props.navigation.navigate('Login')
-    }
-
-    CreateAccount = () => {
-        this.props.navigation.navigate('CreateAccount');
-    }
-
-    SeeMap = () => {
-        this.props.navigation.navigate('MapView')
-    }
-    */
 }
-
-/*
-//This class returns the LoginPage / JF (11/4)
-class Login extends React.Component {
-    static navigationOptions = {
-        title: 'Login'
-    };
-    render() {
-        return(
-            <View>
-                <LoginPage />
-            </View>
-        );
-    }
-};
-*/
-
-/*
-//This class returns the CreateAccount Screens / JF (11/4)
-class CreateAccountScreen extends React.Component {
-    static navigationOptions = {
-        title: 'CreateAccount'
-    };
-    render () {
-        return (
-            <View 
-            style={{ height: '100%'}}>
-            <Wallpaper>
-                <CreateAccount />
-            </Wallpaper>
-            </View>
-        );
-    }
-};
-*/
-
-
-/*This class resturns the map. 
-So far the map is placed on card, because some stylingsproblems.
-When the styling works correctly, we have to decide if the map should be
-over the whole page / JF (11/4)*/
-/*
-class TheMap extends React.Component {
-    static navigationOptions = {
-        title: 'MapView'
-    };
-    render () {
-        return (
-            <KeyboardAwareScrollView
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            contentContainerStyle={styles.container}
-            scrollEnabled={false}
-            >
-                <Container>
-                    <MyApp /> 
-                </Container>
-            </KeyboardAwareScrollView>       
-        );
-    }
-};
-*/
 
 const styles = {
     headerText: {
@@ -152,57 +73,6 @@ const styles = {
         color: 'white'
     },
 };
-
-//layout on sidemenu/ JG 13/4 
-/*const CustomDrawerContentComponent = (props) => (
-    <Container>
-        <Header style={{ height: 200, backgroundColor: 'white' }}>
-            <Body>
-                <Image
-                style={otherStyles.drawerImage}
-                />
-            </Body>
-        </Header>
-        <Content>
-            <DrawerItems {...props}/>
-        </Content>        
-    </Container>
-);
-
-/*Sidemenu with directions to which page if clicking on an option
-InitialRouteName is which page to start on when calling MyApp/JG 13/4 */
-/*const MyApp = DrawerNavigator({
-
-    Map: {
-        screen: MapPage
-    },
-    Log: {
-        screen: LogPage
-    },
-    Favorites: {
-        screen: FavoritePage
-    },
-    Settings: {
-        screen: SettingsScreen
-    },
-}, {
-    initialRouteName: 'Map',
-    contentComponent: CustomDrawerContentComponent,
-    drawerOpenRoute: 'DrawerOpen',
-    drawerCloseRoute: 'DrawerClose',
-    drawerToggleRoute: 'DrawerToggle' 
-    
-});*/
-
-//Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)
-/*
-export default SwitchNavigator({
-    Home: { screen: StartPage },
-    //Login: { screen: Login },
-    CreateAccount: { screen: CreateAccountScreen },
-    //MapView: {screen: TheMap}
-});
-*/
 
 otherStyles = StyleSheet.create({
     container: {
