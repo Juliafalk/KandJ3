@@ -79,7 +79,7 @@ class LoginPage extends Component {
                     placeholder="password"
                     secureTextEntry={true}
                     value={this.state.password}
-                    onChangeText={password => this.setState({ password })}
+                    onChangeText={password => this.setState({ password, error: ''  })}
                     iconType={"SimpleLineIcons"} 
                     iconName={'lock'} 
                     />

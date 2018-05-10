@@ -49,7 +49,7 @@ export class StartPage extends React.Component {
     }
 }
 
-const styles = {
+const styles = { 
     headerText: {
         fontSize: 50, 
         fontWeight: 'bold', 

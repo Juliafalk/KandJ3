@@ -12,6 +12,7 @@ import { Stopwatch } from 'react-native-stopwatch-timer'
 import pick from 'lodash/pick';
 import { Button, Text, Icon } from 'native-base';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Geocoder from 'react-native-geocoding';
 import firebase from 'firebase';
 import haversine from 'haversine';
@@ -251,7 +252,7 @@ class Map extends Component {
             opacity: 0.8,
           },
           textInput: {color: 'rgb(65,127,225)'},
-          textInputContainer: {backgroundColor: '#5c688c', opacity: 0.5,} 
+          textInputContainer: {backgroundColor: '#5c688c', opacity: 0.8} 
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
@@ -460,6 +461,11 @@ class Map extends Component {
     } = this.props;
 
     return (
+      <KeyboardAwareScrollView	        
+             resetScrollToCoords={{ x: 0, y: 0 }}	             
+             contentContainerStyle={styles.scrollViewContainer}	           
+             scrollEnabled={false}	             
+             >
       <View style={mapPageContainer}>
         <MapView
           provider={"google"}
@@ -528,7 +534,8 @@ class Map extends Component {
 
         </MapView>
           {this.startRunning()}
-      </View>
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -623,7 +630,11 @@ const styles = {
     width: '33%',
     marginRight: 5,
     marginLeft: 5
-  }
+  },
+  scrollViewContainer: {	  
+    flex: 1,	    
+    justifyContent: 'center',	           
+  }	
 }
 //This is styling for the timer / JF (18/4)
 const options = {
