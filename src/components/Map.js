@@ -252,7 +252,7 @@ class Map extends Component {
             opacity: 0.8,
           },
           textInput: {color: 'rgb(65,127,225)'},
-          textInputContainer: {backgroundColor: '#5c688c', opacity: 0.5,} 
+          textInputContainer: {backgroundColor: '#5c688c', opacity: 0.8} 
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
