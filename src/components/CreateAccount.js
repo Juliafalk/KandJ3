@@ -21,16 +21,13 @@ class CreateAccount extends React.Component {
         this.setState({ error: '', loading: true,  });
         if (this.state.password == this.state.repPassword){
             console.log('same pass')
-            console.log(password)
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then(this.onCreateAccountSuccess.bind(this)) //need to bind, passing of to promise, dont know the context = need to bind. 
                 .catch(this.onCreateAccountFailed.bind(this))
         }
         else{
             console.log('not same pass')
-            return(
-                (this.onCreateAccountFailed.bind(this))
-            );
+            this.onCreateAccountFailed();
         }
     }
 
@@ -43,7 +40,7 @@ class CreateAccount extends React.Component {
              name: '',
              age: '',
              loading: false, 
-             error: '' //overkill, is not needed.. 
+             error: ''
        });
 
        Actions.Map();
@@ -52,7 +49,7 @@ class CreateAccount extends React.Component {
     onCreateAccountFailed() {
         console.log('failed to create account')
         this.setState({
-            error: 'Create Account Failed.',
+            error: 'Creating Account Failed!',
             loading: false
         });
     }
@@ -73,6 +70,8 @@ class CreateAccount extends React.Component {
 
     render () {
         return ( 
+            <View
+            style={{ height: '100%'}}>
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 scrollEnabled={true}
@@ -81,11 +80,14 @@ class CreateAccount extends React.Component {
                 <View>
                     <View style={styles.inputContainer}>
                         <Icon type="SimpleLineIcons" name="user-follow" style={styles.iconStyle} />
+                            <Text style={styles.errorTextStyle}>
+                                {this.state.error}
+                            </Text>
                             <MyCardSection>
                                 <MyInput
                                     placeholder="name"
                                     value={this.state.name}
-                                    onChangeText={name => this.setState({ name })}
+                                    onChangeText={name => this.setState({ name, error: '' })}
                                     iconType={"SimpleLineIcons"} 
                                     iconName={'user-follow'} 
                                 />
@@ -95,7 +97,7 @@ class CreateAccount extends React.Component {
                                 <MyInput 
                                     placeholder="user@gmail.com"
                                     value={this.state.email}
-                                    onChangeText={email => this.setState({ email })}
+                                    onChangeText={email => this.setState({ email, error: '' })}
                                     iconType={"SimpleLineIcons"} 
                                     iconName={'user'} 
                                 />
@@ -107,7 +109,7 @@ class CreateAccount extends React.Component {
                                     label="Password: "
                                     secureTextEntry={true}
                                     value={this.state.password}
-                                    onChangeText={password => this.setState({ password })}
+                                    onChangeText={password => this.setState({ password, error: '' })}
                                     iconType={"SimpleLineIcons"} 
                                     iconName={'lock'} 
                                 />
@@ -119,7 +121,7 @@ class CreateAccount extends React.Component {
                                     label="Password: "
                                     secureTextEntry={true}
                                     value={this.state.repPassword}
-                                    onChangeText={repPassword => this.setState({ repPassword })}
+                                    onChangeText={repPassword => this.setState({ repPassword, error: '' })}
                                     iconType={"SimpleLineIcons"} 
                                     iconName={'lock'} 
                                 />
@@ -139,6 +141,7 @@ class CreateAccount extends React.Component {
                 </View>
                 </Wallpaper>
             </KeyboardAwareScrollView>
+            </View>
         );
     };
 }
@@ -147,9 +150,17 @@ const styles = {
     iconStyle: {
         fontSize: 60,
         marginTop: 50,
-        marginBottom: 50,
+        marginBottom: 17,
         color: 'white',
         alignSelf: 'center'
+    },
+    errorTextStyle: {
+        height: 25,
+        fontSize: 20,
+        marginBottom: 8,
+        alignSelf: 'center',
+        color: 'black',
+        fontFamily: 'GillSans-SemiBold'
     },
     createAccountView: {
         flex: 1, 
