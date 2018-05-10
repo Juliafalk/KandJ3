@@ -15,6 +15,7 @@ import TheMap from './StartPage';
 import reducers from '../reducers';
 import { connect } from 'react-redux';
 import { runAgain } from '../actions';
+import { Actions } from 'react-native-router-flux';
 
 class ListItem extends Component {
 
@@ -34,15 +35,8 @@ class ListItem extends Component {
     
     //JL 2/5: vill här ändra sida till kartan och skicka med waypoints
     runAgain(route) {
-        console.log(route.wayPoints)
-        this.props.runAgain(route.wayPoints);
-        //this.props.navigation.navigate('Map');
-        //this.SeeMap;
-        console.log('props: ', this.props.wayPoints)
-    }
-
-    SeeMap = () => {
-        this.props.navigation.navigate('Map');
+        this.props.runAgain(route.WAYPOINTS);
+        Actions.Map();
     }
 
     addFavorite(route) {

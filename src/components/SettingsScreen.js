@@ -15,17 +15,6 @@ class SettingsScreen extends Component {
        const user= firebase.auth().currentUser;
        return (
            <Container>
-               <Header style={{ backgroundColor: '#7785ad'}}>
-                   <Left>
-                       <Icon name="ios-menu" style={{color:'white'}}
-                       onPress={() =>
-                       this.props.navigation.navigate('DrawerOpen')}/>
-                   </Left>
-                   <Body>
-                       <Title style={{color:'white'}}>Settings</Title>
-                   </Body>
-                   <Right />
-               </Header>
                <Content contentContainerStyle={{
                    marginTop: 50,
                    alignItems: 'center',
@@ -36,8 +25,8 @@ class SettingsScreen extends Component {
                    <Text>Email: {user.email}</Text>
                </Content>
            </Container>
-
        );
    }
 }
+
 export default SettingsScreen;

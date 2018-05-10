@@ -24,11 +24,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import reducers from './reducers';
 import StartPage from './components/StartPage';
 import MapPage from './components/MapPage';
+import Map from './components/Map';
 import LogPage from './components/LogPage';
 import FavoritePage from './components/FavoritePage';
 import SettingsScreen from './components/SettingsScreen';
 import WaitingPage from './components/WaitingPage'
 import Router from './Router';
+import { Actions } from 'react-native-router-flux';
 
 const store = createStore(reducers , {}, applyMiddleware(ReduxThunk))
 
@@ -59,6 +61,13 @@ class App extends React.Component {
         });
     }
 
+    loggedIn() {
+        if (this.state.loggedIn){
+            Actions.Map();
+        }
+    };
+
+    /*
     renderContent() {
         switch(this.state.loggedIn) {
             case true:
@@ -77,18 +86,19 @@ class App extends React.Component {
             default:
                 return <WaitingPage />;
         }
-    }
-
-    /*
+    }*/
+    
     render()  {
         return(
             <Provider store={ store }>
-                <Router />
+                <Router>
+                    {this.loggedIn()};
+                </Router>
             </Provider>
         );
-    }*/
+    }
     
-    
+    /*
     render()  {
         return(
             <Provider store={ store }>
@@ -98,15 +108,13 @@ class App extends React.Component {
             </Provider>
         );
     }
-    
-    
+    */
 }
 
-
-
-const CustomDrawerContentComponent = (props) => (
+//JL 9/5: används i router till drawer scene
+export const CustomDrawerContentComponent = (props) => (
     <Container >
-        <Header style={{ height: 200, backgroundColor: 'white' }}>
+        <Header style={{ height: 200 }}>
             <Body>
                 <ImageBackground style={otherStyles.drawerImage} blurRadius= {7} 
                 source={require('./components/images/bredTrack.jpg')}>
@@ -123,9 +131,7 @@ const CustomDrawerContentComponent = (props) => (
         <Footer style={{ backgroundColor: '#7785ad' }}>
             <FooterTab>
             <Button onPress={() => Logout()}>
-               
                 <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white'}}>  Log out  </Text>
-                
             </Button>
             </FooterTab>
         </Footer>
@@ -134,12 +140,13 @@ const CustomDrawerContentComponent = (props) => (
 
 function Logout() {
     firebase.auth().signOut()
+    Actions.login();
 }
-
-const MyApp = DrawerNavigator({
+/*
+export const MyApp = DrawerNavigator({
 
     Map: {
-        screen: MapPage
+        screen: Map
     },
     Log: {
         screen: LogPage
@@ -150,18 +157,14 @@ const MyApp = DrawerNavigator({
     Settings: {
         screen: SettingsScreen
     },
-}, {
+}, 
+{
     initialRouteName: 'Map',
     contentComponent: CustomDrawerContentComponent,
     drawerOpenRoute: 'DrawerOpen',
     drawerCloseRoute: 'DrawerClose',
     drawerToggleRoute: 'DrawerToggle' 
-})
-
-const styles = {
-
-};
-export default App;
+})*/
 
 otherStyles = StyleSheet.create({
     container: {
@@ -184,3 +187,5 @@ otherStyles = StyleSheet.create({
         borderRadius: 75
     }
 })
+
+export default App;

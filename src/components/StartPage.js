@@ -17,14 +17,15 @@ import LogPage from './LogPage';
 import FavoritePage from './FavoritePage';
 import SettingsScreen from './SettingsScreen';
 import Wallpaper from './Wallpaper';
+import { Actions } from 'react-native-router-flux';
 
 //This is the first page / JF (11/4)
 //Map button will not be visible later. 
 export class StartPage extends React.Component {
-    
+    /*
     static navigationOptions = {
         title: 'Home'
-    };
+    };*/
     render() {
         return (
             <View style={{ height: '100%' }}>
@@ -40,7 +41,7 @@ export class StartPage extends React.Component {
                             <View>
                                 <Button 
                                     style={styles.createAccountButton}
-                                    onPress={this.CreateAccount}> 
+                                    onPress={() => Actions.createAccount()}> 
                                     <Text style={styles.createAccountText}>Create Account</Text>
                                 </Button> 
                             </View>
@@ -52,6 +53,7 @@ export class StartPage extends React.Component {
     }
 
     //Following functions make sure that the buttons navigate to correct page / JF (11/4)
+    /*
     Login = () => {
         this.props.navigation.navigate('Login')
     }
@@ -63,8 +65,10 @@ export class StartPage extends React.Component {
     SeeMap = () => {
         this.props.navigation.navigate('MapView')
     }
+    */
 }
 
+/*
 //This class returns the LoginPage / JF (11/4)
 class Login extends React.Component {
     static navigationOptions = {
@@ -78,7 +82,9 @@ class Login extends React.Component {
         );
     }
 };
+*/
 
+/*
 //This class returns the CreateAccount Screens / JF (11/4)
 class CreateAccountScreen extends React.Component {
     static navigationOptions = {
@@ -95,11 +101,14 @@ class CreateAccountScreen extends React.Component {
         );
     }
 };
+*/
+
 
 /*This class resturns the map. 
 So far the map is placed on card, because some stylingsproblems.
 When the styling works correctly, we have to decide if the map should be
 over the whole page / JF (11/4)*/
+/*
 class TheMap extends React.Component {
     static navigationOptions = {
         title: 'MapView'
@@ -118,6 +127,7 @@ class TheMap extends React.Component {
         );
     }
 };
+*/
 
 const styles = {
     headerText: {
@@ -185,13 +195,14 @@ InitialRouteName is which page to start on when calling MyApp/JG 13/4 */
 });*/
 
 //Export correct page, SwitchNavigator make sure that correct page is shown / JF (11/4)
-
+/*
 export default SwitchNavigator({
     Home: { screen: StartPage },
-    Login: { screen: Login },
+    //Login: { screen: Login },
     CreateAccount: { screen: CreateAccountScreen },
-    MapView: {screen: TheMap}
+    //MapView: {screen: TheMap}
 });
+*/
 
 otherStyles = StyleSheet.create({
     container: {
@@ -201,3 +212,4 @@ otherStyles = StyleSheet.create({
     }
 })
 
+export default StartPage;

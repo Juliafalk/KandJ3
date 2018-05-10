@@ -4,20 +4,20 @@ Currently not is used, have to figure out how to send props and state
 between diffrent pages / JF (18/4) */
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { MyButton } from './common';
+import { View, Text } from 'react-native';
+import { Icon } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 
 class SummaryPage extends React.Component { 
     
     render() {
-        const { params } = this.props.navigation.state;
-        console.log(this.props.navigation.state)
-        console.log('hellu')
-        console.log('data?' + data)
         return (
             <View style={{ height: '90%', marginTop: 60}}>
-            <View style={styles.divideSection}>
-                <Text>Here should be a Map</Text>
+            <View style={{ marginLeft: 15, marginTop: 10 }}>
+            <Icon name='close' 
+            onPress={() => {Actions.Map()}} 
+            style={{ fontSize: 50, color: 'red' }}
+            />
             </View>
             <View style={styles.divideSection}>
                 <Text>Here should be some distance and time info</Text>
@@ -27,9 +27,7 @@ class SummaryPage extends React.Component {
             </View>
 
             </View>
-            
         );
-       
     }
 }
 
@@ -39,4 +37,5 @@ const styles = {
         justifyContent: 'center',
     }
 }
+
 export default SummaryPage;

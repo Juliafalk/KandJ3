@@ -11,6 +11,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { MyCardSection, MyInput, MySpinner } from './common';
 import StartPage from './StartPage';
 import firebase from 'firebase';
+import Wallpaper from './Wallpaper';
+import { Actions } from 'react-native-router-flux';
 
 class CreateAccount extends React.Component {
 
@@ -46,6 +48,8 @@ class CreateAccount extends React.Component {
              loading: false, 
              error: '' //overkill, is not needed.. 
        });
+
+       Actions.Map();
     }
 
     onCreateAccountFailed() {
@@ -70,12 +74,15 @@ class CreateAccount extends React.Component {
         );
     }
 
+            
+
     render () {
         return ( 
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 contentContainerStyle={styles.container}
                 scrollEnabled={true}>
+                <Wallpaper>
                 <View>
                     <View style={styles.inputContainer}>
                         <Icon type="SimpleLineIcons" name="user-follow" style={styles.iconStyle} />
@@ -129,21 +136,25 @@ class CreateAccount extends React.Component {
                         </View>
                             
                         <MyCardSection>
-                            <Button full style={styles.goBackButton} onPress={this.GoBack}>
+                            <Button full style={styles.goBackButton} onPress={() => Actions.login()}>
                                 <Icon type="Ionicons" name="ios-arrow-back" style={{color:'black', fontSize: 15}}/> 
                                 <Text style={styles.goBackButtonText}>Go Back</Text>
                             </Button>
                         </MyCardSection>
                 </View>
+                </Wallpaper>
             </KeyboardAwareScrollView>
         );
     };
 
+    /*
     GoBack =() => {
             this.props.navigation.navigate('Home');
     } 
+    */
 }
 
+/*
 class GoBackStartPage extends React.Component {
     static navigationOptions = {
         title: 'Home'
@@ -154,6 +165,7 @@ class GoBackStartPage extends React.Component {
         );
     }
 }
+*/
 
 const styles = {
     iconStyle: {
@@ -198,7 +210,11 @@ const styles = {
     }
 }
 
+/*
 export default SwitchNavigator({
     CreateAccount: { screen: CreateAccount },
     Home: { screen: GoBackStartPage }
 });
+*/
+
+export default CreateAccount;

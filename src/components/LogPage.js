@@ -71,16 +71,6 @@ class LogPage extends React.Component {
         } = styles;
         return (
             <View style={viewStyle}>
-                <Header style={headerStyle}>
-                    <Left>
-                        <Icon name="ios-menu" style={iconStyle} onPress={() =>
-                            this.props.navigation.navigate('DrawerOpen')}/>
-                        </Left>
-                        <Body>
-                            <Title style={{color:'white'}} /*style={headerTextStyle}*/>Log</Title>
-                        </Body>
-                        <Right />
-                    </Header>
                     <ScrollView>
                     <View>
                         <View >

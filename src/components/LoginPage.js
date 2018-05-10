@@ -6,6 +6,7 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import firebase from 'firebase';
 import { MyCard, MyCardSection, MySpinner, MyInput } from './common';
 import { Button } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 
 class LoginPage extends Component { 
     state = { email: '', password: '', error: '', loading: false };
@@ -34,6 +35,8 @@ class LoginPage extends Component {
             loading: false, 
             error: '' //overkill, is not needed.. 
         });
+
+        Actions.Map();
     }
 
     renderButton() {

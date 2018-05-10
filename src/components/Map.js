@@ -26,6 +26,7 @@ import {
 } from './common';
 import { connect } from 'react-redux';
 import { runAgain } from '../actions';
+import { Actions } from 'react-native-router-flux';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -44,8 +45,13 @@ const TOTAL_DURATION = 0;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 Geocoder.init(GOOGLE_MAPS_APIKEY);
 
-
 class Map extends Component {
+
+  static navigationOptions = {
+    drawerIcon: (
+        <Icon name='ios-map-outline' style={{ color: 'white'}} />
+    )
+  }
 
   constructor(props) {
     super(props);
@@ -421,7 +427,7 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.SummaryPage(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase()}
+                    {text: 'OK', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase()}
                     },
                   ],
                   { cancelable: false }
@@ -436,12 +442,14 @@ class Map extends Component {
     }
   }
 
+  //JL 9/5: används inte nu, men måste göra durationTime och totalDistance till redux state för att kunna skicka med
+  /*
   SummaryPage() {
     this.props.navigation.navigate('SummaryView', {
       durationTime: TOTAL_DURATION,
       totalDistance: DISTANCE_TRAVELLED,
     });
-  }
+  }*/
 
   //JL 17/4: these three functions handle the stopwatch used to track the user's runtime
   toggleStopwatch() {
@@ -505,7 +513,6 @@ class Map extends Component {
           <MapView.Marker 
             coordinate={this.state.initialPositionMarker} 
           />
-          {(WAYPOINTS.length >= 2) && (
             <MapViewDirections
               origin={WAYPOINTS[0]}
               waypoints={ (WAYPOINTS.length > 2) ? WAYPOINTS.slice(1, -1): null}
@@ -523,6 +530,7 @@ class Map extends Component {
                 //Generate a new route when the route is 10% to short or to small
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
+                console.log(result)
                 if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   this.routeGenerator(this.state.wantedDistance)
                 }
@@ -546,7 +554,6 @@ class Map extends Component {
                  this.routeGenerator(this.state.wantedDistance)
               }}
             />
-          )}
 
         </MapView>
           {this.startRunning()}
@@ -662,140 +669,6 @@ const options = {
   }
 };
  
-/****************HERE STARTS A NEW CLASS FOR SUMMARYPAGE*****************/
-class TheSummary extends Map {
-
-  static navigationOptions = {
-      title: 'SummaryView'
-  };
-
-  //Does not work yet, therefore nothing will happen when pressing add to favorite / JF (2/5)
-  addFavorite (){
-    const { currentUser } = firebase.auth();
-    
-    console.log(this.props)
-    console.log(currentUser)
-    //const UID = route.uid;
-    firebase.database().ref(`/users/${currentUser.uid}/routes/`)
-        .update({ favorite: true });
-  }
-
-  render() {
-
-    const {
-      divideSection,
-      summary,
-      summaryCard,
-      summaryLabel,
-      iconSummary,
-      summaryText,
-      favoriteButtonStyle,
-      favoriteStyle,
-    } = summaryStyle
-
-    const { params } = this.props.navigation.state;
-    const durationTime = params ? params.durationTime : null;
-    const totalDistance = params ? params.totalDistance : null;
-    const date= new Date().toDateString()
-
-
-    return (
-        <View style={summary} >
-        <View style={{ marginLeft: 15, marginTop: 10 }}>
-        <Icon name='close' 
-          onPress={() => {this.props.navigation.navigate('Home')}} 
-          style={{ fontSize: 50, color: 'red' }}
-        />
-        </View>
-        <View style={divideSection}>
-            < Image style={{ height: 90, width: 90}}  
-            source={require('./images/finisher.png')}/>
-        </View>
-        <View style={summaryCard}>
-        <LogCard>
-            <LogCardItem>
-              <Text style={summaryLabel} >
-              {date.toUpperCase()}</Text>
-            </LogCardItem>
-
-            <View style={{ backgroundColor: 'black', height: 0.5,  
-              width: '100%',marginBottom: 8,}} />
-
-            <LogCardItem>
-              <View style={iconSummary} >
-                <Icon  name='ios-stopwatch-outline'/>
-              </View>
-              <Text style={summaryText}>Duration: {durationTime}</Text>
-            </LogCardItem>
-            
-            <LogCardItem block >
-              <View style={iconSummary} >
-                <Icon  name="ios-walk-outline"/>
-              </View>
-              <Text style={summaryText} >Your distance: {totalDistance} km</Text>
-            </LogCardItem>
-          </LogCard>
-        </View>
-
-        <Button transparent style={favoriteButtonStyle} /*onPress={() => {this.addFavorite()}}*/>
-            <Icon type="MaterialIcons" name="favorite-border" style={{ color:'#fff', fontSize: 50}} />
-            <Text style={favoriteStyle}>Add to favorites!</Text>
-        </Button>
-
-        </View>
-
-    );  
-  }
-};
-
-const summaryStyle = {
-  divideSection: {
-    //height: '30%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  summary: {
-    height: '100%',
-    backgroundColor: '#5c688c'
-  },
-  summaryCard: {
-    alignItems: 'center',
-    backgroundColor: '#5c688c',
-    zIndex: -1
-  },
-  summaryLabel: {
-    fontSize: 17, 
-    paddingLeft: 1, 
-    flex: 1, 
-    fontFamily: 'GillSans-Light',
-    color: 'black'
-  },
-  iconSummary: { 
-    width: '7%',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  summaryText:{
-    marginTop: 5,
-    fontSize: 17,
-    fontFamily: 'GillSans-Light',
-    paddingLeft: 10
-  },
-  favoriteButtonStyle: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    height: '10%',
-
-  },
-  favoriteStyle: {
-    fontFamily: 'GillSans-Light',
-    fontSize: 20,
-    color: '#fff' 
-  },
-}
-
 /*
 export default SwitchNavigator({
   Home: { screen: Map },
@@ -810,4 +683,3 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, { runAgain })(Map); 
-

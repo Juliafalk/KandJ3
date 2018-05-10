@@ -17,8 +17,9 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from '../reducers';
 import { connect } from 'react-redux';
-import { routesFetch } from '../actions/RoutesActions';
+import { routesFetch } from '../actions';
 import FavoriteListItem from './FavoriteListItem';
+import { Actions } from 'react-native-router-flux';
 
 
 class FavoritePage extends React.Component { 
@@ -78,16 +79,6 @@ class FavoritePage extends React.Component {
         } = styles;
         return (
                 <View style={viewStyle}>
-                    <Header style={headerStyle}>
-                        <Left>
-                            <Icon name="ios-menu" style={iconStyle} onPress={() =>
-                            this.props.navigation.navigate('DrawerOpen')}/>
-                        </Left>
-                        <Body>
-                            <Text style={headerTextStyle}>Favorites</Text>
-                        </Body>
-                        <Right />
-                    </Header>
                     <ScrollView>
                     <View>
                     <View >
