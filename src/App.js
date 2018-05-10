@@ -96,18 +96,6 @@ class App extends React.Component {
             </Provider>
         );
     }
-    
-    /*
-    render()  {
-        return(
-            <Provider store={ store }>
-                <Container>
-                    {this.renderContent()};    
-                </Container>
-            </Provider>
-        );
-    }
-    */
 }
 
 //JL 9/5: används i router till drawer scene
@@ -115,7 +103,7 @@ export const CustomDrawerContentComponent = (props) => (
     <Container >
         <Header style={{ height: 200 }}>
             <Body>
-                <ImageBackground style={otherStyles.drawerImage} blurRadius= {7} 
+                <ImageBackground style={styles.drawerImage} blurRadius= {7} 
                 source={require('./components/images/bredTrack.jpg')}>
                 <Text style={otherStyles.sideImage}>runRouter</Text>
                 </ImageBackground>
@@ -141,29 +129,15 @@ function Logout() {
     firebase.auth().signOut()
     Actions.login();
 }
-/*
-export const MyApp = DrawerNavigator({
 
-    Map: {
-        screen: Map
-    },
-    Log: {
-        screen: LogPage
-    },
-    Favorites: {
-        screen: FavoritePage
-    },
-    Settings: {
-        screen: SettingsScreen
-    },
-}, 
-{
-    initialRouteName: 'Map',
-    contentComponent: CustomDrawerContentComponent,
-    drawerOpenRoute: 'DrawerOpen',
-    drawerCloseRoute: 'DrawerClose',
-    drawerToggleRoute: 'DrawerToggle' 
-})*/
+
+const styles = {
+    drawerImage: {
+        height: 215,
+        width: 280,
+        borderRadius: 75
+    }
+},
 
 otherStyles = StyleSheet.create({
     container: {
@@ -178,12 +152,6 @@ otherStyles = StyleSheet.create({
         color: 'white', 
         alignSelf: 'center', 
         marginTop: '35%' 
-    },
-
-    drawerImage: {
-        height: 215,
-        width: 280,
-        borderRadius: 75
     }
 })
 
