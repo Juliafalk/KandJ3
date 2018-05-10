@@ -74,8 +74,6 @@ class CreateAccount extends React.Component {
         );
     }
 
-            
-
     render () {
         return ( 
             <KeyboardAwareScrollView
@@ -146,26 +144,7 @@ class CreateAccount extends React.Component {
             </KeyboardAwareScrollView>
         );
     };
-
-    /*
-    GoBack =() => {
-            this.props.navigation.navigate('Home');
-    } 
-    */
 }
-
-/*
-class GoBackStartPage extends React.Component {
-    static navigationOptions = {
-        title: 'Home'
-    };
-    render () {
-        return (
-        <StartPage />
-        );
-    }
-}
-*/
 
 const styles = {
     iconStyle: {
@@ -209,12 +188,5 @@ const styles = {
         marginRight: 15
     }
 }
-
-/*
-export default SwitchNavigator({
-    CreateAccount: { screen: CreateAccount },
-    Home: { screen: GoBackStartPage }
-});
-*/
 
 export default CreateAccount;

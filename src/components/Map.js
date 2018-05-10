@@ -116,8 +116,7 @@ class Map extends Component {
         longitude: position.coords.longitude,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
-      },
-        //wantedDistance: ''
+      }
       });
     },
     (error) => alert(JSON.stringify(error)),
@@ -286,10 +285,7 @@ class Map extends Component {
                     latitudeDelta: LATITUDE_DELTA,
                     longitudeDelta: LONGITUDE_DELTA
                   }
-                
-                  
                 });
-                
               })
               .catch(error => console.warn(error))
           }}
@@ -441,15 +437,6 @@ class Map extends Component {
       );
     }
   }
-
-  //JL 9/5: används inte nu, men måste göra durationTime och totalDistance till redux state för att kunna skicka med
-  /*
-  SummaryPage() {
-    this.props.navigation.navigate('SummaryView', {
-      durationTime: TOTAL_DURATION,
-      totalDistance: DISTANCE_TRAVELLED,
-    });
-  }*/
 
   //JL 17/4: these three functions handle the stopwatch used to track the user's runtime
   toggleStopwatch() {
@@ -668,13 +655,6 @@ const options = {
     marginLeft: 2,
   }
 };
- 
-/*
-export default SwitchNavigator({
-  Home: { screen: Map },
-  SummaryView: {screen: TheSummary}
-});
-*/
 
 const mapStateToProps = state => {
   return {

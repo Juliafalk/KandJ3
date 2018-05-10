@@ -21,7 +21,6 @@ import { routesFetch } from '../actions';
 import FavoriteListItem from './FavoriteListItem';
 import { Actions } from 'react-native-router-flux';
 
-
 class FavoritePage extends React.Component { 
     static navigationOptions = {
         drawerIcon: (
@@ -46,8 +45,6 @@ class FavoritePage extends React.Component {
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
-        //console.log(ds)
-
         this.dataSource = ds.cloneWithRows(routes)
         
     }
@@ -130,6 +127,5 @@ const styles = {
         marginTop: '60%'
     }
 }
+
 export default connect(mapStateToProps, { routesFetch })(FavoritePage); 
-
-

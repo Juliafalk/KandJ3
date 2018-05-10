@@ -1,4 +1,4 @@
-/*Here a summare for the runner will be displayed,
+/*Here a summary for the runner will be displayed,
 a map, distance and total duration will be displayed.
 Currently not is used, have to figure out how to send props and state 
 between diffrent pages / JF (18/4) */
@@ -8,6 +8,7 @@ import { View, Text } from 'react-native';
 import { Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
+//JL 19/5: just a shell to be able to navigate to this page, JF is working on layout
 class SummaryPage extends React.Component { 
     
     render() {

@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import firebase from 'firebase'; 
-import { 
-    Icon, 
-    Button, 
-} from 'native-base';
-import {
-    LogCard,
-    LogCardItem
-} from './common';
+import { Icon, Button } from 'native-base';
+import { LogCard, LogCardItem } from './common';
+import { connect } from 'react-redux';
+import { runAgain } from '../actions';
+import { Actions } from 'react-native-router-flux';
 
 class FavoriteListItem extends Component {
 
@@ -18,7 +15,6 @@ class FavoriteListItem extends Component {
             onClicked: false
         }
         this.handlerButtonOnClick = this.handlerButtonOnClick.bind(this)
-    
     }
 
     handlerButtonOnClick() {
@@ -27,9 +23,9 @@ class FavoriteListItem extends Component {
         });
     }
 
-    runAgain (){
-        console.log('pressed runAgain')
-        console.log(theRoute)
+    runAgain(route) {
+        this.props.runAgain(route.WAYPOINTS);
+        Actions.Map();
     }
 
     removeFavorite (route){
@@ -182,4 +178,10 @@ const styles = {
     },
 };
 
-export default FavoriteListItem;
+const mapStateToProps = state => {
+    return {
+        wayPoints: state.runAgain.wayPoints
+    };
+};
+
+export default connect(mapStateToProps, { runAgain })(FavoriteListItem); 

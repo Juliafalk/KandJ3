@@ -28,22 +28,4 @@ const RouterComponent = () => {
     );
 };
 
-/*navigationBarStyle={styles.headerStyle}
-
-const styles = {
-    headerStyle: {
-        backgroundColor: '#7785ad',
-        color: 'white'
-    }
-}*/
-
 export default RouterComponent;
-
-/*
-                <Scene key = "createAccount" component={LogPage} title="Please Login"/>
-                <Scene key = "mapView" component={LogPage} title="Please Login"/>
-                <Scene key = "summaryPage" component={LogPage} title="Please Login"/>
-                <Scene key = "logPage" component={LogPage} title="Please Login"/>
-                <Scene key = "favorites" component={LogPage} title="Please Login"/>
-                <Scene key = "login" component={LogPage} title="Please Login"/>
-*/

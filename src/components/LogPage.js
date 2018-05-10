@@ -50,7 +50,6 @@ class LogPage extends React.Component {
             return <ListItem route={route} />;
     }
 
-
     renderSpinner() {
         if (this.state.loading) {
             return (
@@ -81,11 +80,6 @@ class LogPage extends React.Component {
                         dataSource={this.dataSource}
                         renderRow={this.renderRow}
                         />
-                        <Button
-                            onPress={() =>
-                                this.props.navigation.navigate('Map')}>
-                            <Text>To Map</Text>
-                        </Button>
                     </View>
                 </ScrollView>
             </View>
