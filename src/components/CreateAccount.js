@@ -75,8 +75,8 @@ class CreateAccount extends React.Component {
         return ( 
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
-                contentContainerStyle={styles.container}
-                scrollEnabled={true}>
+                scrollEnabled={true}
+                >
                 <Wallpaper>
                 <View>
                     <View style={styles.inputContainer}>
@@ -176,6 +176,7 @@ const styles = {
         alignSelf: 'center',
         height: 35,
         width: '30%',
+        marginBottom: 146
     },
     goBackButtonText: {
         fontFamily: 'GillSans',

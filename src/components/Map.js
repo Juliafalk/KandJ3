@@ -535,11 +535,11 @@ class Map extends Component {
 //Obs2, styling for summarypages is under the class TheSummary
 const styles = {
   mapPageContainer: {
-    height: '96%',
+    height: '100%',
     backgroundColor: '#5c688c'
   },
   mapStyle: {
-    height: '80%'
+    height: '82%'
   },
   createRouteContainerStyle: {
     marginTop: 10,
