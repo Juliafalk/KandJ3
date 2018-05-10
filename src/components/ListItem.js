@@ -77,7 +77,7 @@ class ListItem extends Component {
             <View style={viewStyle} >
                 <LogCard>
                     <LogCardItem>
-                        <Text style={labelStyle}>{route.date.toUpperCase()}</Text>
+                        <Text style={labelStyle}>{route.date}</Text>
                         <Icon name="close" style={deleteRouteStyle} onPress={() => 
                                Alert.alert(
                                 'Delete route?',

@@ -36,7 +36,6 @@ const TOTAL_DURATION = 0;
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 Geocoder.init(GOOGLE_MAPS_APIKEY);
-
 class Map extends Component {
 
   static navigationOptions = {
@@ -87,9 +86,11 @@ class Map extends Component {
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
   }
+
+ 
   watchID: ?number = null; // from tutorial, red marked but it works! / JL (13/4) 
  //Do we need this? /JF 18/4 
-
+  
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
       // Here set all the positions, given by the devices current position. 
@@ -137,6 +138,8 @@ class Map extends Component {
     );
   }
 
+  
+
   calcDistance(newLatLng) {
     const { prevLatLng } = this.state
     return (haversine(prevLatLng, newLatLng) || 0 )
@@ -154,6 +157,7 @@ class Map extends Component {
   we then set this.state.wayPoints to waypoints and when rendered, the directionService will make a route 
   through these points*/
   routeGenerator(length) {
+ 
 
     lengthInMeters = length*1000;
     lengthInMeters = lengthInMeters*0.7; //only takes 80% of the input to compensate, since the generated route is almost 'always' too long
@@ -214,6 +218,8 @@ class Map extends Component {
       })
     }
   }
+
+  
 
   //JG 18/4 will send information about the route to the database
   toDatabase() {
@@ -425,6 +431,8 @@ class Map extends Component {
     this.currentTime = time;
     TOTAL_DURATION = time;
   };
+
+ 
   //****//
 
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
@@ -494,7 +502,8 @@ class Map extends Component {
                 //Generate a new route when the route is 10% to short or to small
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
-                console.log(result)
+                console.log(result.distance)
+                console.log(parseFloat(this.state.wantedDistance))
                 if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   this.routeGenerator(this.state.wantedDistance)
                 }
@@ -503,6 +512,7 @@ class Map extends Component {
                 }
                 else {
                   this.setState({ actualDistance: result.distance })
+                  console.log('right route')
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
@@ -511,7 +521,7 @@ class Map extends Component {
                       top: (height / 15),
                     }
                   });
-              }
+                }
               }}
               onError={(errorMessage) => {
                  console.log('GOT AN ERROR');

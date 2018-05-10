@@ -9,18 +9,23 @@ import LogPage from './components/LogPage';
 import FavoritePage from './components/FavoritePage';
 import SettingsScreen from './components/SettingsScreen';
 import SummaryPage from './components/SummaryPage';
+import WaitingPage from './components/WaitingPage';
 
+//Summary scence just for working.
 const RouterComponent = () => {
     return( 
         <Router>
             <Scene key = "root">
-                <Scene initial={true} hideNavBar={true} key="login" component={StartPage}/>
+                
+                <Scene initial={true} hideNavBar={true} key="waitPage" component={WaitingPage}/>
+                <Scene hideNavBar={true} key="login" component={StartPage}/>
                 <Scene hideNavBar={true} key="createAccount" component={CreateAccount}/>
-                <Scene  hideNavBar={true} key="sideMenu" drawer={true} drawerIcon={<Icon name="ios-menu"/>}contentComponent={CustomDrawerContentComponent}>
+                <Scene hideNavBar={true} key="sideMenu" drawer={true} drawerIcon={<Icon name="ios-menu"/>}contentComponent={CustomDrawerContentComponent}>
                     <Scene key="Map" title="Map" component={Map}/>
                     <Scene key="Log" title="Log" component={LogPage}/>
                     <Scene key="Favorites" title="Favorites" component={FavoritePage}/>
                     <Scene key="Settings" title="Settings" component={SettingsScreen}/>
+
                 </Scene>
                 <Scene hideNavBar={true} key="summary" component={SummaryPage}/>
             </Scene>

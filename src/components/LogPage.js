@@ -21,19 +21,18 @@ class LogPage extends React.Component {
 
     componentWillReceiveProps(nextProps){
         this.setState({loading: false})
-        this.createDataSource(this.props);
-    }
-
-    createDataSource({ routes }) {
-            const ds = new ListView.DataSource({
-                rowHasChanged: (r1, r2) => r1 !== r2
-            });
-            this.dataSource = ds.cloneWithRows(routes)
+        this.createDataSource(nextProps);
     }
 
     renderRow(route){
             return <ListItem route={route} />;
     }
+    createDataSource({ routes }) {
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        });
+        this.dataSource = ds.cloneWithRows(routes)
+}
 
     renderSpinner() {
         if (this.state.loading) {
@@ -73,6 +72,7 @@ const mapStateToProps = state => {
             ...val, uid
         };
     });
+    //console.log(routes) returns first empty array, then a filled array?
 
     return { routes };
 };

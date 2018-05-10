@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
-import RoutesReducer from './RoutesReducer'
+import RouteReducer from './RoutesReducer';
+import LastRouteReducer from './LastRouteReducer';
+import FavoriteRoutesReducer from './FavoriteRoutesReducer';
 import RunAgainReducer from './RunAgainReducer'
 
 export default combineReducers({
-    routes: RoutesReducer,
+    routes: RouteReducer,
+    lastRoute: LastRouteReducer,
+    favRoutes: FavoriteRoutesReducer,
     runAgain: RunAgainReducer
- }); 
+ });
