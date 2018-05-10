@@ -34,6 +34,7 @@ const styles = {
         paddingBottom: 8,
         paddingRight: 8,
         flexDirection: 'row',
+        borderRadius: 5
     },
     textStyle: {
         fontSize: 20,
