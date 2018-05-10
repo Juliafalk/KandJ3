@@ -16,7 +16,7 @@ import Geocoder from 'react-native-geocoding';
 import firebase from 'firebase';
 import haversine from 'haversine';
 import { connect } from 'react-redux';
-import { runAgain } from '../actions';
+import { runAgain, startButton } from '../actions';
 import { Actions } from 'react-native-router-flux';
 
 const { width, height } = Dimensions.get('window');
@@ -72,7 +72,6 @@ class Map extends Component {
       prevLatLng: {},
       wantedDistance: '',
       createRoute: true,
-      startButton: true,
       startRunning: false,
       stopwatchStart: false,
       stopwatchReset: false,
@@ -199,9 +198,9 @@ class Map extends Component {
   changeDistance(userInput) {
     if (userInput === '') {
       this.setState({
-        createRoute: true,
-        startButton: true
+        createRoute: true
       })
+      this.props.startButton(true);
     }
     else {
       this.setState({
@@ -337,15 +336,15 @@ class Map extends Component {
               info
               style={createRouteButtonStyle}
               disabled ={createRoute}
-              onPress={() => {this.routeGenerator(wantedDistance), 
-              this.setState({ startButton: false, createdRoute: true }), Keyboard.dismiss}}>
+              onPress={() => {this.routeGenerator(wantedDistance)
+              this.setState({ createdRoute: true }), this.props.startButton(false), Keyboard.dismiss}}>
                 <Text style={{ fontSize: 12, textAlign: 'center' }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
           <Button
           full
           success
-          disabled={startButton}
+          disabled={this.props.START_BUTTON}
           style={startButtonStyle}
           onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
             this.resetStopwatch(), this.toggleStopwatch()}}>
@@ -626,8 +625,9 @@ const options = {
 
 const mapStateToProps = state => {
   return {
-      WAYPOINTS: state.runAgain.wayPoints
+      WAYPOINTS: state.runAgain.wayPoints,
+      START_BUTTON: state.runAgain.startButton
   };
 };
 
-export default connect(mapStateToProps, { runAgain })(Map); 
+export default connect(mapStateToProps, { runAgain, startButton })(Map); 
