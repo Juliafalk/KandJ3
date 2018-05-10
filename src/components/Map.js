@@ -338,7 +338,6 @@ class Map extends Component {
             </View>
             <Button
               info
-              full
               style={createRouteButtonStyle}
               disabled ={createRouteDisabled}
               onPress={() => {this.routeGenerator(wantedDistance)
@@ -347,7 +346,7 @@ class Map extends Component {
             </Button>
           </View>
           <Button
-          full
+          block
           success
           disabled={this.props.START_BUTTON}
           style={startButtonStyle}
@@ -366,7 +365,7 @@ class Map extends Component {
               {distanceTravelled.toFixed(2)} km 
             </Text>
           <View style={timeContainer}>
-            <Icon name='time' style={{fontSize: 25, marginTop: 6}}/>
+            <Icon name='time' style={{fontSize: 25, marginTop: 4, color: 'white'}}/>
             <Stopwatch
               start={stopwatchStart}
               options={options}
@@ -433,8 +432,6 @@ class Map extends Component {
       distanceContainer,
       mapPageContainer,
       mapStyle,
-      startButtonStyle,
-      distanceTravelledStyle,
       timeContainer,
       pauseDoneContainer,
       pauseDoneButton
@@ -561,7 +558,7 @@ const styles = {
     marginRight: 10
   },
   timeContainer: {
-    width: '35%',
+    width: 150,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -569,7 +566,10 @@ const styles = {
     marginRight: -15
   },
   distanceTravelledStyle: {
-    fontSize: 25
+    fontSize: 25,
+    color: 'white',
+    paddingLeft: 15,
+    marginTop: 5
   },
   inputContainerStyle: {
     width: 80,
@@ -610,7 +610,7 @@ const styles = {
     margin: 9
   },
   pauseDoneButton: {
-    width: '30%',
+    width: '33%',
     marginRight: 5,
     marginLeft: 5
   }
@@ -623,7 +623,7 @@ const options = {
   },
   text: {
     fontSize: 25,
-    color: 'black',
+    color: 'white',
     marginLeft: 2,
   }
 };

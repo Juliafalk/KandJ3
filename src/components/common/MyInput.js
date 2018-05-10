@@ -26,13 +26,14 @@ const MyInput = ({secureTextEntry, placeholder, value, onChangeText, iconType, i
 const styles = {
     viewStyle: {
         height: 40,
-        flex: 1,
+        flex: 1
     },
     inputContainer: {
         backgroundColor: 'white',
         opacity: 0.78,
         padding: 8,
         flexDirection: 'row',
+        borderRadius: 5
     },
     iconStyle: {
         fontSize: 22,

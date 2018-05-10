@@ -23,7 +23,7 @@ class LoginPage extends Component {
 
     onLoginFailed() {
         this.setState({
-            error: 'Authentication Failed.',
+            error: 'Wrong email or password!',
             loading: false
         });
     }
@@ -47,7 +47,7 @@ class LoginPage extends Component {
         return (
             <View>
                 <Button
-                    full
+                    block
                     style={styles.loginButton}
                     onPress={this.onButtonPress.bind(this)}> 
                     <Text
@@ -68,7 +68,7 @@ class LoginPage extends Component {
                     <MyInput
                     placeholder="user@gmail.com"
                     value={this.state.email}
-                    onChangeText={email => this.setState({ email })}
+                    onChangeText={email => this.setState({ email, error: '' })}
                     iconType={"SimpleLineIcons"} 
                     iconName={'user'} 
                     />
@@ -95,8 +95,9 @@ class LoginPage extends Component {
 
 const styles = {
     errorTextStyle: {
-        height: 20,
+        height: 25,
         fontSize: 20,
+        marginBottom: 12.7,
         alignSelf: 'center',
         color: 'black',
         fontFamily: 'GillSans-SemiBold'
