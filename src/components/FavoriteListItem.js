@@ -12,6 +12,21 @@ import {
 
 class FavoriteListItem extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = { 
+            onClicked: false
+        }
+        this.handlerButtonOnClick = this.handlerButtonOnClick.bind(this)
+    
+    }
+
+    handlerButtonOnClick() {
+        this.setState({
+            onClicked: true
+        });
+    }
+
     runAgain (){
         console.log('pressed runAgain')
         console.log(theRoute)
@@ -26,8 +41,25 @@ class FavoriteListItem extends Component {
  
     render() {        
         const { route } = this.props;
+
+        var viewStyle;
+
+        if(this.state.onClicked === true || route.favorite === false ) {
+            console.log('route')
+            console.log(route)
+            viewStyle = {
+               height: 0
+            }
+
+        }
+        else{
+            viewStyle = {
+                alignItems: 'center',
+                backgroundColor: '#5c688c'
+            }    
+        }     
+
         const { 
-            viewStyle,
             labelStyle,
             lineStyle, 
             textStyle,
@@ -75,7 +107,7 @@ class FavoriteListItem extends Component {
                             </LogCardItem>
                         </View>
                         <View style= {favoriteRunView}>
-                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.removeFavorite(route)}}>>
+                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.removeFavorite(route), this.handlerButtonOnClick()}}>>
                                 <Icon type="MaterialIcons" name="delete" style={{ color:'black'}} />
                                 <Text style={favoriteStyle}>Remove favorite</Text>
                             </Button>
