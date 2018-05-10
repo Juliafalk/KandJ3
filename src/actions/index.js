@@ -53,11 +53,6 @@ export const lastRouteFetch = () => {
     return(dispatch) => {
         firebase.database().ref(`/users/${currentUser.uid}/routes`)
             .on('value', snapshot => {
-                console.log(snapshot.val())
-                var theRoutes = snapshot.val()
-                console.log(Object.keys(snapshot.val()).length)
-                console.log(theRoutes[Object.keys(theRoutes)[Object.keys(theRoutes).length -1 ]])
-                var lastRoute = theRoutes[Object.keys(theRoutes)[Object.keys(theRoutes).length -1 ]]
                 dispatch({ 
                     type: LAST_ROUTE_FETCH,  
                     payload: snapshot.val()
