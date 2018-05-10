@@ -9,19 +9,7 @@ import { Actions } from 'react-native-router-flux';
 
 class ListItem extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = { 
-            onClicked: false
-        }
-        this.handlerButtonOnClick = this.handlerButtonOnClick.bind(this)
-    }
 
-    handlerButtonOnClick() {
-        this.setState({
-            onClicked: true
-        }); 
-    }
     
     //JL 2/5: vill här ändra sida till kartan och skicka med waypoints
     runAgain(route) {
@@ -50,13 +38,21 @@ class ListItem extends Component {
         var iconName;
         const { route } = this.props;
          
-        if(this.state.onClicked || route.favorite == true ) {
+        if(route.favorite == true ) {
             favoriteText = "Favorite!",
-            iconName = "favorite"
+            iconName = "favorite",
+            iconStyle = {
+                color: '#d6b3d2',
+                fontSize:25
+            }
         }
         else{
             favoriteText = "Add to favorites!",
-            iconName = "favorite-border"
+            iconName = "favorite-border",
+            iconStyle = {
+                color: 'black',
+                fontSize:25
+            }
         }
         
         const { 
@@ -121,8 +117,8 @@ class ListItem extends Component {
                         </View>
                         <View style= {favoriteRunView}>
                         
-                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route), this.handlerButtonOnClick()}}>
-                                <Icon type="MaterialIcons" name={iconName} style={{ color:'black'}} />
+                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route)}}>
+                                <Icon type="MaterialIcons" name={iconName} style={iconStyle} />
                                 <Text style={favoriteStyle}>{favoriteText}</Text>
                             </Button>
                             <Button full 

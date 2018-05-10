@@ -32,23 +32,63 @@ var routeDate;
 var routeDistance;
 var routeDuration;
 var distanceTravelled;
+var favoriteRoute;
 
 
 //JL 19/5: just a shell to be able to navigate to this page, JF is working on layout
 class SummaryPage extends React.Component { 
+
     
     componentWillMount() {
         this.props.lastRouteFetch();
     }
 
-    addToFavorite (lastRoute){
+    addRemoveFavorite (lastRoute){
         const { currentUser } = firebase.auth();
+        console.log(favoriteRoute)
+        if (favoriteRoute === false){
         firebase.database().ref(`/users/${currentUser.uid}/routes/${routeid}`)
            .update({ favorite: true });
-    }
+        }
+        else if (favoriteRoute === true){
+            firebase.database().ref(`/users/${currentUser.uid}/routes/${routeid}`)
+               .update({ favorite: false });
+        }
+}
 
     render() {
         const { lastRoute } = this.props;
+         
+        if(favoriteRoute == true ) {
+            favoriteText = "Favorite!",
+            iconName = "favorite",
+            iconStyle = {
+                color: '#d6b3d2',
+                fontSize: 50
+            },
+            unAddText="Psst.. Press the heart to remove from favorites"  
+        }
+
+        else if (favoriteRoute == false){
+            favoriteText = "Add to favorites!",
+            iconName = "favorite-border",
+            iconStyle = {
+                color: '#ffffff',
+                fontSize: 50
+            },
+            unAddText=""
+
+        }
+
+        else {
+            favoriteText = "Add to favorites!",
+            iconName = "favorite-border",
+            iconStyle = {
+                color: '#ffffff',
+                fontSize: 50
+            },
+            unAddText=""
+        }
         const {
             divideSection,
             summary,
@@ -58,6 +98,7 @@ class SummaryPage extends React.Component {
             summaryText,
             favoriteButtonStyle,
             favoriteStyle,
+            unAddStyle,
           } = summaryStyle
       
         return (
@@ -65,7 +106,7 @@ class SummaryPage extends React.Component {
             <View style={{ marginLeft: 15, marginTop: 10 }}>
             <Icon name='close' 
             onPress={() => {Actions.Map()}} 
-            style={{ fontSize: 50, color: 'red' }}
+            style={{ fontSize: 50, color: 'white' }}
             />
             </View>
             <View style={{ marginLeft: 15, marginTop: 10 }}>
@@ -99,11 +140,17 @@ class SummaryPage extends React.Component {
                 </LogCardItem>
             </LogCard>
             </View>
-
-            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addToFavorite(lastRoute)}}>
-                <Icon type="MaterialIcons" name="favorite-border" style={{ color:'#fff', fontSize: 50}} />
-                <Text style={favoriteStyle}>Add to favorite</Text>
+            
+        
+            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addRemoveFavorite(lastRoute)}}>
+                <Icon 
+                type="MaterialIcons" 
+                name={iconName} 
+                style={iconStyle} />
+                <Text style={favoriteStyle}>{favoriteText}</Text>
             </Button>
+            <Text style={unAddStyle}>{unAddText}</Text>
+         
             </View>
         )
     }
@@ -117,6 +164,7 @@ const mapStateToProps = state => {
         routeDistance = theRoute.actualDistance;
         routeDuration = theRoute.TOTAL_DURATION;
         distanceTravelled = theRoute.DISTANCE_TRAVELLED;
+        favoriteRoute = theRoute.favorite;
         }
         return {theRoute, uid};
     });
@@ -168,6 +216,13 @@ const summaryStyle = {
       fontSize: 20,
       color: '#fff' 
     },
+    unAddStyle: {
+        fontFamily: 'GillSans-Light',
+        fontSize: 15,
+        color: '#fff',
+        justifyContent: 'center',
+        alignSelf: 'center'
+    }
 }
   
 export default connect(mapStateToProps, { lastRouteFetch })(SummaryPage); 
