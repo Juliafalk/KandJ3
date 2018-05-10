@@ -15,7 +15,8 @@ import MapPage from './components/MapPage';
 import LogPage from './components/LogPage';
 import FavoritePage from './components/FavoritePage';
 import SettingsScreen from './components/SettingsScreen';
-import WaitingPage from './components/WaitingPage'
+import WaitingPage from './components/WaitingPage';
+import SummaryPage from './components/SummaryPage';
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
 import { 
     Container, 
@@ -68,7 +69,7 @@ class App extends React.Component {
                 scrollEnabled={false}
                 >
                 <Container>
-                <MyApp /> 
+                    <MyApp /> 
                 
                  </Container>
                 </KeyboardAwareScrollView>);
@@ -83,7 +84,9 @@ class App extends React.Component {
         return(
             <Provider store={ store }>
             <Container>
-           {this.renderContent()};    
+                {this.renderContent()}
+
+               
            </Container>
            </Provider>
         );
@@ -127,7 +130,7 @@ function Logout() {
 const MyApp = DrawerNavigator({
 
     Map: {
-        screen: MapPage
+        screen: SummaryPage
     },
     Log: {
         screen: LogPage

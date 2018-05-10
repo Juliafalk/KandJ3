@@ -6,7 +6,8 @@ import {
   KeyboardAvoidingView, 
   TextInput,
   View,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -42,8 +43,6 @@ const TOTAL_DURATION = 0;
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 Geocoder.init(GOOGLE_MAPS_APIKEY);
-
-
 class Map extends Component {
 
   constructor(props) {
@@ -90,9 +89,11 @@ class Map extends Component {
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
   }
+
+ 
   watchID: ?number = null; // from tutorial, red marked but it works! / JL (13/4) 
  //Do we need this? /JF 18/4 
-
+  
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
       // Here set all the positions, given by the devices current position. 
@@ -141,6 +142,8 @@ class Map extends Component {
       }
     );
   }
+
+  
 
   calcDistance(newLatLng) {
     const { prevLatLng } = this.state
@@ -227,6 +230,8 @@ class Map extends Component {
       })
     }
   }
+
+  
 
   //JG 18/4 will send information about the route to the database
   toDatabase() {
@@ -454,6 +459,8 @@ class Map extends Component {
     this.currentTime = time;
     TOTAL_DURATION = time;
   };
+
+ 
   //****//
 
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
@@ -546,6 +553,7 @@ class Map extends Component {
           )}
 
         </MapView>
+ 
           {this.startRunning()}
       </View>
     );

@@ -18,7 +18,7 @@ import { createStore } from 'redux';
 import reducers from '../reducers';
 import { connect } from 'react-redux';
 import { routesFetch } from '../actions/RoutesActions';
-import {ListItem} from './ListItem';
+import ListItem from './ListItem';
 
 class LogPage extends React.Component { 
     static navigationOptions = {
@@ -35,11 +35,13 @@ class LogPage extends React.Component {
 
     componentWillReceiveProps(nextProps){
         this.setState({loading: false})
-        this.createDataSource(this.props);
+        console.log(nextProps)
+        this.createDataSource(nextProps);
         
     }
 
     createDataSource({ routes }) {
+            //console.log(routes) - returns empty array (JF 9/5)
             const ds = new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2
             });
@@ -103,6 +105,7 @@ const mapStateToProps = state => {
     const routes = _.map(state.routes, (val, uid) => {
         return {...val, uid};
     });
+    //console.log(routes) returns first empty array, then a filled array?
 
     return { routes };
 };
