@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, ImageBackground, View} from 'react-native';
 
-
 export default class Wallpaper extends Component {
  render() {
    return (

@@ -23,7 +23,6 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import reducers from './reducers';
 import StartPage from './components/StartPage';
-import MapPage from './components/MapPage';
 import Map from './components/Map';
 import LogPage from './components/LogPage';
 import FavoritePage from './components/FavoritePage';

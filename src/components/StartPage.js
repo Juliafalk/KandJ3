@@ -10,7 +10,6 @@ import { Container, Content, Header, Body, Button, Icon, Footer } from 'native-b
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MyCard, MyCardSection, MyButton } from './common';
 //JL: should add an index file to reduce imports below
-import MapPage from './MapPage'; 
 import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
 import LogPage from './LogPage';
