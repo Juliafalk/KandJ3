@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, ListView, ScrollView, Text, ActivityIndicator } from 'react-native';
 import { Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { routesFetch } from '../actions';
+import { favoriteFetch } from '../actions';
 import FavoriteListItem from './FavoriteListItem';
 
 class FavoritePage extends React.Component { 
@@ -16,29 +16,31 @@ class FavoritePage extends React.Component {
     state = {loading: true }
 
     componentWillMount() {
-        this.props.routesFetch();
+        this.props.favoriteFetch();
         this.createDataSource(this.props);
     }
 
     componentWillReceiveProps(nextProps){
         this.setState({loading: false})
-        this.createDataSource(this.props);
+        this.createDataSource(nextProps);
     }
 
-    createDataSource({ routes }) {
+    createDataSource({ favRoutes }) {
         
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
-        this.dataSource = ds.cloneWithRows(routes)
+        //console.log(ds)
+
+        this.dataSource = ds.cloneWithRows(favRoutes)
         
     }
 
     renderRow(route){
-            if (route.favorite == true)
+            //if (route.favorite == true)
                 return <FavoriteListItem route={route} />;
-            else
-             return null;
+            //else
+            // return null;
        
     }
 
@@ -74,11 +76,11 @@ class FavoritePage extends React.Component {
 }
 
 const mapStateToProps = state => {
-    const routes = _.map(state.routes, (val, uid) => {
+    const favRoutes = _.map(state.favRoutes, (val, uid) => {
         return {...val, uid};
     });
 
-    return { routes };
+    return { favRoutes };
 };
 
 const styles = {
@@ -93,5 +95,5 @@ const styles = {
         marginTop: '60%'
     }
 }
+export default connect(mapStateToProps, { favoriteFetch })(FavoritePage); 
 
-export default connect(mapStateToProps, { routesFetch })(FavoritePage); 

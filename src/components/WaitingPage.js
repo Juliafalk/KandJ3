@@ -3,8 +3,9 @@ import { Text, ImageBackground } from 'react-native';
 import firebase from 'firebase';
 import { Icon } from 'native-base';
 
-class WaitingPage extends React.Component {
 
+class WaitingPage extends React.Component {
+   
     render() {
         const {
             textStyle,

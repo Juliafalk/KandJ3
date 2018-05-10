@@ -96,18 +96,7 @@ class App extends React.Component {
             </Provider>
         );
     }
-    
-    /*
-    render()  {
-        return(
-            <Provider store={ store }>
-                <Container>
-                    {this.renderContent()};    
-                </Container>
-            </Provider>
-        );
-    }
-    */
+ 
 }
 
 //JL 9/5: används i router till drawer scene
@@ -141,29 +130,7 @@ function Logout() {
     firebase.auth().signOut()
     Actions.login();
 }
-/*
-export const MyApp = DrawerNavigator({
 
-    Map: {
-        screen: Map
-    },
-    Log: {
-        screen: LogPage
-    },
-    Favorites: {
-        screen: FavoritePage
-    },
-    Settings: {
-        screen: SettingsScreen
-    },
-}, 
-{
-    initialRouteName: 'Map',
-    contentComponent: CustomDrawerContentComponent,
-    drawerOpenRoute: 'DrawerOpen',
-    drawerCloseRoute: 'DrawerClose',
-    drawerToggleRoute: 'DrawerToggle' 
-})*/
 
 otherStyles = StyleSheet.create({
     container: {
