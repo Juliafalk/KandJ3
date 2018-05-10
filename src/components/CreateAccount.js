@@ -70,8 +70,7 @@ class CreateAccount extends React.Component {
 
     render () {
         return ( 
-            <View
-            style={{ height: '100%'}}>
+            <View>
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 scrollEnabled={true}
