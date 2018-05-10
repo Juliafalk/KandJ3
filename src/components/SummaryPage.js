@@ -66,7 +66,7 @@ class SummaryPage extends React.Component {
                 color: '#d6b3d2',
                 fontSize: 50
             },
-            unAddText="Psst.. Press the heart to remove from favorite"  
+            unAddText="Psst.. Press the heart to remove from favorites"  
         }
 
         else if (favoriteRoute == false){
