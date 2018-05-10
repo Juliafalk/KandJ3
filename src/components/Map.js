@@ -3,27 +3,18 @@ import {
   Alert,
   Dimensions,
   Keyboard,
-  KeyboardAvoidingView, 
   TextInput,
-  View,
-  Image
+  View
 } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Stopwatch } from 'react-native-stopwatch-timer'
-import { SwitchNavigator } from 'react-navigation';
 import pick from 'lodash/pick';
-import { Button, Text, Icon, CardItem, Card } from 'native-base';
+import { Button, Text, Icon } from 'native-base';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Geocoder from 'react-native-geocoding';
 import firebase from 'firebase';
 import haversine from 'haversine';
-import {
-  LogCard,
-  LogCardItem,
-  MyInput
-} from './common';
 import { connect } from 'react-redux';
 import { runAgain } from '../actions';
 import { Actions } from 'react-native-router-flux';
@@ -75,7 +66,6 @@ class Map extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
       },
-      chosenStartpoint: '',
       distanceTravelled: 0,
       actualDistance: 0,
       favorite: false,
@@ -154,19 +144,6 @@ class Map extends Component {
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID)
   }
-
-  //JL 11/4: press on the map and add another point that the route will go through
-  //JL 9/5: tycker vi tar bort denna funktion, känns som att den kan förstöra mer än den ger i vårt fall...
-  /*
-  onMapPress = (e) => {
-    this.setState({
-      wayPoints: [
-        ...this.state.wayPoints,
-        e.nativeEvent.coordinate,
-      ],
-    });
-  }
-  */
 
   /*JL 11/4: this is a rather complicated function but I will try to explain it in a simple way
   we create a center point of a circle with a radius that is dependent on the length of the route
@@ -294,11 +271,6 @@ class Map extends Component {
             key: GOOGLE_MAPS_APIKEY,
             language: 'en', // language of the results
           }}
-          /*nearbyPlacesAPI='GooglePlacesSearch'
-          GooglePlacesSearchQuery={{
-            rankby: 'distance',
-            types: 'street_address'
-          }}*/
           renderLeftButton={() => <Icon type='EvilIcons' name='location' 
             style={{marginTop: 8, marginLeft: 3, color: 'white'}}/>}
         />
@@ -456,6 +428,8 @@ class Map extends Component {
     const {
       inputContainerStyle,
       distanceContainer,
+      mapPageContainer,
+      mapStyle,
       startButtonStyle,
       distanceTravelledStyle,
       timeContainer,
@@ -478,7 +452,7 @@ class Map extends Component {
     } = this.props;
 
     return (
-      <View style={styles.mapPageContainer}>
+      <View style={mapPageContainer}>
         <MapView
           provider={"google"}
           showsUserLocation={true}
@@ -488,7 +462,7 @@ class Map extends Component {
           onRegionChangeComplete={ currentPosition => this.setState({currentPosition}) }
           showsMyLocationButton
           show 
-          style={styles.mapStyle}
+          style={mapStyle}
           ref={c => this.mapView = c}
          >
 
@@ -572,7 +546,6 @@ const styles = {
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    //alignItems: 'center',
   },
   distanceContainer: {
     width: '35%',
@@ -636,12 +609,7 @@ const styles = {
     width: '30%',
     marginRight: 5,
     marginLeft: 5
-  },
-  chooseStartpointStyle: {
-    backgroundColor: 'white',
-    opacity: 0.8
-  },
-
+  }
 }
 //This is styling for the timer / JF (18/4)
 const options = {

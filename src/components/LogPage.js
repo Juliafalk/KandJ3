@@ -1,20 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { View, ListView, ScrollView, Text, ActivityIndicator} from 'react-native';
-import { 
-    Icon, 
-    Header,  
-    Left, 
-    Body, 
-    Title, 
-    Right,
-    CardItem,
-    Button 
-} from 'native-base';
-import Moment from 'react-moment';
-import firebase from 'firebase';
-import { MyInputCreateAccount, MyButton } from './common';
-import reducers from '../reducers';
+import { Icon, Button } from 'native-base';
 import { connect } from 'react-redux';
 import { routesFetch } from '../actions';
 import ListItem from './ListItem';
@@ -35,7 +22,6 @@ class LogPage extends React.Component {
     componentWillReceiveProps(nextProps){
         this.setState({loading: false})
         this.createDataSource(this.props);
-        
     }
 
     createDataSource({ routes }) {
@@ -43,7 +29,6 @@ class LogPage extends React.Component {
                 rowHasChanged: (r1, r2) => r1 !== r2
             });
             this.dataSource = ds.cloneWithRows(routes)
-         
     }
 
     renderRow(route){
@@ -61,13 +46,8 @@ class LogPage extends React.Component {
     }
 
     render() {
-        const { 
-           headerStyle, 
-           headerTextStyle,
-           iconStyle,
-           viewStyle,
-           spinnerView
-        } = styles;
+        const { viewStyle } = styles;
+
         return (
             <View style={viewStyle}>
                     <ScrollView>
@@ -101,28 +81,13 @@ const styles = {
     viewStyle: {
         backgroundColor: '#5c688c',
         height: '100%',
-    },
-    headerStyle: {
-        backgroundColor: '#7785ad' 
-    },
-    headerTextStyle: {
-        color: 'white', 
-        fontSize: 23,
-        fontFamily: 'GillSans',
     }, 
-    iconStyle: {
-        color: 'white'
-    }, 
-    /*spinnerView: {
-        flex: 1,   
-    },*/
     spinnerStyle: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: '60%'
     }
-
 }
 
 export default connect(mapStateToProps, { routesFetch })(LogPage); 

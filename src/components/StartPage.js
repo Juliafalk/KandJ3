@@ -1,20 +1,13 @@
 /*This page is the startpage that the user will see if the user is not logged in.
 Also it is good for us to be able to work on diffrent files like Login, CreateAccount and SeeMap.
-The code navigates to correst pages with SwitchNavigator. / JF (11/4)
+/ JF (11/4)
 */
-import firebase from 'firebase';
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { DrawerNavigator, DrawerItems, SwitchNavigator } from 'react-navigation';
-import { Container, Content, Header, Body, Button, Icon, Footer } from 'native-base';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { MyCard, MyCardSection, MyButton } from './common';
+import { View, Text, StyleSheet } from 'react-native';
+import { Container, Content, Button } from 'native-base';
+import { MyCardSection } from './common';
 //JL: should add an index file to reduce imports below
-import CreateAccount from './CreateAccount';
 import LoginPage from './LoginPage';
-import LogPage from './LogPage';
-import FavoritePage from './FavoritePage';
-import SettingsScreen from './SettingsScreen';
 import Wallpaper from './Wallpaper';
 import { Actions } from 'react-native-router-flux';
 
@@ -23,12 +16,19 @@ import { Actions } from 'react-native-router-flux';
 export class StartPage extends React.Component {
 
     render() {
+        const { 
+            headerText,
+            loginForm,
+            createAccountButton,
+            createAccountText
+        } = styles 
+
         return (
             <View style={{ height: '100%' }}>
                 <Wallpaper>
-                    <Container style={styles.loginForm}>
+                    <Container style={loginForm}>
                         <MyCardSection>
-                            <Text style={styles.headerText}>runRouter</Text>
+                            <Text style={headerText}>runRouter</Text>
                         </MyCardSection>
                             
                         <LoginPage />
@@ -36,9 +36,9 @@ export class StartPage extends React.Component {
                         <MyCardSection>
                             <View>
                                 <Button 
-                                    style={styles.createAccountButton}
+                                    style={createAccountButton}
                                     onPress={() => Actions.createAccount()}> 
-                                    <Text style={styles.createAccountText}>Create Account</Text>
+                                    <Text style={createAccountText}>Create Account</Text>
                                 </Button> 
                             </View>
                         </MyCardSection>

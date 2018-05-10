@@ -2,9 +2,9 @@
 The Loginpage is placed on an card in App.js
 The user can use/ JF (12/4) */
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native';
 import firebase from 'firebase';
-import { MyCard, MyCardSection, MySpinner, MyInput } from './common';
+import { MyCardSection, MySpinner, MyInput } from './common';
 import { Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 import firebase from 'firebase'; 
 import { Icon, Button } from 'native-base';
 import { LogCard, LogCardItem } from './common';
@@ -41,12 +41,10 @@ class FavoriteListItem extends Component {
         var viewStyle;
 
         if(this.state.onClicked === true || route.favorite === false ) {
-            console.log('route')
             console.log(route)
             viewStyle = {
                height: 0
             }
-
         }
         else{
             viewStyle = {
@@ -60,7 +58,6 @@ class FavoriteListItem extends Component {
             lineStyle, 
             textStyle,
             viewIconStyle,
-            iconStyle,
             favoriteRunView,
             buttonStyle,
             textButtonStyle,

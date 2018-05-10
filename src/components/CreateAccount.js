@@ -1,15 +1,12 @@
 /*This file should include the components for an user to create an account.
 I.e. input form, back-button etc. So far it only includes back-button.
-The back-button navigates back to the startpage trough the SwitchNavigator in the bottom.
 and the GoBack function / JF (11/4) */ 
 
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
-import { SwitchNavigator } from 'react-navigation';
 import { Button, Icon } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MyCardSection, MyInput, MySpinner } from './common';
-import StartPage from './StartPage';
 import firebase from 'firebase';
 import Wallpaper from './Wallpaper';
 import { Actions } from 'react-native-router-flux';

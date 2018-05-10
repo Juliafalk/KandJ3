@@ -1,25 +1,10 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { View, ListView, ScrollView, Text, ActivityIndicator } from 'react-native';
-import { 
-    Icon, 
-    Header,  
-    Left, 
-    Body, 
-    Title, 
-    Right,
-    CardItem,
-} from 'native-base';
-import Moment from 'react-moment';
-import firebase from 'firebase';
-import { MyInputCreateAccount, MyButton } from './common';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducers from '../reducers';
+import { Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { routesFetch } from '../actions';
 import FavoriteListItem from './FavoriteListItem';
-import { Actions } from 'react-native-router-flux';
 
 class FavoritePage extends React.Component { 
     static navigationOptions = {
@@ -68,12 +53,7 @@ class FavoritePage extends React.Component {
     }
 
     render() {
-        const { 
-           headerStyle, 
-           headerTextStyle,
-           iconStyle,
-           viewStyle
-        } = styles;
+        const { viewStyle } = styles;
         return (
                 <View style={viewStyle}>
                     <ScrollView>
@@ -89,7 +69,6 @@ class FavoritePage extends React.Component {
                     </View>
                     </ScrollView>
                 </View>
-             
         )
     }
 }
@@ -106,20 +85,7 @@ const styles = {
     viewStyle: {
         backgroundColor: '#5c688c',
         height: '100%',
-       
-        //Padding because of styling and bugs in scrollview 
     },
-    headerStyle: {
-        backgroundColor: '#7785ad' 
-    },
-    headerTextStyle: {
-        color: 'white', 
-        fontSize: 23,
-        fontFamily: 'GillSans',
-    }, 
-    iconStyle: {
-        color: 'white'
-    }, 
     spinnerStyle: {
         flex: 1,
         justifyContent: 'center',

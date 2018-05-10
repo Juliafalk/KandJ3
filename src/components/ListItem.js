@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
-import { 
-    Text, 
-    View, 
-    StyleSheet,
-    Alert,
-    TouchableHighlight 
-} from 'react-native'; 
+import { Text, View, Alert } from 'react-native'; 
 import firebase from 'firebase'; 
-import { Icon, Button, Container } from 'native-base';
-import { SwitchNavigator } from 'react-navigation';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Icon, Button } from 'native-base';
 import { LogCard, LogCardItem } from './common';
-import TheMap from './StartPage'; 
-import reducers from '../reducers';
 import { connect } from 'react-redux';
 import { runAgain } from '../actions';
 import { Actions } from 'react-native-router-flux';
@@ -72,11 +62,9 @@ class ListItem extends Component {
             viewStyle,
             labelStyle,
             deleteRouteStyle,
-            deleteText,
             lineStyle, 
             textStyle,
             viewIconStyle,
-            iconStyle,
             favoriteRunView,
             buttonStyle,
             textButtonStyle,
@@ -154,10 +142,6 @@ const styles = {
     viewStyle: {
         alignItems: 'center',
     },
-    cardHeaderStyle: {
-        flexDirection: 'row',
-        height: 30
-    },
     labelStyle: {
         fontSize: 17,
         paddingLeft: 1, 
@@ -172,11 +156,6 @@ const styles = {
         alignSelf: 'center',
         position: 'relative',
         height: '100%', 
-    },
-    deleteText: {
-        fontSize: 15,
-        fontFamily: 'GillSans-Light',
-        color: '#fff'
     },
     lineStyle: {
         backgroundColor: 'black',
