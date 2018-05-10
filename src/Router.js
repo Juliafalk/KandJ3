@@ -20,13 +20,11 @@ const RouterComponent = () => {
                 <Scene initial={true} hideNavBar={true} key="waitPage" component={WaitingPage}/>
                 <Scene hideNavBar={true} key="login" component={StartPage}/>
                 <Scene hideNavBar={true} key="createAccount" component={CreateAccount}/>
-                <Scene  hideNavBar={true} key="sideMenu" drawer={true} drawerIcon={<Icon name="ios-menu"/>}contentComponent={CustomDrawerContentComponent}>
+                <Scene hideNavBar={true} key="sideMenu" drawer={true} drawerIcon={<Icon name="ios-menu"/>}contentComponent={CustomDrawerContentComponent}>
                     <Scene key="Map" title="Map" component={Map}/>
                     <Scene key="Log" title="Log" component={LogPage}/>
                     <Scene key="Favorites" title="Favorites" component={FavoritePage}/>
                     <Scene key="Settings" title="Settings" component={SettingsScreen}/>
-            
-                    <Scene key="Summary" component={SummaryPage}/>
 
                 </Scene>
                 <Scene hideNavBar={true} key="summary" component={SummaryPage}/>
