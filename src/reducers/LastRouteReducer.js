@@ -5,9 +5,6 @@ const INITIAL_STATE = {};
 export default (state = INITIAL_STATE, action) => {
     switch(action.type){
         case LAST_ROUTE_FETCH: 
-            console.log('action.payload')
-            console.log(action.payload)
-            //return { ...state, [id]: action.payload };
             var newObject = {};
             var keys = [];
             for (var key in action.payload) {
@@ -19,6 +16,7 @@ export default (state = INITIAL_STATE, action) => {
             newObject[keys[0]]= value;
            
             return newObject;
+        
         default:
             return state;
     }

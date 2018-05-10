@@ -69,27 +69,6 @@ class App extends React.Component {
             Actions.login();
         }
     };
-
-    /*
-    renderContent() {
-        switch(this.state.loggedIn) {
-            case true:
-                return(
-                    <KeyboardAwareScrollView
-                        resetScrollToCoords={{ x: 0, y: 0 }}
-                        contentContainerStyle={styles.container}
-                        scrollEnabled={false}>
-                        <Container>
-                            <MyApp /> 
-                        </Container>
-                    </KeyboardAwareScrollView>
-                );
-            case false:
-                return <StartPage />;
-            default:
-                return <WaitingPage />;
-        }
-    }*/
     
     render()  {
         return(

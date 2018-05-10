@@ -9,8 +9,6 @@ import { Actions } from 'react-native-router-flux';
 
 class ListItem extends Component {
 
-
-    
     //JL 2/5: vill här ändra sida till kartan och skicka med waypoints
     runAgain(route) {
         this.props.runAgain(route.WAYPOINTS);
@@ -18,11 +16,17 @@ class ListItem extends Component {
         Actions.Map();
     }
 
-    addFavorite(route) {
+    addRemoveFavorite(route) {
         const { currentUser } = firebase.auth();
         const UID = route.uid;
-        firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
-           .update({ favorite: true });
+        if (route.favorite === false ){
+            firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
+                .update({ favorite: true });
+        }
+        else if (route.favorite === true) {
+            firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
+                .update({ favorite: false });
+        }
     }
 
     deleteRoute(route){
@@ -74,7 +78,7 @@ class ListItem extends Component {
                 <LogCard>
                     <LogCardItem>
                         <Text style={labelStyle}>{route.date}</Text>
-                        <Icon name="close" style={deleteRouteStyle} onPress={() => 
+                        <Icon type="EvilIcons" name="close" style={deleteRouteStyle} onPress={() => 
                                Alert.alert(
                                 'Delete route?',
                                 'It cannot be restored later!', 
@@ -117,7 +121,7 @@ class ListItem extends Component {
                         </View>
                         <View style= {favoriteRunView}>
                         
-                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route)}}>
+                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addRemoveFavorite(route)}}>
                                 <Icon type="MaterialIcons" name={iconName} style={iconStyle} />
                                 <Text style={favoriteStyle}>{favoriteText}</Text>
                             </Button>
@@ -149,14 +153,13 @@ const styles = {
         justifyContent: 'flex-start',
     },
     deleteRouteStyle: {
-        fontSize: 30,
-        alignSelf: 'center',
+        fontSize: 25,
+        alignSelf: 'flex-start',
         position: 'relative',
-        height: '100%', 
     },
     lineStyle: {
         backgroundColor: 'black',
-        height: 0.5, 
+        height: 1, 
         width: '100%',
         marginBottom: 8,
     },

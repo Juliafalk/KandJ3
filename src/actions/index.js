@@ -1,23 +1,12 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 import { 
-    ROUTES_FETCH_SUCCESS ,
     RUN_AGAIN,
     START_BUTTON,
+    ROUTES_FETCH_SUCCESS,
     FAVORITE_ROUTES_FETCH_SUCCESS,
     LAST_ROUTE_FETCH
 } from './types'; 
-
-export const routesFetch = () => {
-    const {currentUser} = firebase.auth();
-
-    return(dispatch) => {
-        firebase.database().ref(`/users/${currentUser.uid}/routes`)
-            .on('value', snapshot => {
-                dispatch({ type: ROUTES_FETCH_SUCCESS, payload: snapshot.val() });  
-            }); 
-    };
-};
 
 export const runAgain = (wayPoints) => {
     return{ 
@@ -33,6 +22,17 @@ export const startButton = (boolean) => {
     }; 
 };
 
+export const routesFetch = () => {
+    const {currentUser} = firebase.auth();
+
+    return(dispatch) => {
+        firebase.database().ref(`/users/${currentUser.uid}/routes`)
+            .on('value', snapshot => {
+                dispatch({ type: ROUTES_FETCH_SUCCESS, payload: snapshot.val() });  
+            }); 
+    };
+};
+
 export const favoriteFetch = () => {
     const {currentUser} = firebase.auth();
 
@@ -44,12 +44,11 @@ export const favoriteFetch = () => {
                     payload: snapshot.val() 
                 });
             })
-        }
+    }
 };
 
 export const lastRouteFetch = () => {
     const {currentUser} = firebase.auth();
-    console.log(currentUser)
 
     return(dispatch) => {
         firebase.database().ref(`/users/${currentUser.uid}/routes`)
@@ -64,6 +63,5 @@ export const lastRouteFetch = () => {
                     payload: snapshot.val()
                 });  
             })
-            
-        };
     };
+};

@@ -1,31 +1,22 @@
-/*Here a summary for the runner will be displayed,
-a map, distance and total duration will be displayed.
-Currently not is used, have to figure out how to send props and state 
-between diffrent pages / JF (18/4) */
+/*Here is the summary page, where the users latest route is displayed / JF 10/5 */
 
 import React, { Component } from 'react';
 import { View, ListView, ScrollView, Text, ActivityIndicator, Image} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import firebase from 'firebase';
 import { 
-    Icon, 
-    Header,  
-    Left, 
-    Body, 
-    Title, 
-    Right,
-    CardItem,
+    Icon,    
     Button 
 } from 'native-base';
-import { MyInputCreateAccount, MyButton } from './common';
 import reducers from '../reducers';
 import { connect } from 'react-redux';
 import { lastRouteFetch } from '../actions';
 import {
+    MyInputCreateAccount, 
+    MyButton,
     LogCard,
     LogCardItem,
-  } from './common';
-  
+} from './common'; 
 
 var routeid;
 var routeDate;
@@ -33,7 +24,6 @@ var routeDistance;
 var routeDuration;
 var distanceTravelled;
 var favoriteRoute;
-
 
 //JL 19/5: just a shell to be able to navigate to this page, JF is working on layout
 class SummaryPage extends React.Component { 

@@ -20,7 +20,6 @@ export default (state = INITIAL_STATE, action) => {
                 favObject[keys[i]]=value;
                 }
             }
-            console.log(favObject)
             return favObject;
         default:
             return state;
