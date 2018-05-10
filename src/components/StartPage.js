@@ -53,7 +53,7 @@ const styles = {
     headerText: {
         fontSize: 50, 
         fontWeight: 'bold', 
-        marginBottom: 77.7,
+        marginBottom: 60,
         color: 'white'
     },
     loginForm: {

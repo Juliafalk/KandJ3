@@ -18,6 +18,7 @@ import haversine from 'haversine';
 import { connect } from 'react-redux';
 import { runAgain, startButton } from '../actions';
 import { Actions } from 'react-native-router-flux';
+import { DistanceInput } from './common';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -70,7 +71,8 @@ class Map extends Component {
       favorite: false,
       prevLatLng: {},
       wantedDistance: '',
-      createRoute: true,
+      createRouteDisabled: true,
+      createRoute: false,
       startRunning: false,
       stopwatchStart: false,
       stopwatchReset: false,
@@ -201,14 +203,18 @@ class Map extends Component {
   //JL 17/4: disable and enable the footer buttons
   changeDistance(userInput) {
     if (userInput === '') {
+      if (!this.state.createdRoute) {
+        this.props.startButton(true);
+      }
+
       this.setState({
-        createRoute: true
+        createRouteDisabled: true,
+        createdRoute: false
       })
-      this.props.startButton(true);
     }
     else {
       this.setState({
-        createRoute: false,
+        createRouteDisabled: false,
       })
     }
   }
@@ -307,7 +313,7 @@ class Map extends Component {
     const {
       wantedDistance,
       actualDistance,
-      createRoute,
+      createRouteDisabled,
       startButton,
       distanceTravelled,
       stopwatchStart,
@@ -326,11 +332,9 @@ class Map extends Component {
               <Text style={{ color: 'white'}}>{actualDistance.toFixed(2)} km</Text>
             </View>
             <View style={inputContainerStyle}>
-              <TextInput
+              <DistanceInput
                 keyboardType='number-pad'
-                placeholder='..km'
-                style={textInputStyle}
-                maxLength={2}
+                placeholder='...'
                 value={wantedDistance}
                 onChangeText={userInput => 
                   {this.setState({
@@ -341,14 +345,14 @@ class Map extends Component {
             <Button
               info
               style={createRouteButtonStyle}
-              disabled ={createRoute}
+              disabled ={createRouteDisabled}
               onPress={() => {this.routeGenerator(wantedDistance)
               this.setState({ createdRoute: true }), this.props.startButton(false), Keyboard.dismiss}}>
-                <Text style={{ fontSize: 12, textAlign: 'center' }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
+                <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
           <Button
-          full
+          block
           success
           disabled={this.props.START_BUTTON}
           style={startButtonStyle}
@@ -367,7 +371,7 @@ class Map extends Component {
               {distanceTravelled.toFixed(2)} km 
             </Text>
           <View style={timeContainer}>
-            <Icon name='time' style={{fontSize: 25, marginTop: 6}}/>
+            <Icon name='time' style={{fontSize: 25, marginTop: 4, color: 'white'}}/>
             <Stopwatch
               start={stopwatchStart}
               options={options}
@@ -433,12 +437,9 @@ class Map extends Component {
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
     const {
-      inputContainerStyle,
       distanceContainer,
       mapPageContainer,
       mapStyle,
-      startButtonStyle,
-      distanceTravelledStyle,
       timeContainer,
       pauseDoneContainer,
       pauseDoneButton
@@ -446,7 +447,7 @@ class Map extends Component {
     const {
       wantedDistance,
       actualDistance,
-      createRoute,
+      createRouteDisabled,
       startButton,
       distanceTravelled,
       stopwatchStart,
@@ -549,12 +550,14 @@ const styles = {
     backgroundColor: '#5c688c'
   },
   mapStyle: {
-    height: '82%'
+    height: '81.6%'
   },
   createRouteContainerStyle: {
     marginTop: 10,
+    marginLeft: 30,
+    marginRight: 30,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   distanceContainer: {
     width: '35%',
@@ -565,7 +568,7 @@ const styles = {
     marginRight: 10
   },
   timeContainer: {
-    width: '35%',
+    width: 150,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -573,10 +576,13 @@ const styles = {
     marginRight: -15
   },
   distanceTravelledStyle: {
-    fontSize: 25
+    fontSize: 25,
+    color: 'white',
+    paddingLeft: 15,
+    marginTop: 5
   },
   inputContainerStyle: {
-    width: '30%',
+    width: 80,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
@@ -599,10 +605,9 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 15,
   },
   createRouteButtonStyle: {
-    width: '30%',
+    width: 105,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -615,7 +620,7 @@ const styles = {
     margin: 9
   },
   pauseDoneButton: {
-    width: '30%',
+    width: '33%',
     marginRight: 5,
     marginLeft: 5
   }
@@ -628,7 +633,7 @@ const options = {
   },
   text: {
     fontSize: 25,
-    color: 'black',
+    color: 'white',
     marginLeft: 2,
   }
 };

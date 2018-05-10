@@ -64,7 +64,7 @@ class CreateAccount extends React.Component {
 
         return (
             <View style={styles.createAccountView}>
-                <Button full style={styles.createAccountButton} onPress={this.onButtonPress.bind(this)}>
+                <Button block style={styles.createAccountButton} onPress={this.onButtonPress.bind(this)}>
                     <Text style={styles.createAccountText}>Create Account</Text>
                 </Button>
             </View>
@@ -131,7 +131,7 @@ class CreateAccount extends React.Component {
                         </View>
                             
                         <MyCardSection>
-                            <Button full style={styles.goBackButton} onPress={() => Actions.login()}>
+                            <Button block style={styles.goBackButton} onPress={() => Actions.login()}>
                                 <Icon type="Ionicons" name="ios-arrow-back" style={{color:'black', fontSize: 15}}/> 
                                 <Text style={styles.goBackButtonText}>Go Back</Text>
                             </Button>
