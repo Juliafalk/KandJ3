@@ -63,7 +63,7 @@ class App extends React.Component {
     loggedIn() {
         if (this.state.loggedIn){
             //Just to navigate to Summary while working on that page
-            Actions.summary();
+            Actions.Map();
         }
         else if(this.state.loggedIn === false){
             Actions.login();
