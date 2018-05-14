@@ -1,5 +1,7 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
+import thunk from 'redux-thunk';
+
 import { 
     RUN_AGAIN,
     START_BUTTON,
@@ -24,33 +26,37 @@ export const startButton = (boolean) => {
 
 export const routesFetch = () => {
     const {currentUser} = firebase.auth();
-
-    return(dispatch) => {
-        firebase.database().ref(`/users/${currentUser.uid}/routes`)
-            .on('value', snapshot => {
-                dispatch({ type: ROUTES_FETCH_SUCCESS, payload: snapshot.val() });  
-            }); 
-    };
+        return(dispatch) => {
+            if (currentUser != null){
+            firebase.database().ref(`/users/${currentUser.uid}/routes`)
+                .on('value', snapshot => {
+                    dispatch({ type: ROUTES_FETCH_SUCCESS, payload: snapshot.val() });  
+                }); 
+            }
+        };
 };
 
 export const favoriteFetch = () => {
     const {currentUser} = firebase.auth();
 
-    return(dispatch) => {
-        firebase.database().ref(`/users/${currentUser.uid}/routes`)
-            .on('value', snapshot => {
-                dispatch({ 
-                    type: FAVORITE_ROUTES_FETCH_SUCCESS, 
-                    payload: snapshot.val() 
-                });
-            })
-    }
+        return(dispatch) => {
+            if (currentUser != null){
+            firebase.database().ref(`/users/${currentUser.uid}/routes`)
+                .on('value', snapshot => {
+                    dispatch({ 
+                        type: FAVORITE_ROUTES_FETCH_SUCCESS, 
+                        payload: snapshot.val() 
+                    });
+                })
+            }
+        }
 };
 
 export const lastRouteFetch = () => {
     const {currentUser} = firebase.auth();
 
     return(dispatch) => {
+        if(currentUser != null){
         firebase.database().ref(`/users/${currentUser.uid}/routes`)
             .on('value', snapshot => {
                 dispatch({ 
@@ -58,5 +64,6 @@ export const lastRouteFetch = () => {
                     payload: snapshot.val()
                 });  
             })
+        }
     };
 };

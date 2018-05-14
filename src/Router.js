@@ -11,7 +11,6 @@ import SettingsScreen from './components/SettingsScreen';
 import SummaryPage from './components/SummaryPage';
 import WaitingPage from './components/WaitingPage';
 
-//Summary scence just for working.
 const RouterComponent = () => {
     return( 
         <Router>

@@ -66,7 +66,7 @@ class LoginPage extends Component {
 
                 <MyCardSection>
                     <MyInput
-                    placeholder="user@gmail.com"
+                    placeholder="user@email.com"
                     value={this.state.email}
                     onChangeText={email => this.setState({ email, error: '' })}
                     iconType={"SimpleLineIcons"} 
