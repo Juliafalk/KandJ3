@@ -12,6 +12,7 @@ export default (state = INITIAL_STATE, action) => {
             }
             keys.reverse();
 
+            
             var value = action.payload[keys[0]]
             newObject[keys[0]]= value;
            

@@ -59,6 +59,7 @@ export const lastRouteFetch = () => {
         if(currentUser != null){
         firebase.database().ref(`/users/${currentUser.uid}/routes`)
             .on('value', snapshot => {
+                if(snapshot.val() != null)
                 dispatch({ 
                     type: LAST_ROUTE_FETCH,  
                     payload: snapshot.val()
