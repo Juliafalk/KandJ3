@@ -122,60 +122,70 @@ class SummaryPage extends React.Component {
             style={{ fontSize: 50, color: 'white' }}
             />
             </View>
-        
-            <View style={divideSection}>
-                <Image style={{ width: '90%', height: '50%'}} 
-                source={require('./images/goldenband.png') /*Will probably changes picture later /JF (15/5)*/} />
 
-            </View>
-            <View style={summaryCard}>
-            <LogCard>
-                
-                <LogCardItem>
-                <Text style={summaryLabel}>{routeDate}</Text>
-                </LogCardItem>
-
-                <View style={{ backgroundColor: 'black', height: 0.5,  
-                width: '100%',marginBottom: 8,}} />
-                <LogCardItem>
-                <View style={iconSummary} >
-                    <Icon  name='ios-stopwatch-outline'/>
+            <View style={{marginTop: 60}}>
+                <View style={divideSection}>
+                    <Image style={{ width: '95%', height: '70%'}} 
+                    source={require('./images/goldenband.png') /*Will probably changes picture later /JF (15/5)*/} />
                 </View>
-                <Text style={summaryText}>Duration: {routeDuration}</Text>
-                </LogCardItem>
 
-                <LogCardItem />
+                <View style={summaryCard}>
+                <LogCard>
+                    
+                    <LogCardItem>
+                    <Text style={summaryLabel}>{routeDate}</Text>
+                    </LogCardItem>
 
-                <LogCardItem >
-                    <View style={iconSummary}>
-                        <Icon name="ios-walk-outline" style={{fontSize: 28 }}/>
+                    <View style={{ backgroundColor: 'black', height: 0.5,  
+                    width: '100%',marginBottom: 8,}} />
+                    <LogCardItem>
+                    <View style={iconSummary} >
+                        <Icon  name='ios-stopwatch-outline'/>
                     </View>
-                    <Text style={summaryText}>Route distance: {routeDistance} km</Text>
-                </LogCardItem>
+                    <Text style={summaryText}>Duration: {routeDuration}</Text>
+                    </LogCardItem>
 
-                <LogCardItem />
-                
-                <LogCardItem>
-                <View style={iconSummary} >
-                    <Icon name="ios-trophy-outline" style={{fontSize: 24 }}/>   
+                    <LogCardItem />
+
+                    <LogCardItem >
+                        <View style={iconSummary}>
+                            <Icon name="ios-walk-outline" style={{fontSize: 28 }}/>
+                        </View>
+                        <Text style={summaryText}>Route distance: {routeDistance} km</Text>
+                    </LogCardItem>
+
+                    <LogCardItem />
+                    
+                    <LogCardItem>
+                    <View style={iconSummary} >
+                        <Icon name="ios-trophy-outline" style={{fontSize: 24 }}/>   
+                    </View>
+                    <Text style={summaryText} >Your distance: {distanceTravelled} km</Text>
+                    </LogCardItem>
+
+                    <LogCardItem />
+
+                </LogCard>
                 </View>
-                <Text style={summaryText} >Your distance: {distanceTravelled} km</Text>
-                </LogCardItem>
-                <LogCardItem />
-            </LogCard>
+
+                <View style={divideSection}>
+                    <Image style={{ width: '95%', height: '70%'}} 
+                    source={require('./images/goldenband.png') /*Will probably changes picture later /JF (15/5)*/} />
+                </View>
+                
+                <View style={{marginTop: 10}}>
+                <Button transparent style={favoriteButtonStyle} onPress={() => {this.addRemoveFavorite(lastRoute)}}>
+                    <Icon 
+                    type="MaterialIcons" 
+                    name={iconName} 
+                    style={iconStyle} />
+                    <Text style={favoriteStyle}>{favoriteText}</Text>
+                </Button>
+                <Text style={unAddStyle}>{unAddText}</Text>
+                
+                </View>
             </View>
-            
-            <View style={{marginTop: 10}}>
-            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addRemoveFavorite(lastRoute)}}>
-                <Icon 
-                type="MaterialIcons" 
-                name={iconName} 
-                style={iconStyle} />
-                <Text style={favoriteStyle}>{favoriteText}</Text>
-            </Button>
-            <Text style={unAddStyle}>{unAddText}</Text>
-            </View>
-            </View>
+        </View>
             
             )
         }
@@ -211,7 +221,7 @@ const summaryStyle = {
     divideSection: {
       justifyContent: 'center',
       alignItems: 'center',
-      height: '10%'
+      height: '5%'
     },
     summary: {
       height: '100%',
