@@ -244,7 +244,7 @@ class Map extends Component {
     if (!this.state.startRunning) {
       return(
         <GooglePlacesAutocomplete
-        placeholder='Current location'
+        placeholder='Choose starting point'
         placeholderTextColor='rgb(65,127,225)'
         styles={{
           listView: {
@@ -404,8 +404,8 @@ class Map extends Component {
                   'Done running?',
                   '', 
                   [
-                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase()}
+                    {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'Yes', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase()}
                     },
                   ],
                   { cancelable: false }
@@ -492,7 +492,7 @@ class Map extends Component {
               origin={WAYPOINTS[0]}
               waypoints={ (WAYPOINTS.length > 2) ? WAYPOINTS.slice(1, -1): null}
               destination={WAYPOINTS[WAYPOINTS.length-1]}
-              mode={'walking'}
+              mode={"walking"}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={3}
               strokeColor="hotpink"

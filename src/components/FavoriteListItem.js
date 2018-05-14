@@ -8,9 +8,6 @@ import { runAgain, startButton } from '../actions';
 import { Actions } from 'react-native-router-flux';
 
 class FavoriteListItem extends Component {
-
-    
-
     runAgain(route) {
         this.props.runAgain(route.WAYPOINTS);
         this.props.startButton(false);
