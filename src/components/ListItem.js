@@ -1,49 +1,32 @@
 import React, { Component } from 'react';
-import { 
-    Text, 
-    View, 
-    StyleSheet,
-    Alert,
-    TouchableHighlight 
-} from 'react-native';
+import { Text, View, Alert } from 'react-native'; 
 import firebase from 'firebase'; 
-import { 
-    Icon, 
-    Button, 
-} from 'native-base';
-import {
-    LogCard,
-    LogCardItem
-} from './common';
+import { Icon, Button } from 'native-base';
+import { LogCard, LogCardItem } from './common';
+import { connect } from 'react-redux';
+import { runAgain, startButton } from '../actions';
+import { Actions } from 'react-native-router-flux';
 
 class ListItem extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = { 
-            onClicked: false
-        }
-        this.handlerButtonOnClick = this.handlerButtonOnClick.bind(this)
+    //JL 2/5: vill här ändra sida till kartan och skicka med waypoints
+    runAgain(route) {
+        this.props.runAgain(route.WAYPOINTS);
+        this.props.startButton(false);
+        Actions.Map();
     }
 
-    handlerButtonOnClick() {
-        this.setState({
-            onClicked: true
-        });
-    }
-
-   
-
-    runAgain (){
-        console.log('pressed runAgain')
-        console.log(theRoute)
-    }
-
-    addFavorite (route){
+    addRemoveFavorite(route) {
         const { currentUser } = firebase.auth();
         const UID = route.uid;
-        firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
-           .update({ favorite: true });
+        if (route.favorite === false ){
+            firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
+                .update({ favorite: true });
+        }
+        else if (route.favorite === true) {
+            firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
+                .update({ favorite: false });
+        }
     }
 
     deleteRoute(route){
@@ -59,26 +42,30 @@ class ListItem extends Component {
         var iconName;
         const { route } = this.props;
          
-        if(this.state.onClicked || route.favorite == true ) {
-            favoriteText = "Favorite",
-            iconName = "favorite"
-
+        if(route.favorite == true ) {
+            favoriteText = "Favorite!",
+            iconName = "favorite",
+            iconStyle = {
+                color: '#d6b3d2',
+                fontSize:25
+            }
         }
         else{
-            favoriteText = "Add to favorite",
-            iconName = "favorite-border"
+            favoriteText = "Add to favorites!",
+            iconName = "favorite-border",
+            iconStyle = {
+                color: 'black',
+                fontSize:25
+            }
         }
-
         
         const { 
             viewStyle,
             labelStyle,
             deleteRouteStyle,
-            deleteText,
             lineStyle, 
             textStyle,
             viewIconStyle,
-            iconStyle,
             favoriteRunView,
             buttonStyle,
             textButtonStyle,
@@ -86,16 +73,15 @@ class ListItem extends Component {
             favoriteStyle,
         } = styles;
         
-     
         return (
             <View style={viewStyle} >
                 <LogCard>
                     <LogCardItem>
-                        <Text style={labelStyle}>{route.date.toUpperCase()}</Text>
-                        <Icon name="close" style={deleteRouteStyle} onPress={() => 
+                        <Text style={labelStyle}>{route.date}</Text>
+                        <Icon type="EvilIcons" name="close" style={deleteRouteStyle} onPress={() => 
                                Alert.alert(
                                 'Delete route?',
-                                'The route is not possible restore!', 
+                                'It cannot be restored later!', 
                                 [
                                   {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                                   {text: 'Yes', onPress: () => {this.deleteRoute(route)}
@@ -113,7 +99,7 @@ class ListItem extends Component {
                             alignItems: 'flex-start',
                             justifyContent: 'flex-start',
                             width: '65%'
-                        }}>
+                            }}>
                             <LogCardItem>
                                 <View style={viewIconStyle}>
                                     <Icon name='ios-stopwatch-outline' style={{fontSize: 22 }}/>
@@ -135,13 +121,13 @@ class ListItem extends Component {
                         </View>
                         <View style= {favoriteRunView}>
                         
-                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addFavorite(route), this.handlerButtonOnClick()}}>>
-                                <Icon type="MaterialIcons" name={iconName} style={{ color:'black'}} />
+                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addRemoveFavorite(route)}}>
+                                <Icon type="MaterialIcons" name={iconName} style={iconStyle} />
                                 <Text style={favoriteStyle}>{favoriteText}</Text>
                             </Button>
                             <Button full 
                             style={buttonStyle} 
-                            onPress={() => {this.runAgain(route)}}>
+                            onPress={() => this.runAgain(route)}>
                                 <Text style={textButtonStyle}>Run again</Text>
                             </Button>
                           
@@ -149,17 +135,13 @@ class ListItem extends Component {
                     </View>
                 </LogCard>        
             </View>
-        )};
-       
+        )
+    };
 }
 
 const styles = {
     viewStyle: {
         alignItems: 'center',
-    },
-    cardHeaderStyle: {
-        flexDirection: 'row',
-        height: 30
     },
     labelStyle: {
         fontSize: 17,
@@ -171,20 +153,13 @@ const styles = {
         justifyContent: 'flex-start',
     },
     deleteRouteStyle: {
-        fontSize: 35,
-        alignSelf: 'center',
+        fontSize: 25,
+        alignSelf: 'flex-start',
         position: 'relative',
-        height: '160%', 
-        color:'red'
-    },
-    deleteText: {
-        fontSize: 15,
-        fontFamily: 'GillSans-Light',
-        color: '#fff'
     },
     lineStyle: {
         backgroundColor: 'black',
-        height: 0.5, 
+        height: 1, 
         width: '100%',
         marginBottom: 8,
         marginTop: -10
@@ -228,5 +203,10 @@ const styles = {
     },
 };
 
+const mapStateToProps = state => {
+    return {
+        wayPoints: state.runAgain.wayPoints
+    };
+};
 
-export default ListItem;
+export default connect(mapStateToProps, { runAgain, startButton })(ListItem); 

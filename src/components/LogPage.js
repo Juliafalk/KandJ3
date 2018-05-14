@@ -1,23 +1,9 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { View, ListView, ScrollView, Text, ActivityIndicator} from 'react-native';
-import { 
-    Icon, 
-    Header,  
-    Left, 
-    Body, 
-    Title, 
-    Right,
-    CardItem 
-} from 'native-base';
-import Moment from 'react-moment';
-import firebase from 'firebase';
-import { MyInputCreateAccount, MyButton } from './common';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducers from '../reducers';
+import { Icon, Button } from 'native-base';
 import { connect } from 'react-redux';
-import { routesFetch } from '../actions/RoutesActions';
+import { routesFetch } from '../actions';
 import ListItem from './ListItem';
 
 class LogPage extends React.Component { 
@@ -35,22 +21,18 @@ class LogPage extends React.Component {
 
     componentWillReceiveProps(nextProps){
         this.setState({loading: false})
-        this.createDataSource(this.props);
-        
-    }
-
-    createDataSource({ routes }) {
-            const ds = new ListView.DataSource({
-                rowHasChanged: (r1, r2) => r1 !== r2
-            });
-            this.dataSource = ds.cloneWithRows(routes)
-         
+        this.createDataSource(nextProps);
     }
 
     renderRow(route){
             return <ListItem route={route} />;
     }
-
+    createDataSource({ routes }) {
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        });
+        this.dataSource = ds.cloneWithRows(routes)
+}
 
     renderSpinner() {
         if (this.state.loading) {
@@ -63,25 +45,10 @@ class LogPage extends React.Component {
     }
 
     render() {
-        const { 
-           headerStyle, 
-           headerTextStyle,
-           iconStyle,
-           viewStyle,
-           spinnerView
-        } = styles;
+        const { viewStyle } = styles;
+
         return (
             <View style={viewStyle}>
-                <Header style={headerStyle}>
-                    <Left>
-                        <Icon name="ios-menu" style={iconStyle} onPress={() =>
-                            this.props.navigation.navigate('DrawerOpen')}/>
-                        </Left>
-                        <Body>
-                            <Title style={{color:'white'}} /*style={headerTextStyle}*/>Log</Title>
-                        </Body>
-                        <Right />
-                    </Header>
                     <ScrollView>
                     <View>
                         <View >
@@ -101,8 +68,11 @@ class LogPage extends React.Component {
 
 const mapStateToProps = state => {
     const routes = _.map(state.routes, (val, uid) => {
-        return {...val, uid};
+        return {
+            ...val, uid
+        };
     });
+    //console.log(routes) returns first empty array, then a filled array?
 
     return { routes };
 };
@@ -111,30 +81,13 @@ const styles = {
     viewStyle: {
         backgroundColor: '#5c688c',
         height: '100%',
-       
-        //Padding because of styling and bugs in scrollview 
-    },
-    headerStyle: {
-        backgroundColor: '#7785ad' 
-    },
-    headerTextStyle: {
-        color: 'white', 
-        fontSize: 23,
-        fontFamily: 'GillSans',
     }, 
-    iconStyle: {
-        color: 'white'
-    }, 
-    /*spinnerView: {
-        flex: 1,   
-    },*/
     spinnerStyle: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: '60%'
     }
-
 }
 
 export default connect(mapStateToProps, { routesFetch })(LogPage); 

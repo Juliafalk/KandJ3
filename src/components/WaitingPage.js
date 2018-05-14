@@ -1,18 +1,23 @@
 import React from 'react';
-import { View, Text, ImageBackground } from 'react-native';
+import { Text, ImageBackground } from 'react-native';
 import firebase from 'firebase';
 import { Icon } from 'native-base';
 
-class WaitingPage extends React.Component {
 
+class WaitingPage extends React.Component {
+   
     render() {
+        const {
+            textStyle,
+            iconStyle
+        } = styles;
+
         return(
             <ImageBackground 
                 style={{width: '100%', height: '100%', justifyContent: 'center'}}
                 source={{ url: 'https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg'}}>
-            
-            <Text style={styles.textStyle}>Let's run!</Text>
-            <Icon type="MaterialIcons" name="directions-run" style={styles.iconStyle} />
+                <Text style={textStyle}>Let's run!</Text>
+                <Icon type="MaterialIcons" name="directions-run" style={iconStyle} />
             </ImageBackground>);
     }
 }

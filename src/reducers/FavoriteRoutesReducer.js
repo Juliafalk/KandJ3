@@ -1,15 +1,12 @@
-import { 
-    ROUTES_FETCH_SUCCESS
-} from '../actions/types';
+import { FAVORITE_ROUTES_FETCH_SUCCESS } from '../actions/types';
 
-const INITIAL_STATE = {
-};
+const INITIAL_STATE = {};
 
 export default (state = INITIAL_STATE, action) => {
     switch(action.type){
-        case ROUTES_FETCH_SUCCESS:
-
-            var newObject = {};
+        case FAVORITE_ROUTES_FETCH_SUCCESS:
+            
+            var favObject = {};
             var keys = [];
             for (var key in action.payload) {
                 keys.push(key);
@@ -19,12 +16,12 @@ export default (state = INITIAL_STATE, action) => {
             
             for (var i = 0; i<keys.length; i++){
                 var value = action.payload[keys[i]];
-                newObject[keys[i]]=value;
-                
+                if (value.favorite === true){
+                favObject[keys[i]]=value;
+                }
             }
-            
-            return newObject;
+            return favObject;
         default:
             return state;
     }
-};   
+};

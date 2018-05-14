@@ -1,25 +1,10 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { View, ListView, ScrollView, Text, ActivityIndicator } from 'react-native';
-import { 
-    Icon, 
-    Header,  
-    Left, 
-    Body, 
-    Title, 
-    Right,
-    CardItem,
-} from 'native-base';
-import Moment from 'react-moment';
-import firebase from 'firebase';
-import { MyInputCreateAccount, MyButton } from './common';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducers from '../reducers';
+import { Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { routesFetch } from '../actions/RoutesActions';
+import { favoriteFetch } from '../actions';
 import FavoriteListItem from './FavoriteListItem';
-
 
 class FavoritePage extends React.Component { 
     static navigationOptions = {
@@ -31,31 +16,31 @@ class FavoritePage extends React.Component {
     state = {loading: true }
 
     componentWillMount() {
-        this.props.routesFetch();
+        this.props.favoriteFetch();
         this.createDataSource(this.props);
     }
 
     componentWillReceiveProps(nextProps){
         this.setState({loading: false})
-        this.createDataSource(this.props);
+        this.createDataSource(nextProps);
     }
 
-    createDataSource({ routes }) {
+    createDataSource({ favRoutes }) {
         
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
         //console.log(ds)
 
-        this.dataSource = ds.cloneWithRows(routes)
+        this.dataSource = ds.cloneWithRows(favRoutes)
         
     }
 
     renderRow(route){
-            if (route.favorite == true)
+            //if (route.favorite == true)
                 return <FavoriteListItem route={route} />;
-            else
-             return null;
+            //else
+            // return null;
        
     }
 
@@ -70,24 +55,9 @@ class FavoritePage extends React.Component {
     }
 
     render() {
-        const { 
-           headerStyle, 
-           headerTextStyle,
-           iconStyle,
-           viewStyle
-        } = styles;
+        const { viewStyle } = styles;
         return (
                 <View style={viewStyle}>
-                    <Header style={headerStyle}>
-                        <Left>
-                            <Icon name="ios-menu" style={iconStyle} onPress={() =>
-                            this.props.navigation.navigate('DrawerOpen')}/>
-                        </Left>
-                        <Body>
-                            <Text style={headerTextStyle}>Favorites</Text>
-                        </Body>
-                        <Right />
-                    </Header>
                     <ScrollView>
                     <View>
                     <View >
@@ -101,37 +71,23 @@ class FavoritePage extends React.Component {
                     </View>
                     </ScrollView>
                 </View>
-             
         )
     }
 }
 
 const mapStateToProps = state => {
-    const routes = _.map(state.routes, (val, uid) => {
+    const favRoutes = _.map(state.favRoutes, (val, uid) => {
         return {...val, uid};
     });
 
-    return { routes };
+    return { favRoutes };
 };
 
 const styles = {
     viewStyle: {
         backgroundColor: '#5c688c',
         height: '100%',
-       
-        //Padding because of styling and bugs in scrollview 
     },
-    headerStyle: {
-        backgroundColor: '#7785ad' 
-    },
-    headerTextStyle: {
-        color: 'white', 
-        fontSize: 23,
-        fontFamily: 'GillSans',
-    }, 
-    iconStyle: {
-        color: 'white'
-    }, 
     spinnerStyle: {
         flex: 1,
         justifyContent: 'center',
@@ -139,6 +95,5 @@ const styles = {
         marginTop: '60%'
     }
 }
-export default connect(mapStateToProps, { routesFetch })(FavoritePage); 
-
+export default connect(mapStateToProps, { favoriteFetch })(FavoritePage); 
 

@@ -1,35 +1,20 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 import firebase from 'firebase'; 
-import { 
-    Icon, 
-    Button, 
-} from 'native-base';
-import {
-    LogCard,
-    LogCardItem
-} from './common';
+import { Icon, Button } from 'native-base';
+import { LogCard, LogCardItem } from './common';
+import { connect } from 'react-redux';
+import { runAgain, startButton } from '../actions';
+import { Actions } from 'react-native-router-flux';
 
 class FavoriteListItem extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = { 
-            onClicked: false
-        }
-        this.handlerButtonOnClick = this.handlerButtonOnClick.bind(this)
     
-    }
 
-    handlerButtonOnClick() {
-        this.setState({
-            onClicked: true
-        });
-    }
-
-    runAgain (){
-        console.log('pressed runAgain')
-        console.log(theRoute)
+    runAgain(route) {
+        this.props.runAgain(route.WAYPOINTS);
+        this.props.startButton(false);
+        Actions.Map();
     }
 
     removeFavorite (route){
@@ -41,30 +26,13 @@ class FavoriteListItem extends Component {
  
     render() {        
         const { route } = this.props;
-
-        var viewStyle;
-
-        if(this.state.onClicked === true || route.favorite === false ) {
-            console.log('route')
-            console.log(route)
-            viewStyle = {
-               height: 0
-            }
-
-        }
-        else{
-            viewStyle = {
-                alignItems: 'center',
-                backgroundColor: '#5c688c'
-            }    
-        }     
-
-        const { 
+ 
+        const {
+            viewStyle, 
             labelStyle,
             lineStyle, 
             textStyle,
             viewIconStyle,
-            iconStyle,
             favoriteRunView,
             buttonStyle,
             textButtonStyle,
@@ -107,7 +75,7 @@ class FavoriteListItem extends Component {
                             </LogCardItem>
                         </View>
                         <View style= {favoriteRunView}>
-                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.removeFavorite(route), this.handlerButtonOnClick()}}>>
+                            <Button transparent style={favoriteButtonStyle} onPress={() => {this.removeFavorite(route)}}>
                                 <Icon type="MaterialIcons" name="delete" style={{ color:'black'}} />
                                 <Text style={favoriteStyle}>Remove favorite</Text>
                             </Button>
@@ -182,5 +150,10 @@ const styles = {
     },
 };
 
+const mapStateToProps = state => {
+    return {
+        wayPoints: state.runAgain.wayPoints
+    };
+};
 
-export default FavoriteListItem;
+export default connect(mapStateToProps, { runAgain, startButton })(FavoriteListItem); 

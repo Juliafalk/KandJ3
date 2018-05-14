@@ -3,28 +3,23 @@ import {
   Alert,
   Dimensions,
   Keyboard,
-  KeyboardAvoidingView, 
   TextInput,
-  View,
-  Image
+  View
 } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Stopwatch } from 'react-native-stopwatch-timer'
-import { SwitchNavigator } from 'react-navigation';
 import pick from 'lodash/pick';
-import { Button, Text, Icon, CardItem, Card } from 'native-base';
+import { Button, Text, Icon } from 'native-base';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Geocoder from 'react-native-geocoding';
 import firebase from 'firebase';
 import haversine from 'haversine';
-import {
-  LogCard,
-  LogCardItem,
-  MyInput
-} from './common';
-
+import { connect } from 'react-redux';
+import { runAgain, startButton } from '../actions';
+import { Actions } from 'react-native-router-flux';
+import { DistanceInput } from './common';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -42,9 +37,13 @@ const TOTAL_DURATION = 0;
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
 Geocoder.init(GOOGLE_MAPS_APIKEY);
-
-
 class Map extends Component {
+
+  static navigationOptions = {
+    drawerIcon: (
+        <Icon name='ios-map-outline' style={{ color: 'white'}} />
+    )
+  }
 
   constructor(props) {
     super(props);
@@ -68,15 +67,13 @@ class Map extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
       },
-      chosenStartpoint: '',
       distanceTravelled: 0,
       actualDistance: 0,
       favorite: false,
       prevLatLng: {},
-      wayPoints: [],
       wantedDistance: '',
-      createRoute: true,
-      startButton: true,
+      createRouteDisabled: true,
+      createRoute: false,
       startRunning: false,
       stopwatchStart: false,
       stopwatchReset: false,
@@ -90,9 +87,11 @@ class Map extends Component {
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
   }
+
+ 
   watchID: ?number = null; // from tutorial, red marked but it works! / JL (13/4) 
  //Do we need this? /JF 18/4 
-
+  
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
       // Here set all the positions, given by the devices current position. 
@@ -110,9 +109,7 @@ class Map extends Component {
         longitude: position.coords.longitude,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
-      },
-        //wayPoints: [],
-        //wantedDistance: ''
+      }
       });
     },
     (error) => alert(JSON.stringify(error)),
@@ -142,6 +139,8 @@ class Map extends Component {
     );
   }
 
+  
+
   calcDistance(newLatLng) {
     const { prevLatLng } = this.state
     return (haversine(prevLatLng, newLatLng) || 0 )
@@ -149,16 +148,6 @@ class Map extends Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID)
-  }
-
-  //JL 11/4: press on the map and add another point that the route will go through
-  onMapPress = (e) => {
-    this.setState({
-      wayPoints: [
-        ...this.state.wayPoints,
-        e.nativeEvent.coordinate,
-      ],
-    });
   }
 
   /*JL 11/4: this is a rather complicated function but I will try to explain it in a simple way
@@ -169,6 +158,7 @@ class Map extends Component {
   we then set this.state.wayPoints to waypoints and when rendered, the directionService will make a route 
   through these points*/
   routeGenerator(length) {
+ 
 
     lengthInMeters = length*1000;
     lengthInMeters = lengthInMeters*0.7; //only takes 80% of the input to compensate, since the generated route is almost 'always' too long
@@ -207,37 +197,41 @@ class Map extends Component {
     }
     waypoints[circlePoints+1] = this.state.initialPosition;
 
-    this.setState({
-      wayPoints: waypoints
-    });
-    console.log(waypoints)
+    //sets the redux state
+    this.props.runAgain(waypoints);
   }
 
   //JL 17/4: disable and enable the footer buttons
   changeDistance(userInput) {
     if (userInput === '') {
+      if (!this.state.createdRoute) {
+        this.props.startButton(true);
+      }
+
       this.setState({
-        createRoute: true,
-        startButton: true
+        createRouteDisabled: true,
+        createdRoute: false
       })
     }
     else {
       this.setState({
-        createRoute: false,
+        createRouteDisabled: false,
       })
     }
   }
 
+  
+
   //JG 18/4 will send information about the route to the database
   toDatabase() {
     var date= new Date().toDateString()
-    const { wayPoints, totalDuration, actualDistance, favorite } = this.state;
+    const { totalDuration, actualDistance, favorite } = this.state;
+    const { WAYPOINTS } = this.props;
     const { currentUser } = firebase.auth();
     firebase.database().ref(`/users/${currentUser.uid}/routes`)
-        .push({ wayPoints, TOTAL_DURATION, DISTANCE_TRAVELLED, date, actualDistance, favorite });
+        .push({ WAYPOINTS, TOTAL_DURATION, DISTANCE_TRAVELLED, date, actualDistance, favorite });
     return(
       this.setState({
-          wayPoints: [],
           totalDuration: 0,
           DISTANCE_TRAVELLED: 0 ,
           date: 0   
@@ -258,7 +252,7 @@ class Map extends Component {
             opacity: 0.8,
           },
           textInput: {color: 'rgb(65,127,225)'},
-          textInputContainer: {backgroundColor: '#5c688c', opacity: 0.5,} 
+          textInputContainer: {backgroundColor: '#5c688c', opacity: 0.8} 
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
@@ -280,10 +274,7 @@ class Map extends Component {
                     latitudeDelta: LATITUDE_DELTA,
                     longitudeDelta: LONGITUDE_DELTA
                   }
-                
-                  
                 });
-                
               })
               .catch(error => console.warn(error))
           }}
@@ -292,11 +283,6 @@ class Map extends Component {
             key: GOOGLE_MAPS_APIKEY,
             language: 'en', // language of the results
           }}
-          /*nearbyPlacesAPI='GooglePlacesSearch'
-          GooglePlacesSearchQuery={{
-            rankby: 'distance',
-            types: 'street_address'
-          }}*/
           renderLeftButton={() => <Icon type='EvilIcons' name='location' 
             style={{marginTop: 8, marginLeft: 3, color: 'white'}}/>}
         />
@@ -328,7 +314,7 @@ class Map extends Component {
     const {
       wantedDistance,
       actualDistance,
-      createRoute,
+      createRouteDisabled,
       startButton,
       distanceTravelled,
       stopwatchStart,
@@ -347,11 +333,9 @@ class Map extends Component {
               <Text style={{ color: 'white'}}>{actualDistance.toFixed(2)} km</Text>
             </View>
             <View style={inputContainerStyle}>
-              <TextInput
+              <DistanceInput
                 keyboardType='number-pad'
-                placeholder='..km'
-                style={textInputStyle}
-                maxLength={2}
+                placeholder='...'
                 value={wantedDistance}
                 onChangeText={userInput => 
                   {this.setState({
@@ -362,16 +346,16 @@ class Map extends Component {
             <Button
               info
               style={createRouteButtonStyle}
-              disabled ={createRoute}
-              onPress={() => {this.routeGenerator(wantedDistance), 
-              this.setState({ startButton: false, createdRoute: true }), Keyboard.dismiss}}>
-                <Text style={{ fontSize: 12, textAlign: 'center' }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
+              disabled ={createRouteDisabled}
+              onPress={() => {this.routeGenerator(wantedDistance)
+              this.setState({ createdRoute: true }), this.props.startButton(false), Keyboard.dismiss}}>
+                <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
           <Button
-          full
+          block
           success
-          disabled={startButton}
+          disabled={this.props.START_BUTTON}
           style={startButtonStyle}
           onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
             this.resetStopwatch(), this.toggleStopwatch()}}>
@@ -388,7 +372,7 @@ class Map extends Component {
               {distanceTravelled.toFixed(2)} km 
             </Text>
           <View style={timeContainer}>
-            <Icon name='time' style={{fontSize: 25, marginTop: 6}}/>
+            <Icon name='time' style={{fontSize: 25, marginTop: 4, color: 'white'}}/>
             <Stopwatch
               start={stopwatchStart}
               options={options}
@@ -421,7 +405,7 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {this.SummaryPage(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase()}
+                    {text: 'OK', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase()}
                     },
                   ],
                   { cancelable: false }
@@ -436,13 +420,6 @@ class Map extends Component {
     }
   }
 
-  SummaryPage() {
-    this.props.navigation.navigate('SummaryView', {
-      durationTime: TOTAL_DURATION,
-      totalDistance: DISTANCE_TRAVELLED,
-    });
-  }
-
   //JL 17/4: these three functions handle the stopwatch used to track the user's runtime
   toggleStopwatch() {
     this.setState({stopwatchStart: !this.state.stopwatchStart, stopwatchReset: false});
@@ -454,15 +431,16 @@ class Map extends Component {
     this.currentTime = time;
     TOTAL_DURATION = time;
   };
+
+ 
   //****//
 
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
     const {
-      inputContainerStyle,
       distanceContainer,
-      startButtonStyle,
-      distanceTravelledStyle,
+      mapPageContainer,
+      mapStyle,
       timeContainer,
       pauseDoneContainer,
       pauseDoneButton
@@ -470,7 +448,7 @@ class Map extends Component {
     const {
       wantedDistance,
       actualDistance,
-      createRoute,
+      createRouteDisabled,
       startButton,
       distanceTravelled,
       stopwatchStart,
@@ -478,9 +456,17 @@ class Map extends Component {
       pauseRunning,
       totalDuration
     } = this.state;
+    const {
+      WAYPOINTS
+    } = this.props;
 
     return (
-      <View style={styles.mapPageContainer}>
+      <KeyboardAwareScrollView	        
+             resetScrollToCoords={{ x: 0, y: 0 }}	             
+             contentContainerStyle={styles.scrollViewContainer}	           
+             scrollEnabled={false}	             
+             >
+      <View style={mapPageContainer}>
         <MapView
           provider={"google"}
           showsUserLocation={true}
@@ -490,7 +476,7 @@ class Map extends Component {
           onRegionChangeComplete={ currentPosition => this.setState({currentPosition}) }
           showsMyLocationButton
           show 
-          style={styles.mapStyle}
+          style={mapStyle}
           ref={c => this.mapView = c}
          >
 
@@ -502,12 +488,11 @@ class Map extends Component {
           <MapView.Marker 
             coordinate={this.state.initialPositionMarker} 
           />
-          {(this.state.wayPoints.length >= 2) && (
             <MapViewDirections
-              origin={this.state.wayPoints[0]}
-              waypoints={ (this.state.wayPoints.length > 2) ? this.state.wayPoints.slice(1, -1): null}
-              destination={this.state.wayPoints[this.state.wayPoints.length-1]}
-              mode={'walking'}
+              origin={WAYPOINTS[0]}
+              waypoints={ (WAYPOINTS.length > 2) ? WAYPOINTS.slice(1, -1): null}
+              destination={WAYPOINTS[WAYPOINTS.length-1]}
+              mode={"walking"}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={3}
               strokeColor="hotpink"
@@ -520,6 +505,8 @@ class Map extends Component {
                 //Generate a new route when the route is 10% to short or to small
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
+                console.log(result.distance)
+                console.log(parseFloat(this.state.wantedDistance))
                 if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   this.routeGenerator(this.state.wantedDistance)
                 }
@@ -528,6 +515,7 @@ class Map extends Component {
                 }
                 else {
                   this.setState({ actualDistance: result.distance })
+                  console.log('right route')
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
@@ -536,18 +524,18 @@ class Map extends Component {
                       top: (height / 15),
                     }
                   });
-              }
+                }
               }}
               onError={(errorMessage) => {
                  console.log('GOT AN ERROR');
                  this.routeGenerator(this.state.wantedDistance)
               }}
             />
-          )}
 
         </MapView>
           {this.startRunning()}
-      </View>
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -555,7 +543,7 @@ class Map extends Component {
 //to add markers at the coords for the waypoints insert this at row ish 113
 //inbetween the <MapView/> and <MapViewDirections/>
 /*
-  {this.state.wayPoints.map((coordinate, index) =>
+  {WAYPOINTS.map((coordinate, index) =>
     <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
   )}
 */
@@ -565,17 +553,18 @@ class Map extends Component {
 //Obs2, styling for summarypages is under the class TheSummary
 const styles = {
   mapPageContainer: {
-    height: '96%',
+    height: '100%',
     backgroundColor: '#5c688c'
   },
   mapStyle: {
-    height: '80%'
+    height: '81.6%'
   },
   createRouteContainerStyle: {
     marginTop: 10,
+    marginLeft: 30,
+    marginRight: 30,
     flexDirection: 'row',
-    justifyContent: 'center',
-    //alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   distanceContainer: {
     width: '35%',
@@ -586,7 +575,7 @@ const styles = {
     marginRight: 10
   },
   timeContainer: {
-    width: '35%',
+    width: 150,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -594,10 +583,13 @@ const styles = {
     marginRight: -15
   },
   distanceTravelledStyle: {
-    fontSize: 25
+    fontSize: 25,
+    color: 'white',
+    paddingLeft: 15,
+    marginTop: 5
   },
   inputContainerStyle: {
-    width: '30%',
+    width: 80,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
@@ -620,10 +612,9 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 15,
   },
   createRouteButtonStyle: {
-    width: '30%',
+    width: 105,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -636,15 +627,14 @@ const styles = {
     margin: 9
   },
   pauseDoneButton: {
-    width: '30%',
+    width: '33%',
     marginRight: 5,
     marginLeft: 5
   },
-  chooseStartpointStyle: {
-    backgroundColor: 'white',
-    opacity: 0.8
-  },
-
+  scrollViewContainer: {	  
+    flex: 1,	    
+    justifyContent: 'center',	           
+  }	
 }
 //This is styling for the timer / JF (18/4)
 const options = {
@@ -654,150 +644,16 @@ const options = {
   },
   text: {
     fontSize: 25,
-    color: 'black',
+    color: 'white',
     marginLeft: 2,
   }
 };
- 
-/****************HERE STARTS A NEW CLASS FOR SUMMARYPAGE*****************/
-class TheSummary extends Map {
 
-
-  static navigationOptions = {
-      title: 'SummaryView'
+const mapStateToProps = state => {
+  return {
+      WAYPOINTS: state.runAgain.wayPoints,
+      START_BUTTON: state.runAgain.startButton
   };
-
-  //Does not work yet, therefore nothing will happen when pressing add to favorite / JF (2/5)
-  addFavorite (){
-    const { currentUser } = firebase.auth();
-    
-    console.log(this.props)
-    console.log(currentUser)
-    //const UID = route.uid;
-    firebase.database().ref(`/users/${currentUser.uid}/routes/`)
-        .update({ favorite: true });
-  }
-
-  render() {
-
-    const {
-      divideSection,
-      summary,
-      summaryCard,
-      summaryLabel,
-      iconSummary,
-      summaryText,
-      favoriteButtonStyle,
-      favoriteStyle,
-    } = summaryStyle
-
-    const { params } = this.props.navigation.state;
-    const durationTime = params ? params.durationTime : null;
-    const totalDistance = params ? params.totalDistance : null;
-    const date= new Date().toDateString()
-
-
-    return (
-        <View style={summary} >
-        <View style={{ marginLeft: 15, marginTop: 10 }}>
-        <Icon name='close' 
-          onPress={() => {this.props.navigation.navigate('Home')}} 
-          style={{ fontSize: 50, color: 'red' }}
-        />
-        </View>
-        <View style={divideSection}>
-            <Text style={{fontSize: 30, fontWeight: 'bold'}}>Congratulations!</Text>
-        </View>
-        <View style={summaryCard}>
-        <LogCard>
-            <LogCardItem>
-              <Text style={summaryLabel} >
-              {date.toUpperCase()}</Text>
-            </LogCardItem>
-
-            <View style={{ backgroundColor: 'black', height: 0.5,  
-              width: '100%',marginBottom: 8, marginTop: 5}} />
-
-            <LogCardItem>
-              <View style={iconSummary} >
-                <Icon  name='ios-stopwatch-outline' style={{fontSize: 24 }}/>
-              </View>
-              <Text style={summaryText}>Duration: {durationTime}</Text>
-            </LogCardItem>
-            
-            <LogCardItem block >
-              <View style={iconSummary} >
-              <Icon name="ios-trophy-outline" style={{fontSize: 22 }}/>
-              </View>
-              <Text style={summaryText} >Your distance: {totalDistance} km</Text>
-            </LogCardItem>
-          </LogCard>
-        </View>
-
-        <Button transparent style={favoriteButtonStyle} /*onPress={() => {this.addFavorite()}}*/>
-            <Icon type="MaterialIcons" name="favorite-border" style={{ color:'#fff', fontSize: 50}} />
-            <Text style={favoriteStyle}>Add to favorite</Text>
-        </Button>
-
-        </View>
-
-    );  
-  }
 };
 
-const summaryStyle = {
-  divideSection: {
-    //height: '30%',
-    marginTop: 20,
-    marginBottom: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  summary: {
-    height: '100%',
-    backgroundColor: '#5c688c'
-  },
-  summaryCard: {
-    marginTop: 15,
-    alignItems: 'center',
-    backgroundColor: '#5c688c',
-    zIndex: -1
-  },
-  summaryLabel: {
-    fontSize: 17, 
-    paddingLeft: 1, 
-    flex: 1, 
-    fontFamily: 'GillSans-Light',
-    color: 'black'
-  },
-  iconSummary: { 
-    width: '7%',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  summaryText:{
-    marginTop: 5,
-    fontSize: 17,
-    fontFamily: 'GillSans-Light',
-    paddingLeft: 10
-  },
-  favoriteButtonStyle: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    height: '10%',
-
-  },
-  favoriteStyle: {
-    fontFamily: 'GillSans-Light',
-    fontSize: 20,
-    color: '#fff' 
-  },
-}
-
-
-export default SwitchNavigator({
-  Home: { screen: Map },
-  SummaryView: {screen: TheSummary}
-});
+export default connect(mapStateToProps, { runAgain, startButton })(Map); 

@@ -1,16 +1,15 @@
 /*This file should include the components for an user to create an account.
 I.e. input form, back-button etc. So far it only includes back-button.
-The back-button navigates back to the startpage trough the SwitchNavigator in the bottom.
 and the GoBack function / JF (11/4) */ 
 
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
-import { SwitchNavigator } from 'react-navigation';
 import { Button, Icon } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MyCardSection, MyInput, MySpinner } from './common';
-import StartPage from './StartPage';
 import firebase from 'firebase';
+import Wallpaper from './Wallpaper';
+import { Actions } from 'react-native-router-flux';
 
 class CreateAccount extends React.Component {
 
@@ -22,16 +21,13 @@ class CreateAccount extends React.Component {
         this.setState({ error: '', loading: true,  });
         if (this.state.password == this.state.repPassword){
             console.log('same pass')
-            console.log(password)
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then(this.onCreateAccountSuccess.bind(this)) //need to bind, passing of to promise, dont know the context = need to bind. 
                 .catch(this.onCreateAccountFailed.bind(this))
         }
         else{
             console.log('not same pass')
-            return(
-                (this.onCreateAccountFailed.bind(this))
-            );
+            this.onCreateAccountFailed();
         }
     }
 
@@ -44,14 +40,16 @@ class CreateAccount extends React.Component {
              name: '',
              age: '',
              loading: false, 
-             error: '' //overkill, is not needed.. 
+             error: ''
        });
+
+       Actions.Map();
     }
 
     onCreateAccountFailed() {
         console.log('failed to create account')
         this.setState({
-            error: 'Create Account Failed.',
+            error: 'Creating Account Failed!',
             loading: false
         });
     }
@@ -63,7 +61,7 @@ class CreateAccount extends React.Component {
 
         return (
             <View style={styles.createAccountView}>
-                <Button full style={styles.createAccountButton} onPress={this.onButtonPress.bind(this)}>
+                <Button block style={styles.createAccountButton} onPress={this.onButtonPress.bind(this)}>
                     <Text style={styles.createAccountText}>Create Account</Text>
                 </Button>
             </View>
@@ -72,18 +70,23 @@ class CreateAccount extends React.Component {
 
     render () {
         return ( 
+            <View>
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
-                contentContainerStyle={styles.container}
-                scrollEnabled={true}>
+                scrollEnabled={true}
+                >
+                <Wallpaper>
                 <View>
                     <View style={styles.inputContainer}>
                         <Icon type="SimpleLineIcons" name="user-follow" style={styles.iconStyle} />
+                            <Text style={styles.errorTextStyle}>
+                                {this.state.error}
+                            </Text>
                             <MyCardSection>
                                 <MyInput
                                     placeholder="name"
                                     value={this.state.name}
-                                    onChangeText={name => this.setState({ name })}
+                                    onChangeText={name => this.setState({ name, error: '' })}
                                     iconType={"SimpleLineIcons"} 
                                     iconName={'user-follow'} 
                                 />
@@ -93,7 +96,7 @@ class CreateAccount extends React.Component {
                                 <MyInput 
                                     placeholder="user@gmail.com"
                                     value={this.state.email}
-                                    onChangeText={email => this.setState({ email })}
+                                    onChangeText={email => this.setState({ email, error: '' })}
                                     iconType={"SimpleLineIcons"} 
                                     iconName={'user'} 
                                 />
@@ -105,7 +108,7 @@ class CreateAccount extends React.Component {
                                     label="Password: "
                                     secureTextEntry={true}
                                     value={this.state.password}
-                                    onChangeText={password => this.setState({ password })}
+                                    onChangeText={password => this.setState({ password, error: '' })}
                                     iconType={"SimpleLineIcons"} 
                                     iconName={'lock'} 
                                 />
@@ -117,7 +120,7 @@ class CreateAccount extends React.Component {
                                     label="Password: "
                                     secureTextEntry={true}
                                     value={this.state.repPassword}
-                                    onChangeText={repPassword => this.setState({ repPassword })}
+                                    onChangeText={repPassword => this.setState({ repPassword, error: '' })}
                                     iconType={"SimpleLineIcons"} 
                                     iconName={'lock'} 
                                 />
@@ -129,39 +132,34 @@ class CreateAccount extends React.Component {
                         </View>
                             
                         <MyCardSection>
-                            <Button full style={styles.goBackButton} onPress={this.GoBack}>
+                            <Button block style={styles.goBackButton} onPress={() => Actions.login()}>
                                 <Icon type="Ionicons" name="ios-arrow-back" style={{color:'black', fontSize: 15}}/> 
                                 <Text style={styles.goBackButtonText}>Go Back</Text>
                             </Button>
                         </MyCardSection>
                 </View>
+                </Wallpaper>
             </KeyboardAwareScrollView>
+            </View>
         );
     };
-
-    GoBack =() => {
-            this.props.navigation.navigate('Home');
-    } 
-}
-
-class GoBackStartPage extends React.Component {
-    static navigationOptions = {
-        title: 'Home'
-    };
-    render () {
-        return (
-        <StartPage />
-        );
-    }
 }
 
 const styles = {
     iconStyle: {
         fontSize: 60,
         marginTop: 50,
-        marginBottom: 50,
+        marginBottom: 17,
         color: 'white',
         alignSelf: 'center'
+    },
+    errorTextStyle: {
+        height: 25,
+        fontSize: 20,
+        marginBottom: 8,
+        alignSelf: 'center',
+        color: 'black',
+        fontFamily: 'GillSans-SemiBold'
     },
     createAccountView: {
         flex: 1, 
@@ -188,6 +186,7 @@ const styles = {
         alignSelf: 'center',
         height: 35,
         width: '30%',
+        marginBottom: 146
     },
     goBackButtonText: {
         fontFamily: 'GillSans',
@@ -198,7 +197,4 @@ const styles = {
     }
 }
 
-export default SwitchNavigator({
-    CreateAccount: { screen: CreateAccount },
-    Home: { screen: GoBackStartPage }
-});
+export default CreateAccount;

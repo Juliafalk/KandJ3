@@ -2,10 +2,11 @@
 The Loginpage is placed on an card in App.js
 The user can use/ JF (12/4) */
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native';
 import firebase from 'firebase';
-import { MyCard, MyCardSection, MySpinner, MyInput } from './common';
+import { MyCardSection, MySpinner, MyInput } from './common';
 import { Button } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 
 class LoginPage extends Component { 
     state = { email: '', password: '', error: '', loading: false };
@@ -22,7 +23,7 @@ class LoginPage extends Component {
 
     onLoginFailed() {
         this.setState({
-            error: 'Authentication Failed.',
+            error: 'Wrong email or password!',
             loading: false
         });
     }
@@ -34,6 +35,8 @@ class LoginPage extends Component {
             loading: false, 
             error: '' //overkill, is not needed.. 
         });
+
+        Actions.Map();
     }
 
     renderButton() {
@@ -44,7 +47,7 @@ class LoginPage extends Component {
         return (
             <View>
                 <Button
-                    full
+                    block
                     style={styles.loginButton}
                     onPress={this.onButtonPress.bind(this)}> 
                     <Text
@@ -65,7 +68,7 @@ class LoginPage extends Component {
                     <MyInput
                     placeholder="user@gmail.com"
                     value={this.state.email}
-                    onChangeText={email => this.setState({ email })}
+                    onChangeText={email => this.setState({ email, error: '' })}
                     iconType={"SimpleLineIcons"} 
                     iconName={'user'} 
                     />
@@ -76,7 +79,7 @@ class LoginPage extends Component {
                     placeholder="password"
                     secureTextEntry={true}
                     value={this.state.password}
-                    onChangeText={password => this.setState({ password })}
+                    onChangeText={password => this.setState({ password, error: ''  })}
                     iconType={"SimpleLineIcons"} 
                     iconName={'lock'} 
                     />
@@ -92,8 +95,9 @@ class LoginPage extends Component {
 
 const styles = {
     errorTextStyle: {
-        height: 20,
+        height: 25,
         fontSize: 20,
+        marginBottom: 12.7,
         alignSelf: 'center',
         color: 'black',
         fontFamily: 'GillSans-SemiBold'

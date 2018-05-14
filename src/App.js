@@ -7,17 +7,10 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import reducers from './reducers';
 import ReduxThunk from 'redux-thunk';
 import firebase from 'firebase';
-import StartPage from './components/StartPage';
-import MapPage from './components/MapPage';
-import LogPage from './components/LogPage';
-import FavoritePage from './components/FavoritePage';
-import SettingsScreen from './components/SettingsScreen';
-import WaitingPage from './components/WaitingPage'
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import { 
+import {  
     Container, 
     Content, 
     Header, 
@@ -28,6 +21,15 @@ import {
     FooterTab
 } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import reducers from './reducers';
+import StartPage from './components/StartPage';
+import Map from './components/Map';
+import LogPage from './components/LogPage';
+import FavoritePage from './components/FavoritePage';
+import SettingsScreen from './components/SettingsScreen';
+import WaitingPage from './components/WaitingPage'
+import Router from './Router';
+import { Actions } from 'react-native-router-flux';
 
 const store = createStore(reducers , {}, applyMiddleware(ReduxThunk))
 
@@ -58,45 +60,33 @@ class App extends React.Component {
         });
     }
 
-    renderContent() {
-        switch(this.state.loggedIn) {
-            case true:
-                return(
-                <KeyboardAwareScrollView
-                resetScrollToCoords={{ x: 0, y: 0 }}
-                contentContainerStyle={styles.container}
-                scrollEnabled={false}
-                >
-                <Container>
-                <MyApp /> 
-                
-                 </Container>
-                </KeyboardAwareScrollView>);
-            case false:
-                return <StartPage />;
-            default:
-                return <WaitingPage />;
+    loggedIn() {
+        if (this.state.loggedIn){
+            //Just to navigate to Summary while working on that page
+            Actions.Map();
         }
-    }
-
+        else if(this.state.loggedIn === false){
+            Actions.login();
+        }
+    };
+    
     render()  {
         return(
             <Provider store={ store }>
-            <Container>
-           {this.renderContent()};    
-           </Container>
-           </Provider>
+                <Router>
+                    {this.loggedIn()};
+                </Router>
+            </Provider>
         );
     }
 }
 
-
-
-const CustomDrawerContentComponent = (props) => (
+//JL 9/5: används i router till drawer scene
+export const CustomDrawerContentComponent = (props) => (
     <Container >
-        <Header style={{ height: 200, backgroundColor: 'white' }}>
+        <Header style={{ height: 200 }}>
             <Body>
-                <ImageBackground style={otherStyles.drawerImage} blurRadius= {7} 
+                <ImageBackground style={styles.drawerImage} blurRadius= {7} 
                 source={require('./components/images/bredTrack.jpg')}>
                 <Text style={otherStyles.sideImage}>runRouter</Text>
                 </ImageBackground>
@@ -111,9 +101,7 @@ const CustomDrawerContentComponent = (props) => (
         <Footer style={{ backgroundColor: '#7785ad' }}>
             <FooterTab>
             <Button onPress={() => Logout()}>
-               
                 <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white'}}>  Log out  </Text>
-                
             </Button>
             </FooterTab>
         </Footer>
@@ -122,36 +110,16 @@ const CustomDrawerContentComponent = (props) => (
 
 function Logout() {
     firebase.auth().signOut()
+    Actions.login();
 }
 
-const MyApp = DrawerNavigator({
-
-    Map: {
-        screen: MapPage
-    },
-    Log: {
-        screen: LogPage
-    },
-    Favorites: {
-        screen: FavoritePage
-    },
-    Settings: {
-        screen: SettingsScreen
-    },
-}, {
-    initialRouteName: 'Map',
-    contentComponent: CustomDrawerContentComponent,
-    drawerOpenRoute: 'DrawerOpen',
-    drawerCloseRoute: 'DrawerClose',
-    drawerToggleRoute: 'DrawerToggle' 
-    
-})
-
 const styles = {
-
-};
-export default App;
-
+    drawerImage: {
+        height: 215,
+        width: 280,
+        borderRadius: 75
+    }
+},
 
 otherStyles = StyleSheet.create({
     container: {
@@ -166,11 +134,7 @@ otherStyles = StyleSheet.create({
         color: 'white', 
         alignSelf: 'center', 
         marginTop: '35%' 
-    },
-
-    drawerImage: {
-        height: 215,
-        width: 280,
-        borderRadius: 75
     }
 })
+
+export default App;
