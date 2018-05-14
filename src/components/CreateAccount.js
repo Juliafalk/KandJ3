@@ -27,7 +27,7 @@ class CreateAccount extends React.Component {
         }
         else{
             console.log('not same pass')
-            this.onCreateAccountFailed();
+            this.pwdDiff();
         }
     }
 
@@ -46,12 +46,45 @@ class CreateAccount extends React.Component {
        Actions.Map();
     }
 
-    onCreateAccountFailed() {
+    onCreateAccountFailed(error) {
         console.log('failed to create account')
+
+       if ( error.code == 'auth/invalid-email' && this.state.password.length < 6) {
+            this.setState({
+                error: 'Invalid email and password',
+                loading: false
+            });
+        }
+        else if (this.state.password.length < 6){
+            this.setState({
+                error: 'Password too short',
+                loading: false
+            });
+        }
+        
+       
+        else{
+            this.setState({
+                error: 'Invalid email',
+                loading: false
+            });
+        }
+    }
+
+
+    pwdDiff() {
+        if (this.state.password.length < 6){
+            this.setState({
+                error: 'Password short and not matching',
+                loading: false
+            });
+        }
+      else{
         this.setState({
-            error: 'Creating Account Failed!',
+            error: 'Password not matching',
             loading: false
         });
+      }  
     }
 
     renderButton() {
@@ -94,7 +127,7 @@ class CreateAccount extends React.Component {
 
                             <MyCardSection>
                                 <MyInput 
-                                    placeholder="user@gmail.com"
+                                    placeholder="user@email.com"
                                     value={this.state.email}
                                     onChangeText={email => this.setState({ email, error: '' })}
                                     iconType={"SimpleLineIcons"} 
