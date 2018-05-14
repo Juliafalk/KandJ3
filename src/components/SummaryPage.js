@@ -28,14 +28,16 @@ var favoriteRoute;
 //JL 19/5: just a shell to be able to navigate to this page, JF is working on layout
 class SummaryPage extends React.Component { 
 
+    state = { loading: true };
+
     
     componentWillMount() {
         this.props.lastRouteFetch();
+       
     }
 
     addRemoveFavorite (lastRoute){
         const { currentUser } = firebase.auth();
-        console.log(favoriteRoute)
         if (favoriteRoute === false){
         firebase.database().ref(`/users/${currentUser.uid}/routes/${routeid}`)
            .update({ favorite: true });
@@ -44,17 +46,29 @@ class SummaryPage extends React.Component {
             firebase.database().ref(`/users/${currentUser.uid}/routes/${routeid}`)
                .update({ favorite: false });
         }
-}
+    }
+
+    renderSpinner() {
+        if (this.state.loading) {
+            return (
+            <View style={summaryStyle.spinnerStyle} >
+            <ActivityIndicator size="large"  />
+            </View>
+            );
+        }
+    }
 
     render() {
         const { lastRoute } = this.props;
+    
+       
          
         if(favoriteRoute == true ) {
             favoriteText = "Favorite!",
             iconName = "favorite",
             iconStyle = {
                 color: '#d6b3d2',
-                fontSize: 50
+                fontSize: 70
             },
             unAddText="Psst.. Press the heart to remove from favorites"  
         }
@@ -64,7 +78,7 @@ class SummaryPage extends React.Component {
             iconName = "favorite-border",
             iconStyle = {
                 color: '#ffffff',
-                fontSize: 50
+                fontSize: 70
             },
             unAddText=""
 
@@ -75,10 +89,11 @@ class SummaryPage extends React.Component {
             iconName = "favorite-border",
             iconStyle = {
                 color: '#ffffff',
-                fontSize: 50
+                fontSize: 70
             },
             unAddText=""
         }
+
         const {
             divideSection,
             summary,
@@ -90,7 +105,15 @@ class SummaryPage extends React.Component {
             favoriteStyle,
             unAddStyle,
           } = summaryStyle
-      
+        
+          //Two types of gifs, will see if it is possible to store them as files later.. / JF(14/5)
+          //https://media.giphy.com/media/xUPGcECDtcpmUDIeQw/giphy.gif
+          //https://media.giphy.com/media/Hb3kDuX7tYHza/giphy.gif
+
+        
+       
+        
+        if(lastRoute.length > 0){
         return (
             <View style={summary} >
             <View style={{ marginLeft: 15, marginTop: 10 }}>
@@ -99,50 +122,81 @@ class SummaryPage extends React.Component {
             style={{ fontSize: 50, color: 'white' }}
             />
             </View>
-            <View style={{ marginLeft: 15, marginTop: 10 }}>
-            </View>
-            <View style={divideSection}>
-                <Image style={{ height: 90, width: 90}}  
-                source={require('./images/finisher.png')}/>
-            </View>
-            <View style={summaryCard}>
-            <LogCard>
-                <LogCardItem>
-                <Text style={summaryLabel} >{routeDate}
-                </Text>
-                </LogCardItem>
 
-                <View style={{ backgroundColor: 'black', height: 0.5,  
-                width: '100%',marginBottom: 8,}} />
-
-                <LogCardItem>
-                <View style={iconSummary} >
-                    <Icon  name='ios-stopwatch-outline'/>
+            <View style={{marginTop: 60}}>
+                <View style={divideSection}>
+                    <Image style={{ width: '95%', height: '70%'}} 
+                    source={require('./images/goldenband.png') /*Will probably changes picture later /JF (15/5)*/} />
                 </View>
-                <Text style={summaryText}>Duration: {routeDuration}</Text>
-                </LogCardItem>
+
+                <View style={summaryCard}>
+                <LogCard>
+                    
+                    <LogCardItem>
+                    <Text style={summaryLabel}>{routeDate}</Text>
+                    </LogCardItem>
+
+                    <View style={{ backgroundColor: 'black', height: 0.5,  
+                    width: '100%',marginBottom: 8,}} />
+                    <LogCardItem>
+                    <View style={iconSummary} >
+                        <Icon  name='ios-stopwatch-outline'/>
+                    </View>
+                    <Text style={summaryText}>Duration: {routeDuration}</Text>
+                    </LogCardItem>
+
+                    <LogCardItem />
+
+                    <LogCardItem >
+                        <View style={iconSummary}>
+                            <Icon name="ios-walk-outline" style={{fontSize: 28 }}/>
+                        </View>
+                        <Text style={summaryText}>Route distance: {routeDistance} km</Text>
+                    </LogCardItem>
+
+                    <LogCardItem />
+                    
+                    <LogCardItem>
+                    <View style={iconSummary} >
+                        <Icon name="ios-trophy-outline" style={{fontSize: 24 }}/>   
+                    </View>
+                    <Text style={summaryText} >Your distance: {distanceTravelled} km</Text>
+                    </LogCardItem>
+
+                    <LogCardItem />
+
+                </LogCard>
+                </View>
+
+                <View style={divideSection}>
+                    <Image style={{ width: '95%', height: '70%'}} 
+                    source={require('./images/goldenband.png') /*Will probably changes picture later /JF (15/5)*/} />
+                </View>
                 
-                <LogCardItem block >
-                <View style={iconSummary} >
-                    <Icon  name="ios-walk-outline"/>
+                <View style={{marginTop: 10}}>
+                <Button transparent style={favoriteButtonStyle} onPress={() => {this.addRemoveFavorite(lastRoute)}}>
+                    <Icon 
+                    type="MaterialIcons" 
+                    name={iconName} 
+                    style={iconStyle} />
+                    <Text style={favoriteStyle}>{favoriteText}</Text>
+                </Button>
+                <Text style={unAddStyle}>{unAddText}</Text>
+                
                 </View>
-                <Text style={summaryText} >Your distance: {distanceTravelled} km</Text>
-                </LogCardItem>
-            </LogCard>
             </View>
+        </View>
             
-        
-            <Button transparent style={favoriteButtonStyle} onPress={() => {this.addRemoveFavorite(lastRoute)}}>
-                <Icon 
-                type="MaterialIcons" 
-                name={iconName} 
-                style={iconStyle} />
-                <Text style={favoriteStyle}>{favoriteText}</Text>
-            </Button>
-            <Text style={unAddStyle}>{unAddText}</Text>
-         
+            )
+        }
+        else {
+            return (
+            <View style={summary}>
+                {this.renderSpinner()}
             </View>
-        )
+            )
+        }
+        
     }
 }
 
@@ -151,24 +205,28 @@ const mapStateToProps = state => {
         if (_.map(state.lastRoute).length > 0){
         routeid = uid; 
         routeDate = theRoute.date.toUpperCase();
-        routeDistance = theRoute.actualDistance;
+        routeDistance = theRoute.actualDistance.toFixed(2);
         routeDuration = theRoute.TOTAL_DURATION;
         distanceTravelled = theRoute.DISTANCE_TRAVELLED;
         favoriteRoute = theRoute.favorite;
         }
         return {theRoute, uid};
     });
+   
     return { lastRoute };
+    
 };
 
 const summaryStyle = {
     divideSection: {
       justifyContent: 'center',
       alignItems: 'center',
+      height: '5%'
     },
     summary: {
       height: '100%',
       backgroundColor: '#5c688c',
+      paddingTop: '5%'
     },
     summaryCard: {
       alignItems: 'center',
@@ -176,7 +234,7 @@ const summaryStyle = {
       zIndex: -1
     },
     summaryLabel: {
-      fontSize: 17, 
+      fontSize: 23, 
       paddingLeft: 1, 
       flex: 1, 
       fontFamily: 'GillSans-Light',
@@ -190,7 +248,7 @@ const summaryStyle = {
     },
     summaryText:{
       marginTop: 5,
-      fontSize: 17,
+      fontSize: 20,
       fontFamily: 'GillSans-Light',
       paddingLeft: 10
     },
@@ -198,8 +256,7 @@ const summaryStyle = {
       flexDirection: 'column',
       justifyContent: 'center',
       alignSelf: 'center',
-      height: '10%',
-  
+      height: 90,
     },
     favoriteStyle: {
       fontFamily: 'GillSans-Light',
@@ -212,6 +269,11 @@ const summaryStyle = {
         color: '#fff',
         justifyContent: 'center',
         alignSelf: 'center'
+    },
+    spinnerStyle: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 }
   
