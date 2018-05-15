@@ -126,7 +126,7 @@ class SummaryPage extends React.Component {
              <View >
                     <Image style={{ width: 150, height: 150, marginLeft: 110}}
                     source={require('./images/greatJob.png') /*Suggestion /JG (16/5)*/} />
-                </View>
+            </View>
 
             <View style={{marginTop: 10}}>
                 <View style={divideSection}>
