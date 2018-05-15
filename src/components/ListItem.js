@@ -159,10 +159,10 @@ const styles = {
     },
     lineStyle: {
         backgroundColor: 'black',
-        height: 1, 
+        height: 0.5, 
         width: '100%',
         marginBottom: 8,
-        marginTop: -10
+        marginTop: 2
     },
     textStyle:{
         marginTop: 5,

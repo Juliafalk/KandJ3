@@ -106,7 +106,7 @@ const styles = {
         height: 0.5, 
         width: '100%',
         marginBottom: 8,
-        marginTop: 5,
+        marginTop: 3,
     },
     textStyle:{
         marginTop: 5,
