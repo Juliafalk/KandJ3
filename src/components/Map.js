@@ -244,7 +244,7 @@ class Map extends Component {
     if (!this.state.startRunning) {
       return(
         <GooglePlacesAutocomplete
-        placeholder='Choose starting point'
+        placeholder='Search starting point'
         placeholderTextColor='rgb(65,127,225)'
         styles={{
           listView: {
