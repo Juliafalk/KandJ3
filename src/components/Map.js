@@ -298,6 +298,11 @@ class Map extends Component {
   //JL 17/4: shows different footers before and while running
   startRunning(){
     //JL 18/4: deconstruction of styles and states
+
+    var startButtonStyleEnable=  {
+        marginTop: 10
+      }
+    
     const {
       createRouteContainerStyle,
       createRouteButtonStyle,
@@ -305,7 +310,7 @@ class Map extends Component {
       distanceContainer,
       textInputStyle,
       actualDistanceStyle,
-      startButtonStyle,
+      //startButtonStyle,
       distanceTravelledStyle,
       timeContainer,
       pauseDoneContainer,
@@ -324,7 +329,48 @@ class Map extends Component {
       createdRoute
     } = this.state;
 
-    if (!this.state.startRunning){
+    
+    if(this.state.createdRoute == true){
+      return(
+      <View>
+      <View style={createRouteContainerStyle}>
+        <View style={actualDistanceStyle}>
+          <Text style={{ fontSize: 12, color: 'white'}}>This Route:</Text>
+          <Text style={{ color: 'white'}}>{actualDistance.toFixed(2)} km</Text>
+        </View>
+        <View style={inputContainerStyle}>
+          <DistanceInput
+            keyboardType='number-pad'
+            placeholder='...'
+            value={wantedDistance}
+            onChangeText={userInput => 
+              {this.setState({
+              wantedDistance: userInput}),
+              this.changeDistance(userInput)}}
+          />
+        </View>
+        <Button
+          info
+          style={createRouteButtonStyle}
+          disabled ={createRouteDisabled}
+          onPress={() => {this.routeGenerator(wantedDistance)
+          this.setState({ createdRoute: true }), this.props.startButton(false), Keyboard.dismiss}}>
+            <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
+        </Button>
+      </View>
+      <Button
+          block
+          success
+          disabled={this.props.START_BUTTON}
+          style={startButtonStyleEnable}
+          onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
+            this.resetStopwatch(), this.toggleStopwatch()}}>
+            <Text>Start</Text>
+        </Button>
+        </View>
+      )
+    }
+    else if (!this.state.startRunning){
       return(
         <View>
           <View style={createRouteContainerStyle}>
@@ -347,23 +393,15 @@ class Map extends Component {
               info
               style={createRouteButtonStyle}
               disabled ={createRouteDisabled}
-              onPress={() => {this.routeGenerator(wantedDistance)
+              onPress={() => {//this.routeGenerator(wantedDistance)
               this.setState({ createdRoute: true }), this.props.startButton(false), Keyboard.dismiss}}>
                 <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
-          <Button
-          block
-          success
-          disabled={this.props.START_BUTTON}
-          style={startButtonStyle}
-          onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
-            this.resetStopwatch(), this.toggleStopwatch()}}>
-            <Text>Start</Text>
-        </Button>
+          
       </View>
       );
-    } 
+    }
     else {
       return(
         <View style={{backgroundColor: '#5c688c'}}>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Animated} from 'react-native';
 import firebase from 'firebase'; 
 import { Icon, Button } from 'native-base';
 import { LogCard, LogCardItem } from './common';
@@ -8,6 +8,13 @@ import { runAgain, startButton } from '../actions';
 import { Actions } from 'react-native-router-flux';
 
 class FavoriteListItem extends Component {
+
+    state = {
+        animatedRemove: new Animated.Value(1)
+    }
+    componentDidUpdate() {
+        this.state.animatedRemove.setValue(1)
+    }
     runAgain(route) {
         this.props.runAgain(route.WAYPOINTS);
         this.props.startButton(false);
@@ -17,12 +24,21 @@ class FavoriteListItem extends Component {
     removeFavorite (route){
         const { currentUser } = firebase.auth();
         const UID = route.uid;
-        firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
-           .update({ favorite: false });
-    }
+       
+        Animated.timing(this.state.animatedRemove, {
+            toValue: 0,
+        }).start(() =>  {firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
+            .update({ favorite: false })}, 
+        )}
+
  
-    render() {        
+    render() {
         const { route } = this.props;
+        const { animatedRemove } = this.state;
+        const transformStyle = {
+            opacity: animatedRemove,
+            alignItems: 'center',
+        };
  
         const {
             viewStyle, 
@@ -38,7 +54,7 @@ class FavoriteListItem extends Component {
         } = styles;
         
         return (
-            <View style={viewStyle}>
+            <Animated.View style ={transformStyle}>
                 <LogCard>
                     <LogCardItem>
                         <Text style={labelStyle}>{route.date.toUpperCase()}</Text>
@@ -84,16 +100,15 @@ class FavoriteListItem extends Component {
                           
                         </View>
                     </View>
-                </LogCard>        
-            </View>
-        )};
-       
+                </LogCard> 
+            </Animated.View> 
+  
+           
+             
+        )};  
 }
 
 const styles = {
-    viewStyle: {
-        alignItems: 'center',
-    },
     labelStyle: {
         fontSize: 17,
         paddingLeft: 1, 
@@ -123,7 +138,10 @@ const styles = {
         marginTop: 10,
         height: 35,
         width: '100%',
-        backgroundColor: '#7785ad',  
+        backgroundColor: '#7785ad',
+        borderRadius: 5,
+        alignContent: 'center',
+        justifyContent: 'center'  
     },
     textButtonStyle: {
         fontSize: 17,
