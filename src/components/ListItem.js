@@ -4,7 +4,7 @@ import firebase from 'firebase';
 import { Icon, Button } from 'native-base';
 import { LogCard, LogCardItem } from './common';
 import { connect } from 'react-redux';
-import { runAgain, startButton } from '../actions';
+import { runAgain, startButton, runAgainMode } from '../actions';
 import { Actions } from 'react-native-router-flux';
 
 class ListItem extends Component {
@@ -15,6 +15,7 @@ class ListItem extends Component {
     runAgain(route) {
         this.props.runAgain(route.WAYPOINTS);
         this.props.startButton(false);
+        this.props.runAgainMode(true);
         Actions.Map();
     }
 
@@ -205,4 +206,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { runAgain, startButton })(ListItem); 
+export default connect(mapStateToProps, { runAgain, startButton, runAgainMode })(ListItem); 

@@ -17,7 +17,7 @@ import Geocoder from 'react-native-geocoding';
 import firebase from 'firebase';
 import haversine from 'haversine';
 import { connect } from 'react-redux';
-import { runAgain, startButton } from '../actions';
+import { runAgain, startButton, runAgainMode } from '../actions';
 import { Actions } from 'react-native-router-flux';
 import { DistanceInput } from './common';
 
@@ -30,7 +30,6 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO*0.1;
 const DISTANCE_TRAVELLED = 0; //This is to calculate how long distance that has been travelled / JF (18/4)
 //const favorite = false;
 //JL 11/4: the points the route should go through (including start and end point)
-const waypoints = [];
 
 //JL 18/4: time spent runnning
 const TOTAL_DURATION = 0;
@@ -139,8 +138,6 @@ class Map extends Component {
     );
   }
 
-  
-
   calcDistance(newLatLng) {
     const { prevLatLng } = this.state
     return (haversine(prevLatLng, newLatLng) || 0 )
@@ -158,8 +155,8 @@ class Map extends Component {
   we then set this.state.wayPoints to waypoints and when rendered, the directionService will make a route 
   through these points*/
   routeGenerator(length) {
+    const waypoints = [];
  
-
     lengthInMeters = length*1000;
     lengthInMeters = lengthInMeters*0.7; //only takes 80% of the input to compensate, since the generated route is almost 'always' too long
     waypoints[0] = this.state.initialPosition;
@@ -220,8 +217,7 @@ class Map extends Component {
     }
   }
 
-  
-
+  //JL 14/5: kolla här: totalduration skrivs med både gemener och versaler...konstigt
   //JG 18/4 will send information about the route to the database
   toDatabase() {
     var date= new Date().toDateString()
@@ -233,10 +229,15 @@ class Map extends Component {
     return(
       this.setState({
           totalDuration: 0,
-          DISTANCE_TRAVELLED: 0 ,
-          date: 0   
+          DISTANCE_TRAVELLED: 0,
+          date: 0
       })
     );
+  }
+
+  resetMap(){
+    this.props.runAgain('');
+    this.setState({ actualDistance: '' })
   }
 
   //JL 25/4: allows user to choose starting point
@@ -313,7 +314,6 @@ class Map extends Component {
     } = styles;
     const {
       wantedDistance,
-      actualDistance,
       createRouteDisabled,
       startButton,
       distanceTravelled,
@@ -321,7 +321,8 @@ class Map extends Component {
       stopwatchReset,
       pauseRunning,
       totalDuration,
-      createdRoute
+      createdRoute,
+      actualDistance
     } = this.state;
 
     if (!this.state.startRunning){
@@ -348,7 +349,7 @@ class Map extends Component {
               style={createRouteButtonStyle}
               disabled ={createRouteDisabled}
               onPress={() => {this.routeGenerator(wantedDistance)
-              this.setState({ createdRoute: true }), this.props.startButton(false), Keyboard.dismiss}}>
+              this.setState({ createdRoute: true }), this.props.startButton(false), this.props.runAgainMode(false), Keyboard.dismiss}}>
                 <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
@@ -357,7 +358,7 @@ class Map extends Component {
           success
           disabled={this.props.START_BUTTON}
           style={startButtonStyle}
-          onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
+          onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0, wantedDistance: '' }), 
             this.resetStopwatch(), this.toggleStopwatch()}}>
             <Text>Start</Text>
         </Button>
@@ -405,7 +406,7 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase()}
+                    {text: 'OK', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase(), this.resetMap()}
                     },
                   ],
                   { cancelable: false }
@@ -431,8 +432,6 @@ class Map extends Component {
     this.currentTime = time;
     TOTAL_DURATION = time;
   };
-
- 
   //****//
 
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
@@ -447,17 +446,17 @@ class Map extends Component {
     } = styles;
     const {
       wantedDistance,
-      actualDistance,
       createRouteDisabled,
       startButton,
       distanceTravelled,
       stopwatchStart,
       stopwatchReset,
       pauseRunning,
-      totalDuration
+      totalDuration,
+      actualDistance
     } = this.state;
     const {
-      WAYPOINTS
+      WAYPOINTS,
     } = this.props;
 
     return (
@@ -505,17 +504,21 @@ class Map extends Component {
                 //Generate a new route when the route is 10% to short or to small
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
-                console.log(result.distance)
-                console.log(parseFloat(this.state.wantedDistance))
-                if (result.distance < parseFloat(this.state.wantedDistance)*0.9){
+                //console.log(result.distance)
+                console.log('render')
+                console.log('distance: ',result.distance)
+                console.log(this.state.wantedDistance)
+                if (!this.props.RUN_AGAIN_MODE && result.distance < parseFloat(this.state.wantedDistance)*0.9){
+                  console.log('too short')
                   this.routeGenerator(this.state.wantedDistance)
                 }
-                else if (result.distance > parseFloat(this.state.wantedDistance)*1.1) {
+                /*else if (!this.props.RUN_AGAIN_MODE && result.distance > parseFloat(this.state.wantedDistance)*1.1) {
+                  //console.log('too long')
                   this.routeGenerator(this.state.wantedDistance)
-                }
+                }*/
                 else {
                   this.setState({ actualDistance: result.distance })
-                  console.log('right route')
+                  console.log('ok distance')
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
@@ -652,8 +655,9 @@ const options = {
 const mapStateToProps = state => {
   return {
       WAYPOINTS: state.runAgain.wayPoints,
-      START_BUTTON: state.runAgain.startButton
+      START_BUTTON: state.runAgain.startButton,
+      RUN_AGAIN_MODE: state.runAgain.runAgainMode
   };
 };
 
-export default connect(mapStateToProps, { runAgain, startButton })(Map); 
+export default connect(mapStateToProps, { runAgain, startButton, runAgainMode })(Map); 

@@ -1,7 +1,7 @@
-import { RUN_AGAIN, START_BUTTON } from '../actions/types';
+import { RUN_AGAIN, START_BUTTON, RUN_AGAIN_MODE } from '../actions/types';
 
 //const INITIAL_STATE = {};
-const INITIAL_STATE = { wayPoints: '', startButton: true };
+const INITIAL_STATE = { wayPoints: '', startButton: true, runAgainMode: false };
 
 export default (state = INITIAL_STATE, action) => {
     switch(action.type){
@@ -9,6 +9,8 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, wayPoints: action.payload};
         case START_BUTTON:
             return { ...state, startButton: action.payload};
+        case RUN_AGAIN_MODE:
+            return { ...state, runAgainMode: action.payload};
         default:
             return state;
     }

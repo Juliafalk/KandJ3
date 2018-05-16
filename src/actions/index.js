@@ -3,6 +3,7 @@ import { Actions } from 'react-native-router-flux';
 import { 
     ROUTES_FETCH_SUCCESS ,
     RUN_AGAIN,
+    RUN_AGAIN_MODE,
     START_BUTTON,
     FAVORITE_ROUTES_FETCH_SUCCESS,
     LAST_ROUTE_FETCH
@@ -23,6 +24,13 @@ export const runAgain = (wayPoints) => {
     return{ 
         type: RUN_AGAIN, 
         payload: wayPoints
+    }; 
+};
+
+export const runAgainMode = (boolean) => {
+    return{ 
+        type: RUN_AGAIN_MODE, 
+        payload: boolean
     }; 
 };
 
