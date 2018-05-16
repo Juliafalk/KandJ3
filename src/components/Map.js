@@ -244,15 +244,15 @@ class Map extends Component {
     if (!this.state.startRunning) {
       return(
         <GooglePlacesAutocomplete
-        placeholder='Choose starting point'
+        placeholder='Search Starting Point'
         placeholderTextColor='rgb(65,127,225)'
         styles={{
           listView: {
             backgroundColor: 'white',
             opacity: 0.8,
           },
-          textInput: {color: 'rgb(65,127,225)'},
-          textInputContainer: {backgroundColor: '#5c688c', opacity: 0.8} 
+          textInput: {color: 'rgb(65,127,225)',  fontSize: 14},
+          textInputContainer: {backgroundColor: '#5c688c', /*opacity: 0.8*/} 
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
@@ -330,7 +330,7 @@ class Map extends Component {
     } = this.state;
 
     
-    if(this.state.createdRoute == true){
+    if(this.state.createdRoute == true && this.state.startRunning == false){
       return(
       <View>
       <View style={createRouteContainerStyle}>
@@ -364,19 +364,19 @@ class Map extends Component {
           disabled={this.props.START_BUTTON}
           style={startButtonStyleEnable}
           onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
-            this.resetStopwatch(), this.toggleStopwatch()}}>
-            <Text>Start</Text>
+          this.resetStopwatch(), this.toggleStopwatch()}}> 
++            <Text style={{ fontSize: 20 }}>Start</Text>
         </Button>
         </View>
       )
     }
-    else if (!this.state.startRunning){
+    else if (this.state.createdRoute == false){
       return(
         <View>
           <View style={createRouteContainerStyle}>
             <View style={actualDistanceStyle}>
-              <Text style={{ fontSize: 12, color: 'white'}}>This Route:</Text>
-              <Text style={{ color: 'white'}}>{actualDistance.toFixed(2)} km</Text>
+              <Text style={{ fontSize: 15, color: 'white'}}>This Route:</Text>
+              <Text style={{ color: 'white', fontSize: 16}}>{actualDistance.toFixed(2)} km</Text>
             </View>
             <View style={inputContainerStyle}>
               <DistanceInput
@@ -393,16 +393,15 @@ class Map extends Component {
               info
               style={createRouteButtonStyle}
               disabled ={createRouteDisabled}
-              onPress={() => {//this.routeGenerator(wantedDistance)
+              onPress={() => {this.routeGenerator(wantedDistance)
               this.setState({ createdRoute: true }), this.props.startButton(false), Keyboard.dismiss}}>
                 <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
-          
       </View>
       );
     }
-    else {
+    else if (this.state.startRunning == true){
       return(
         <View style={{backgroundColor: '#5c688c'}}>
           <View style={createRouteContainerStyle}>
@@ -450,7 +449,7 @@ class Map extends Component {
                 )
               }}>
                 <Icon type='FontAwesome' name='check' />
-                <Text>Done</Text>
+                <Text style={{fontSize: 16}} >Done</Text>
             </Button>
           </View>
       </View>
@@ -621,10 +620,10 @@ const styles = {
     marginRight: -15
   },
   distanceTravelledStyle: {
-    fontSize: 25,
+    fontSize: 28,
     color: 'white',
     paddingLeft: 15,
-    marginTop: 5
+    marginTop: 5,
   },
   inputContainerStyle: {
     width: 80,
