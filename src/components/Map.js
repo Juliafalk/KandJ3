@@ -244,14 +244,14 @@ class Map extends Component {
     if (!this.state.startRunning) {
       return(
         <GooglePlacesAutocomplete
-        placeholder='Search starting point'
+        placeholder='Search Starting Point'
         placeholderTextColor='rgb(65,127,225)'
         styles={{
           listView: {
             backgroundColor: 'white',
             opacity: 0.8,
           },
-          textInput: {color: 'rgb(65,127,225)'},
+          textInput: {color: 'rgb(65,127,225)',  fontFamily: 'GillSans', fontSize: 18},
           textInputContainer: {backgroundColor: '#5c688c', /*opacity: 0.8*/} 
           }}
           returnKeyType={'search'}
@@ -329,8 +329,8 @@ class Map extends Component {
         <View>
           <View style={createRouteContainerStyle}>
             <View style={actualDistanceStyle}>
-              <Text style={{ fontSize: 12, color: 'white'}}>This Route:</Text>
-              <Text style={{ color: 'white'}}>{actualDistance.toFixed(2)} km</Text>
+              <Text style={{ fontSize: 16, color: 'white', fontFamily: 'GillSans'}}>This Route:</Text>
+              <Text style={{ color: 'white', fontSize: 18, fontFamily: 'GillSans'}}>{actualDistance.toFixed(2)} km</Text>
             </View>
             <View style={inputContainerStyle}>
               <DistanceInput
@@ -349,7 +349,7 @@ class Map extends Component {
               disabled ={createRouteDisabled}
               onPress={() => {this.routeGenerator(wantedDistance)
               this.setState({ createdRoute: true }), this.props.startButton(false), Keyboard.dismiss}}>
-                <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
+                <Text style={{ fontSize: 12, fontFamily: 'GillSans' }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
           <Button
@@ -359,7 +359,7 @@ class Map extends Component {
           style={startButtonStyle}
           onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
             this.resetStopwatch(), this.toggleStopwatch()}}>
-            <Text>Start</Text>
+            <Text style={{ fontSize: 20, fontFamily: 'GillSans' }}>Start</Text>
         </Button>
       </View>
       );
@@ -412,7 +412,7 @@ class Map extends Component {
                 )
               }}>
                 <Icon type='FontAwesome' name='check' />
-                <Text>Done</Text>
+                <Text style={{fontFamily: 'GillSans', fontSize: 18}} >Done</Text>
             </Button>
           </View>
       </View>
@@ -583,10 +583,10 @@ const styles = {
     marginRight: -15
   },
   distanceTravelledStyle: {
-    fontSize: 25,
+    fontSize: 28,
     color: 'white',
     paddingLeft: 15,
-    marginTop: 5
+    marginTop: 5,
   },
   inputContainerStyle: {
     width: 80,
