@@ -16,7 +16,8 @@ var sceneConfig = {
         backgroundColor: '#7785ad',
     },
     titleStyle: {
-        color: 'white'
+        color: 'white',
+        fontSize: 20
     },
 }
 

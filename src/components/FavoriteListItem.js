@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Animated} from 'react-native';
 import firebase from 'firebase'; 
 import { Icon, Button } from 'native-base';
 import { LogCard, LogCardItem } from './common';
@@ -8,6 +8,13 @@ import { runAgain, startButton } from '../actions';
 import { Actions } from 'react-native-router-flux';
 
 class FavoriteListItem extends Component {
+
+    state = {
+        animatedRemove: new Animated.Value(1)
+    }
+    componentDidUpdate() {
+        this.state.animatedRemove.setValue(1)
+    }
     runAgain(route) {
         this.props.runAgain(route.WAYPOINTS);
         this.props.startButton(false);
@@ -17,12 +24,21 @@ class FavoriteListItem extends Component {
     removeFavorite (route){
         const { currentUser } = firebase.auth();
         const UID = route.uid;
-        firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
-           .update({ favorite: false });
-    }
+       
+        Animated.timing(this.state.animatedRemove, {
+            toValue: 0,
+        }).start(() =>  {firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
+            .update({ favorite: false })}, 
+        )}
+
  
-    render() {        
+    render() {
         const { route } = this.props;
+        const { animatedRemove } = this.state;
+        const transformStyle = {
+            opacity: animatedRemove,
+            alignItems: 'center',
+        };
  
         const {
             viewStyle, 
@@ -38,7 +54,7 @@ class FavoriteListItem extends Component {
         } = styles;
         
         return (
-            <View style={viewStyle}>
+            <Animated.View style ={transformStyle}>
                 <LogCard>
                     <LogCardItem>
                         <Text style={labelStyle}>{route.date.toUpperCase()}</Text>
@@ -62,38 +78,37 @@ class FavoriteListItem extends Component {
                                 <View style={viewIconStyle}>
                                     <Icon name="ios-walk-outline" style={{fontSize: 24 }}/>
                                 </View>
-                                <Text style={textStyle}>Route distance: {route.actualDistance.toFixed(2)} km</Text>
+                                <Text style={textStyle}>Route Distance: {route.actualDistance.toFixed(2)} km</Text>
                             </LogCardItem>
                             <LogCardItem >
                                 <View style={viewIconStyle} >
                                 <Icon name="ios-trophy-outline" style={{fontSize: 22 }}/>
                                 </View>
-                                <Text style={textStyle}>Your distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
+                                <Text style={textStyle}>Your Distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
                             </LogCardItem>
                         </View>
                         <View style= {favoriteRunView}>
                             <Button transparent style={favoriteButtonStyle} onPress={() => {this.removeFavorite(route)}}>
                                 <Icon type="MaterialIcons" name="delete" style={{ color:'black'}} />
-                                <Text style={favoriteStyle}>Remove favorite</Text>
+                                <Text style={favoriteStyle}>Remove Favorite</Text>
                             </Button>
                             <Button full 
                             style={buttonStyle} 
                             onPress={() => {this.runAgain(route)}}>
-                                <Text style={textButtonStyle}>Run again</Text>
+                                <Text style={textButtonStyle}>Run Again</Text>
                             </Button>
                           
                         </View>
                     </View>
-                </LogCard>        
-            </View>
-        )};
-       
+                </LogCard> 
+            </Animated.View> 
+  
+           
+             
+        )};  
 }
 
 const styles = {
-    viewStyle: {
-        alignItems: 'center',
-    },
     labelStyle: {
         fontSize: 17,
         paddingLeft: 1, 
@@ -123,7 +138,10 @@ const styles = {
         marginTop: 10,
         height: 35,
         width: '100%',
-        backgroundColor: '#7785ad',  
+        backgroundColor: '#7785ad',
+        borderRadius: 5,
+        alignContent: 'center',
+        justifyContent: 'center'  
     },
     textButtonStyle: {
         fontSize: 17,

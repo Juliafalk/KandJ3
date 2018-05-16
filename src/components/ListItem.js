@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Alert } from 'react-native'; 
+import { Animated, Text, View, Alert } from 'react-native'; 
 import firebase from 'firebase'; 
 import { Icon, Button } from 'native-base';
 import { LogCard, LogCardItem } from './common';
@@ -9,6 +9,13 @@ import { Actions } from 'react-native-router-flux';
 
 class ListItem extends Component {
 
+    state = {
+        animatedRemove: new Animated.Value(1)
+    }
+
+    componentDidUpdate () {
+        this.state.animatedRemove.setValue(1)
+    }
     //JL 2/5: vill här ändra sida till kartan och skicka med waypoints
     runAgain(route) {
         this.props.runAgain(route.WAYPOINTS);
@@ -18,6 +25,8 @@ class ListItem extends Component {
     }
 
     addRemoveFavorite(route) {
+
+        Pressedfavorite = true;
         const { currentUser } = firebase.auth();
         const UID = route.uid;
         if (route.favorite === false ){
@@ -33,18 +42,25 @@ class ListItem extends Component {
     deleteRoute(route){
         const { currentUser } = firebase.auth();
         const UID = route.uid;
-        firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
-           .remove();
-    }
+        Animated.timing(this.state.animatedRemove, {
+            toValue: 0,
+        }).start(() =>  {
+            firebase.database().ref(`/users/${currentUser.uid}/routes/${UID}`)
+                .remove()}) 
+        }
+
         
     render() {    
         
         var favoriteText;
         var iconName;
         const { route } = this.props;
+        const { animatedRemove } = this.state;
+
+        
          
         if(route.favorite == true ) {
-            favoriteText = "Favorite!",
+            favoriteText = "Favorite",
             iconName = "favorite",
             iconStyle = {
                 color: '#d6b3d2',
@@ -52,14 +68,18 @@ class ListItem extends Component {
             }
         }
         else{
-            favoriteText = "Add to favorites!",
+            favoriteText = "Add to Favorites",
             iconName = "favorite-border",
             iconStyle = {
                 color: 'black',
                 fontSize:25
             }
         }
-        
+        const transformStyle = {
+            opacity: animatedRemove,
+            alignItems: 'center',
+        };
+
         const { 
             viewStyle,
             labelStyle,
@@ -75,7 +95,7 @@ class ListItem extends Component {
         } = styles;
         
         return (
-            <View style={viewStyle} >
+            <Animated.View style={transformStyle} >
                 <LogCard>
                     <LogCardItem>
                         <Text style={labelStyle}>{route.date.toUpperCase()}</Text>
@@ -111,13 +131,13 @@ class ListItem extends Component {
                                 <View style={viewIconStyle}>
                                     <Icon name="ios-walk-outline" style={{fontSize: 24 }}/>
                                 </View>
-                                <Text style={textStyle}>Route distance: {route.actualDistance.toFixed(2)} km</Text>
+                                <Text style={textStyle}>Route Distance: {route.actualDistance.toFixed(2)} km</Text>
                             </LogCardItem>
                             <LogCardItem >
                                 <View style={viewIconStyle} >
                                 <Icon name="ios-trophy-outline" style={{fontSize: 22 }}/>
                                 </View>
-                                <Text style={textStyle}>Your distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
+                                <Text style={textStyle}>Your Distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
                             </LogCardItem>
                         </View>
                         <View style= {favoriteRunView}>
@@ -126,24 +146,21 @@ class ListItem extends Component {
                                 <Icon type="MaterialIcons" name={iconName} style={iconStyle} />
                                 <Text style={favoriteStyle}>{favoriteText}</Text>
                             </Button>
-                            <Button full 
+                            <Button  
                             style={buttonStyle} 
                             onPress={() => this.runAgain(route)}>
-                                <Text style={textButtonStyle}>Run again</Text>
+                                <Text style={textButtonStyle}>Run Again</Text>
                             </Button>
                           
                         </View>
                     </View>
-                </LogCard>        
-            </View>
+                </LogCard>     
+            </Animated.View>
         )
     };
 }
 
 const styles = {
-    viewStyle: {
-        alignItems: 'center',
-    },
     labelStyle: {
         fontSize: 17,
         paddingLeft: 1, 
@@ -181,6 +198,9 @@ const styles = {
         height: 35,
         width: '100%',
         backgroundColor: '#7785ad',  
+        borderRadius: 5,
+        alignContent: 'center',
+        justifyContent: 'center'
     },
     textButtonStyle: {
         fontSize: 17,

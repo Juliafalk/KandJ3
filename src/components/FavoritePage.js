@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, ListView, ScrollView, Text, ActivityIndicator } from 'react-native';
+import { View, ListView, ScrollView, Text, ActivityIndicator, LayoutAnimation } from 'react-native';
 import { Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { favoriteFetch } from '../actions';
@@ -15,15 +15,20 @@ class FavoritePage extends React.Component {
 
     state = {loading: true }
 
+    
+
     componentWillMount() {
         this.props.favoriteFetch();
         this.createDataSource(this.props);
+        LayoutAnimation.linear();
     }
 
     componentWillReceiveProps(nextProps){
         this.setState({loading: false})
         this.createDataSource(nextProps);
+        
     }
+
 
     createDataSource({ favRoutes }) {
         
@@ -63,7 +68,7 @@ class FavoritePage extends React.Component {
                     <View >
                         {this.renderSpinner()}
                     </View>
-                    <ListView
+                    <ListView                   
                     enableEmptySections
                     dataSource={this.dataSource}
                     renderRow={this.renderRow}

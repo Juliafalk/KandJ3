@@ -70,11 +70,11 @@ class SummaryPage extends React.Component {
                 color: '#d6b3d2',
                 fontSize: 70
             },
-            unAddText="Psst.. Press the heart to remove from favorites"  
+            unAddText="Psst.. Press the heart to remove from Favorites"  
         }
 
         else if (favoriteRoute == false){
-            favoriteText = "Add to favorites!",
+            favoriteText = "Add to Favorites!",
             iconName = "favorite-border",
             iconStyle = {
                 color: '#ffffff',
@@ -156,7 +156,7 @@ class SummaryPage extends React.Component {
                         <View style={iconSummary}>
                             <Icon name="ios-walk-outline" style={{fontSize: 28 }}/>
                         </View>
-                        <Text style={summaryText}>Route distance: {routeDistance} km</Text>
+                        <Text style={summaryText}>Route Distance: {routeDistance} km</Text>
                     </LogCardItem>
 
                     <LogCardItem />
@@ -165,7 +165,7 @@ class SummaryPage extends React.Component {
                     <View style={iconSummary} >
                         <Icon name="ios-trophy-outline" style={{fontSize: 24 }}/>   
                     </View>
-                    <Text style={summaryText} >Your distance: {distanceTravelled} km</Text>
+                    <Text style={summaryText} >Your Distance: {distanceTravelled} km</Text>
                     </LogCardItem>
 
                     <LogCardItem />
