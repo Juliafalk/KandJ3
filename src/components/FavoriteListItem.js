@@ -62,24 +62,24 @@ class FavoriteListItem extends Component {
                                 <View style={viewIconStyle}>
                                     <Icon name="ios-walk-outline" style={{fontSize: 24 }}/>
                                 </View>
-                                <Text style={textStyle}>Route distance: {route.actualDistance.toFixed(2)} km</Text>
+                                <Text style={textStyle}>Route Distance: {route.actualDistance.toFixed(2)} km</Text>
                             </LogCardItem>
                             <LogCardItem >
                                 <View style={viewIconStyle} >
                                 <Icon name="ios-trophy-outline" style={{fontSize: 22 }}/>
                                 </View>
-                                <Text style={textStyle}>Your distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
+                                <Text style={textStyle}>Your Distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
                             </LogCardItem>
                         </View>
                         <View style= {favoriteRunView}>
                             <Button transparent style={favoriteButtonStyle} onPress={() => {this.removeFavorite(route)}}>
                                 <Icon type="MaterialIcons" name="delete" style={{ color:'black'}} />
-                                <Text style={favoriteStyle}>Remove favorite</Text>
+                                <Text style={favoriteStyle}>Remove Favorite</Text>
                             </Button>
                             <Button full 
                             style={buttonStyle} 
                             onPress={() => {this.runAgain(route)}}>
-                                <Text style={textButtonStyle}>Run again</Text>
+                                <Text style={textButtonStyle}>Run Again</Text>
                             </Button>
                           
                         </View>

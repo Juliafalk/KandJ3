@@ -251,7 +251,7 @@ class Map extends Component {
             backgroundColor: 'white',
             opacity: 0.8,
           },
-          textInput: {color: 'rgb(65,127,225)',  fontFamily: 'GillSans', fontSize: 18},
+          textInput: {color: 'rgb(65,127,225)',  fontSize: 14},
           textInputContainer: {backgroundColor: '#5c688c', /*opacity: 0.8*/} 
           }}
           returnKeyType={'search'}
@@ -329,8 +329,8 @@ class Map extends Component {
         <View>
           <View style={createRouteContainerStyle}>
             <View style={actualDistanceStyle}>
-              <Text style={{ fontSize: 16, color: 'white', fontFamily: 'GillSans'}}>This Route:</Text>
-              <Text style={{ color: 'white', fontSize: 18, fontFamily: 'GillSans'}}>{actualDistance.toFixed(2)} km</Text>
+              <Text style={{ fontSize: 15, color: 'white'}}>This Route:</Text>
+              <Text style={{ color: 'white', fontSize: 16}}>{actualDistance.toFixed(2)} km</Text>
             </View>
             <View style={inputContainerStyle}>
               <DistanceInput
@@ -349,7 +349,7 @@ class Map extends Component {
               disabled ={createRouteDisabled}
               onPress={() => {this.routeGenerator(wantedDistance)
               this.setState({ createdRoute: true }), this.props.startButton(false), Keyboard.dismiss}}>
-                <Text style={{ fontSize: 12, fontFamily: 'GillSans' }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
+                <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
           <Button
@@ -359,7 +359,7 @@ class Map extends Component {
           style={startButtonStyle}
           onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
             this.resetStopwatch(), this.toggleStopwatch()}}>
-            <Text style={{ fontSize: 20, fontFamily: 'GillSans' }}>Start</Text>
+            <Text style={{ fontSize: 20 }}>Start</Text>
         </Button>
       </View>
       );
@@ -412,7 +412,7 @@ class Map extends Component {
                 )
               }}>
                 <Icon type='FontAwesome' name='check' />
-                <Text style={{fontFamily: 'GillSans', fontSize: 18}} >Done</Text>
+                <Text style={{fontSize: 16}} >Done</Text>
             </Button>
           </View>
       </View>

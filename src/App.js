@@ -101,7 +101,7 @@ export const CustomDrawerContentComponent = (props) => (
         <Footer style={{ backgroundColor: '#7785ad' }}>
             <FooterTab>
             <Button onPress={() => Logout()}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white'}}>  Log out  </Text>
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white'}}>  Log Out  </Text>
             </Button>
             </FooterTab>
         </Footer>

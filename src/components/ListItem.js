@@ -43,7 +43,7 @@ class ListItem extends Component {
         const { route } = this.props;
          
         if(route.favorite == true ) {
-            favoriteText = "Favorite!",
+            favoriteText = "Favorite",
             iconName = "favorite",
             iconStyle = {
                 color: '#d6b3d2',
@@ -51,7 +51,7 @@ class ListItem extends Component {
             }
         }
         else{
-            favoriteText = "Add to favorites!",
+            favoriteText = "Add to Favorites",
             iconName = "favorite-border",
             iconStyle = {
                 color: 'black',
@@ -110,13 +110,13 @@ class ListItem extends Component {
                                 <View style={viewIconStyle}>
                                     <Icon name="ios-walk-outline" style={{fontSize: 24 }}/>
                                 </View>
-                                <Text style={textStyle}>Route distance: {route.actualDistance.toFixed(2)} km</Text>
+                                <Text style={textStyle}>Route Distance: {route.actualDistance.toFixed(2)} km</Text>
                             </LogCardItem>
                             <LogCardItem >
                                 <View style={viewIconStyle} >
                                 <Icon name="ios-trophy-outline" style={{fontSize: 22 }}/>
                                 </View>
-                                <Text style={textStyle}>Your distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
+                                <Text style={textStyle}>Your Distance: {route.DISTANCE_TRAVELLED.toFixed(2)} km</Text>
                             </LogCardItem>
                         </View>
                         <View style= {favoriteRunView}>
@@ -128,7 +128,7 @@ class ListItem extends Component {
                             <Button full 
                             style={buttonStyle} 
                             onPress={() => this.runAgain(route)}>
-                                <Text style={textButtonStyle}>Run again</Text>
+                                <Text style={textButtonStyle}>Run Again</Text>
                             </Button>
                           
                         </View>
