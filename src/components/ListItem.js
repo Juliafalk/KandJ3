@@ -4,12 +4,12 @@ import firebase from 'firebase';
 import { Icon, Button } from 'native-base';
 import { LogCard, LogCardItem } from './common';
 import { connect } from 'react-redux';
-import { runAgain, startButton, runAgainMode } from '../actions';
+import { runAgain, runAgainMode } from '../actions';
 import { Actions } from 'react-native-router-flux';
 
 class ListItem extends Component {
 
-    state = {
+    state = { 
         animatedRemove: new Animated.Value(1)
     }
 
@@ -19,7 +19,6 @@ class ListItem extends Component {
     //JL 2/5: vill här ändra sida till kartan och skicka med waypoints
     runAgain(route) {
         this.props.runAgain(route.WAYPOINTS);
-        this.props.startButton(false);
         this.props.runAgainMode(true);
         Actions.Map();
     }
@@ -230,4 +229,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { runAgain, startButton, runAgainMode })(ListItem); 
+export default connect(mapStateToProps, { runAgain, runAgainMode })(ListItem); 
