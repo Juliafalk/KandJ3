@@ -375,8 +375,8 @@ class Map extends Component {
         <View>
           <View style={createRouteContainerStyle}>
             <View style={actualDistanceStyle}>
-              <Text style={{ fontSize: 15, color: 'white'}}>This Route:</Text>
-              <Text style={{ color: 'white', fontSize: 16}}>{actualDistance.toFixed(2)} km</Text>
+              <Text style={{ fontSize: 12, color: 'white'}}>This Route:</Text>
+              <Text style={{ color: 'white' }}>{actualDistance.toFixed(2)} km</Text>
             </View>
             <View style={inputContainerStyle}>
               <DistanceInput
@@ -544,15 +544,15 @@ class Map extends Component {
                 console.log('render')
                 console.log('distance: ',result.distance)
                 console.log(this.state.wantedDistance)
-                if (!this.props.RUN_AGAIN_MODE && result.distance < parseFloat(this.state.wantedDistance)*0.9){
+                /*if (!this.props.RUN_AGAIN_MODE && result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   console.log('too short')
                   this.routeGenerator(this.state.wantedDistance)
                 }
                 else if (!this.props.RUN_AGAIN_MODE && result.distance > parseFloat(this.state.wantedDistance)*1.1) {
                   //console.log('too long')
                   this.routeGenerator(this.state.wantedDistance)
-                }
-                else {
+                }*/
+                //else {
                   this.setState({ actualDistance: result.distance })
                   console.log('ok distance')
                   this.mapView.fitToCoordinates(result.coordinates, {
@@ -563,7 +563,7 @@ class Map extends Component {
                       top: (height / 15),
                     }
                   });
-                }
+               // }
               }}
               onError={(errorMessage) => {
                  console.log('GOT AN ERROR');
@@ -622,7 +622,7 @@ const styles = {
     marginRight: -15
   },
   distanceTravelledStyle: {
-    fontSize: 28,
+    fontSize: 25,
     color: 'white',
     paddingLeft: 15,
     marginTop: 5,
