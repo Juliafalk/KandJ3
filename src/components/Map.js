@@ -330,7 +330,7 @@ class Map extends Component {
     } = this.state;
 
     
-    if(this.state.createdRoute == true && this.state.startRunning == false){
+    if( (this.props.RUN_AGAIN_MODE == true) || (this.state.createdRoute == true && this.state.startRunning == false)){
       return(
       <View>
       <View style={createRouteContainerStyle}>
