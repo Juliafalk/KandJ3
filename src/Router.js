@@ -7,7 +7,7 @@ import { CustomDrawerContentComponent } from './App';
 import Map from './components/Map';
 import LogPage from './components/LogPage';
 import FavoritePage from './components/FavoritePage';
-import SettingsScreen from './components/SettingsScreen';
+import InfoScreen from './components/InfoScreen';
 import SummaryPage from './components/SummaryPage';
 import WaitingPage from './components/WaitingPage';
 
@@ -33,7 +33,7 @@ const RouterComponent = () => {
                     <Scene key="Map" title="Map" component={Map}/>
                     <Scene key="Log" title="Log" component={LogPage}/>
                     <Scene key="Favorites" title="Favorites" component={FavoritePage}/>
-                    <Scene key="Settings" title="Settings" component={SettingsScreen}/>
+                    <Scene key="Info" title="Info" component={InfoScreen}/>
 
                 </Scene>
                 <Scene hideNavBar={true} key="summary" component={SummaryPage}/>

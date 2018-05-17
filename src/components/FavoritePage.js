@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, ListView, ScrollView, Text, ActivityIndicator, LayoutAnimation } from 'react-native';
+import { View, ListView, ScrollView, Text, ActivityIndicator} from 'react-native';
 import { Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { favoriteFetch } from '../actions';
@@ -15,12 +15,9 @@ class FavoritePage extends React.Component {
 
     state = {loading: true }
 
-    
-
     componentWillMount() {
         this.props.favoriteFetch();
         this.createDataSource(this.props);
-        LayoutAnimation.linear();
     }
 
     componentWillReceiveProps(nextProps){
@@ -31,22 +28,15 @@ class FavoritePage extends React.Component {
 
 
     createDataSource({ favRoutes }) {
-        
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
-        //console.log(ds)
-
         this.dataSource = ds.cloneWithRows(favRoutes)
         
     }
 
     renderRow(route){
-            //if (route.favorite == true)
-                return <FavoriteListItem route={route} />;
-            //else
-            // return null;
-       
+        return <FavoriteListItem route={route} />;
     }
 
     renderSpinner() {
@@ -65,14 +55,14 @@ class FavoritePage extends React.Component {
                 <View style={viewStyle}>
                     <ScrollView>
                     <View>
-                    <View >
-                        {this.renderSpinner()}
-                    </View>
-                    <ListView                   
-                    enableEmptySections
-                    dataSource={this.dataSource}
-                    renderRow={this.renderRow}
-                    />
+                        <View >
+                            {this.renderSpinner()}
+                        </View>
+                        <ListView                   
+                        enableEmptySections
+                        dataSource={this.dataSource}
+                        renderRow={this.renderRow}
+                        />
                     </View>
                     </ScrollView>
                 </View>
