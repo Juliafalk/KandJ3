@@ -33,7 +33,7 @@ const RouterComponent = () => {
                     <Scene key="Map" title="Map" component={Map}/>
                     <Scene key="Log" title="Log" component={LogPage}/>
                     <Scene key="Favorites" title="Favorites" component={FavoritePage}/>
-                    <Scene key="Info" title="Info" component={InfoScreen}/>
+                    <Scene key="Info" title="Information" component={InfoScreen}/>
 
                 </Scene>
                 <Scene hideNavBar={true} key="summary" component={SummaryPage}/>

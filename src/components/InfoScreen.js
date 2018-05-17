@@ -20,7 +20,7 @@ class InfoScreen extends Component {
                     <Text style={styles.nameHeaderStyle}>Hey {user.displayName}</Text>
                 </View>
 
-                <View style = {styles.viewStyle}>    
+                <View style = {styles.viewCardStyle}>    
                     <Text style={styles.textStyle}>
                         Woopa, we are the J3 team. 
                         Three dedicated students, studying the third year in Master Programme in Sociotechnical Systems Engineering.
@@ -85,13 +85,20 @@ const styles = {
     },
     viewBackground: {
         backgroundColor: '#5c688c',
-        height: '100%'
+        height: '100%',
+        padding: 20
     },
     viewStyle: {
         padding: 5,
         justifyContent: 'center',
         alignSelf: 'center',
         width: '100%'
+    },
+    viewCardStyle: {
+        justifyContent: 'center',
+        alignSelf: 'center',
+        width: '100%',
+
     },
     imageStyle: {
         width: '90%', 
