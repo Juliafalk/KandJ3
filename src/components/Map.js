@@ -544,15 +544,15 @@ class Map extends Component {
                 console.log('render')
                 console.log('distance: ',result.distance)
                 console.log(this.state.wantedDistance)
-                if (!this.props.RUN_AGAIN_MODE && result.distance < parseFloat(this.state.wantedDistance)*0.9){
+                /*if (!this.props.RUN_AGAIN_MODE && result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   console.log('too short')
                   this.routeGenerator(this.state.wantedDistance)
                 }
                 else if (!this.props.RUN_AGAIN_MODE && result.distance > parseFloat(this.state.wantedDistance)*1.1) {
                   //console.log('too long')
                   this.routeGenerator(this.state.wantedDistance)
-                }
-                else {
+                }*/
+               // else {
                   this.setState({ actualDistance: result.distance })
                   console.log('ok distance')
                   this.mapView.fitToCoordinates(result.coordinates, {
@@ -563,7 +563,7 @@ class Map extends Component {
                       top: (height / 15),
                     }
                   });
-                }
+               // }
               }}
               onError={(errorMessage) => {
                  console.log('GOT AN ERROR');
