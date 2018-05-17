@@ -299,7 +299,7 @@ class Map extends Component {
   startRunning(){
     //JL 18/4: deconstruction of styles and states
 
-    var startButtonStyleEnable=  {
+    var startButtonStyleEnable =  {
         marginTop: 10
       }
     
@@ -310,7 +310,6 @@ class Map extends Component {
       distanceContainer,
       textInputStyle,
       actualDistanceStyle,
-
       distanceTravelledStyle,
       timeContainer,
       pauseDoneContainer,
@@ -323,15 +322,19 @@ class Map extends Component {
       distanceTravelled,
       stopwatchStart,
       stopwatchReset,
+      startRunning,
       pauseRunning,
       totalDuration,
       createdRoute,
       actualDistance
     } = this.state;
+    const {
+      RUN_AGAIN_MODE
+    } = this.props;
 
 
 
-    if (this.state.startRunning == true){
+    if (startRunning){
       return(
         <View style={{backgroundColor: '#5c688c'}}>
           <View style={createRouteContainerStyle}>
@@ -370,8 +373,8 @@ class Map extends Component {
                   'Done running?',
                   '', 
                   [
-                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase(), this.resetMap()}
+                    {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'Yes', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase(), this.resetMap()}
                     },
                   ],
                   { cancelable: false }
@@ -384,7 +387,7 @@ class Map extends Component {
       </View>
       );
     }
-    else if( (this.props.RUN_AGAIN_MODE == true && this.state.startRunning == false) || (this.state.createdRoute == true && this.state.startRunning == false)){
+    else if( (RUN_AGAIN_MODE && !startRunning ) || (createdRoute && !startRunning)){
       return(
       <View>
       <View style={createRouteContainerStyle}>
@@ -424,7 +427,7 @@ class Map extends Component {
         </View>
       )
     }
-    else if (this.state.createdRoute == false){
+    else if (!createdRoute){
       return(
         <View>
           <View style={createRouteContainerStyle}>
@@ -541,10 +544,6 @@ class Map extends Component {
                 //Generate a new route when the route is 10% to short or to small
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
-                //console.log(result.distance)
-                console.log('render')
-                console.log('distance: ',result.distance)
-                console.log(this.state.wantedDistance)
                 /*if (!this.props.RUN_AGAIN_MODE && result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   console.log('too short')
                   this.routeGenerator(this.state.wantedDistance)

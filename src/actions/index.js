@@ -14,7 +14,7 @@ import {
 export const runAgain = (wayPoints) => {
     return{ 
         type: RUN_AGAIN, 
-        payload: wayPoints
+        payload: wayPoints 
     }; 
 };
 
