@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Text, View, Image } from 'react-native';
-import { Icon, Container, Content } from 'native-base';
+import { Icon } from 'native-base';
 import firebase from 'firebase';
 
-class SettingsScreen extends Component {
+class InfoScreen extends Component {
   
    static navigationOptions = {
        drawerIcon: (
-           <Icon name='ios-settings-outline' style={{ color: 'white'}}/>
+           <Icon name='ios-information-circle-outline' style={{ color: 'white'}}/>
        )
    }
   
@@ -113,4 +113,4 @@ const styles = {
     }
 }
 
-export default SettingsScreen;
+export default InfoScreen;

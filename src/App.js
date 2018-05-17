@@ -26,7 +26,7 @@ import StartPage from './components/StartPage';
 import Map from './components/Map';
 import LogPage from './components/LogPage';
 import FavoritePage from './components/FavoritePage';
-import SettingsScreen from './components/SettingsScreen';
+import InfoScreen from './components/InfoScreen';
 import WaitingPage from './components/WaitingPage'
 import Router from './Router';
 import { Actions } from 'react-native-router-flux';
