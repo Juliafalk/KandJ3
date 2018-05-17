@@ -15,32 +15,33 @@ class SettingsScreen extends Component {
        const user = firebase.auth().currentUser;
        console.log(user)
        return (
-           <View style={styles.viewBackground}>
-           <View style = {styles.viewStyle}>    
-            <Text style={styles.nameHeaderStyle}>Hey {user.displayName}</Text>
-            </View>
-            <View style = {styles.viewStyle}>    
+            <View style={styles.viewBackground}>
+                <View style = {styles.viewStyle}>    
+                    <Text style={styles.nameHeaderStyle}>Hey {user.displayName}</Text>
+                </View>
+
+                <View style = {styles.viewStyle}>    
                     <Text style={styles.textStyle}>
-                        Woopa, we are the J3 team. Three dedicated students, studying the third year in 
-                        Master Programme in Sociotechnical Systems Engineering.
-                        Outside the studies, we are three runnaholics, therefore this application a great
-                        tool for us. 
-                        We hope you enjoy our application as much as we do!
+                        Woopa, we are the J3 team. 
+                        Three dedicated students, studying the third year in Master Programme in Sociotechnical Systems Engineering.
+                        Outside the studies, we are three runnaholics, therefore this app is a big advantage for us. 
+                        We hope you will enjoy our app as much as we do!
                     </Text>
-            </View>
+                </View>
            
-                    <View style = {styles.divideSection}>
-                        <Image style={styles.imageStyle} 
-                        source={require('./images/J3.jpg')} /*Byter till bättre bild imorgon*//>
-                    </View>
+                <View style = {styles.divideSection}>
+                    <Image style={styles.imageStyle} 
+                    source={require('./images/J3.jpg')} /*Byter till bättre bild imorgon*//>
+                </View>
+                        
                     <View style = {styles.viewStyle}>
-                    <Text style={styles.headerStyle}>Contact information</Text>
-                    <Text style={styles.textStyleCenter}>For contact or reporting bugs please send us an e-mail: </Text>
-                    <Text style={styles.textStyleCenter}>runRouter@runRouter.com</Text>
-                    <Text style={styles.textStyleCenter}>We will respond as soon as possible</Text>
-                    <Text style={styles.quoteStyle}>Happy running!</Text>
+                        <Text style={styles.headerStyle}>Contact information</Text>
+                        <Text style={styles.textStyleCenter}>For contact or reporting bugs please send us an e-mail: </Text>
+                        <Text style={styles.textStyleCenterContact}>runRouter@runRouter.com</Text>
+                        <Text style={styles.textStyleCenter}>We will respond as soon as possible!</Text>
+                        <Text style={styles.quoteStyle}>Happy running!</Text>
                     </View>
-            </View>
+                </View>
        );
    }
 }
@@ -69,11 +70,18 @@ const styles = {
         fontFamily: 'GillSans-Light',
         fontSize: 15,
         alignSelf: 'center',
+        alignItems: 'center',
         //color: '#fff'
     },
     textStyleCenter: {
         fontFamily: 'GillSans-Light',
         alignSelf: 'center',
+        fontSize: 15
+    },
+    textStyleCenterContact: {
+        fontFamily: 'GillSans-Light',
+        alignSelf: 'center',
+        fontSize: 18
     },
     viewBackground: {
         backgroundColor: '#5c688c',
@@ -100,7 +108,7 @@ const styles = {
         fontSize: 40,
         fontFamily: 'GillSans',
         alignSelf: 'center',
-        paddingTop: 50,
+        paddingTop: 30,
         color: '#fff'
     }
 }
