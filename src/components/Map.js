@@ -429,8 +429,8 @@ class Map extends Component {
         <View>
           <View style={createRouteContainerStyle}>
             <View style={actualDistanceStyle}>
-              <Text style={{ fontSize: 15, color: 'white'}}>This Route:</Text>
-              <Text style={{ color: 'white', fontSize: 16}}>{actualDistance.toFixed(2)} km</Text>
+              <Text style={{ fontSize: 12, color: 'white'}}>This Route:</Text>
+              <Text style={{ color: 'white' }}>{actualDistance.toFixed(2)} km</Text>
             </View>
             <View style={inputContainerStyle}>
               <DistanceInput
@@ -623,7 +623,7 @@ const styles = {
     marginRight: -15
   },
   distanceTravelledStyle: {
-    fontSize: 28,
+    fontSize: 25,
     color: 'white',
     paddingLeft: 15,
     marginTop: 5,
