@@ -370,8 +370,8 @@ class Map extends Component {
                   'Done running?',
                   '', 
                   [
-                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase(), this.resetMap()}
+                    {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'Yes', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase(), this.resetMap()}
                     },
                   ],
                   { cancelable: false }

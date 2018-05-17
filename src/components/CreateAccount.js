@@ -15,6 +15,9 @@ class CreateAccount extends React.Component {
 
     state = { email: '', password: '', repPassword: '', error: '', name: '', age: '', loading: false };
 
+    componentWillUnmount() {
+        
+    }
     onButtonPress() {
         const { email, password } = this.state;
 
@@ -22,7 +25,8 @@ class CreateAccount extends React.Component {
         if (this.state.password == this.state.repPassword){
             console.log('same pass')
             firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then(this.onCreateAccountSuccess.bind(this)) //need to bind, passing of to promise, dont know the context = need to bind. 
+                .then(this.onCreateAccountSuccess.bind(this))
+                     //need to bind, passing of to promise, dont know the context = need to bind. 
                 .catch(this.onCreateAccountFailed.bind(this))
         }
         else{
@@ -32,6 +36,14 @@ class CreateAccount extends React.Component {
     }
 
     onCreateAccountSuccess() {
+        const user = firebase.auth().currentUser;
+        
+        user.updateProfile({
+            displayName: this.state.name
+        }).then(function() {
+            var displayName = user.displayName;
+        })
+  
         console.log('created an account?')
          this.setState({
              email: '',
@@ -47,6 +59,7 @@ class CreateAccount extends React.Component {
     }
 
     onCreateAccountFailed(error) {
+
         console.log('failed to create account')
 
        if ( error.code == 'auth/invalid-email' && this.state.password.length < 6) {
