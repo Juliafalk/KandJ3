@@ -310,7 +310,7 @@ class Map extends Component {
       distanceContainer,
       textInputStyle,
       actualDistanceStyle,
-      //startButtonStyle,
+
       distanceTravelledStyle,
       timeContainer,
       pauseDoneContainer,
@@ -329,8 +329,62 @@ class Map extends Component {
       actualDistance
     } = this.state;
 
-    
-    if( (this.props.RUN_AGAIN_MODE == true) || (this.state.createdRoute == true && this.state.startRunning == false)){
+
+
+    if (this.state.startRunning == true){
+      return(
+        <View style={{backgroundColor: '#5c688c'}}>
+          <View style={createRouteContainerStyle}>
+            <Text style={distanceTravelledStyle}>
+              {distanceTravelled.toFixed(2)} km 
+            </Text>
+          <View style={timeContainer}>
+            <Icon name='time' style={{fontSize: 25, marginTop: 4, color: 'white'}}/>
+            <Stopwatch
+              start={stopwatchStart}
+              options={options}
+              reset={stopwatchReset}
+              getTime={(time) => this.getFormattedTime(time)}
+            />
+          </View>
+          </View>
+          <View style={pauseDoneContainer}>
+            <Button
+              warning
+              style={pauseDoneButton}
+              onPress={() => {this.setState({ startRunning: true, pauseRunning: !pauseRunning }),
+                this.toggleStopwatch()}}>
+                <Icon 
+                style={{fontSize: 25}}
+                type='FontAwesome'
+                name={pauseRunning ? 'play': 'pause'}
+                />
+            </Button>
+            <Button
+              success
+              iconLeft
+              style={pauseDoneButton}          
+              onPress={() =>  {this.setState({ pauseRunning: true, stopwatchStart: false }),
+                DISTANCE_TRAVELLED = parseFloat(distanceTravelled.toFixed(2)), 
+                Alert.alert(
+                  'Done running?',
+                  '', 
+                  [
+                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'OK', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase(), this.resetMap()}
+                    },
+                  ],
+                  { cancelable: false }
+                )
+              }}>
+                <Icon type='FontAwesome' name='check' />
+                <Text style={{fontSize: 16}} >Done</Text>
+            </Button>
+          </View>
+      </View>
+      );
+    }
+    else if( (this.props.RUN_AGAIN_MODE == true && this.state.startRunning == false) || (this.state.createdRoute == true && this.state.startRunning == false)){
       return(
       <View>
       <View style={createRouteContainerStyle}>
@@ -401,61 +455,8 @@ class Map extends Component {
       </View>
       );
     }
-    else if (this.state.startRunning == true){
-      return(
-        <View style={{backgroundColor: '#5c688c'}}>
-          <View style={createRouteContainerStyle}>
-            <Text style={distanceTravelledStyle}>
-              {distanceTravelled.toFixed(2)} km 
-            </Text>
-          <View style={timeContainer}>
-            <Icon name='time' style={{fontSize: 25, marginTop: 4, color: 'white'}}/>
-            <Stopwatch
-              start={stopwatchStart}
-              options={options}
-              reset={stopwatchReset}
-              getTime={(time) => this.getFormattedTime(time)}
-            />
-          </View>
-          </View>
-          <View style={pauseDoneContainer}>
-            <Button
-              warning
-              style={pauseDoneButton}
-              onPress={() => {this.setState({ startRunning: true, pauseRunning: !pauseRunning }),
-                this.toggleStopwatch()}}
-              >
-                <Icon 
-                style={{fontSize: 25}}
-                type='FontAwesome'
-                name={pauseRunning ? 'play': 'pause'}
-                />
-            </Button>
-            <Button
-              success
-              iconLeft
-              style={pauseDoneButton}          
-              onPress={() =>  {this.setState({ pauseRunning: true, stopwatchStart: false }),
-                DISTANCE_TRAVELLED = parseFloat(distanceTravelled.toFixed(2)), 
-                Alert.alert(
-                  'Done running?',
-                  '', 
-                  [
-                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase(), this.resetMap()}
-                    },
-                  ],
-                  { cancelable: false }
-                )
-              }}>
-                <Icon type='FontAwesome' name='check' />
-                <Text style={{fontSize: 16}} >Done</Text>
-            </Button>
-          </View>
-      </View>
-      );
-    }
   }
+
 
   //JL 17/4: these three functions handle the stopwatch used to track the user's runtime
   toggleStopwatch() {
@@ -544,15 +545,15 @@ class Map extends Component {
                 console.log('render')
                 console.log('distance: ',result.distance)
                 console.log(this.state.wantedDistance)
-                if (!this.props.RUN_AGAIN_MODE && result.distance < parseFloat(this.state.wantedDistance)*0.9){
+                /*if (!this.props.RUN_AGAIN_MODE && result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   console.log('too short')
                   this.routeGenerator(this.state.wantedDistance)
                 }
                 else if (!this.props.RUN_AGAIN_MODE && result.distance > parseFloat(this.state.wantedDistance)*1.1) {
                   //console.log('too long')
                   this.routeGenerator(this.state.wantedDistance)
-                }
-                else {
+                }*/
+                //else {
                   this.setState({ actualDistance: result.distance })
                   console.log('ok distance')
                   this.mapView.fitToCoordinates(result.coordinates, {
@@ -563,7 +564,7 @@ class Map extends Component {
                       top: (height / 15),
                     }
                   });
-                }
+                //}
               }}
               onError={(errorMessage) => {
                  console.log('GOT AN ERROR');
