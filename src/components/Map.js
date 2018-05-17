@@ -364,7 +364,7 @@ class Map extends Component {
           success
           disabled={this.props.START_BUTTON}
           style={startButtonStyleEnable}
-          onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0 }), 
+          onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0, wantedDistance: '' }), 
           this.resetStopwatch(), this.toggleStopwatch()}}> 
 +            <Text style={{ fontSize: 20 }}>Start</Text>
         </Button>
