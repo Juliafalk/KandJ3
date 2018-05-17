@@ -3,21 +3,28 @@ import { Text, View, Image } from 'react-native';
 import { Icon } from 'native-base';
 import firebase from 'firebase';
 
+var username = '';
+
 class InfoScreen extends Component {
   
    static navigationOptions = {
        drawerIcon: (
            <Icon name='ios-information-circle-outline' style={{ color: 'white'}}/>
        )
-   }
-  
+    }
+
    render() {
-       const user = firebase.auth().currentUser;
-       console.log(user)
+       
+        const user = firebase.auth().currentUser;
+
+        if (user){
+            username = user.displayName    
+        }
+       
        return (
             <View style={styles.viewBackground}>
                 <View style = {styles.viewStyle}>    
-                    <Text style={styles.nameHeaderStyle}>Hey {user.displayName}</Text>
+                    <Text style={styles.nameHeaderStyle}>Hey {username}</Text>
                 </View>
 
                 <View style = {styles.viewCardStyle}>    
@@ -34,23 +41,17 @@ class InfoScreen extends Component {
                     source={require('./images/J3.jpg')} /*Byter till bättre bild imorgon*//>
                 </View>
                         
-                    <View style = {styles.viewStyle}>
-                        <Text style={styles.headerStyle}>Contact information</Text>
-                        <Text style={styles.textStyleCenter}>For contact or reporting bugs please send us an e-mail: </Text>
-                        <Text style={styles.textStyleCenterContact}>runRouter@runRouter.com</Text>
-                        <Text style={styles.textStyleCenter}>We will respond as soon as possible!</Text>
-                        <Text style={styles.quoteStyle}>Happy running!</Text>
-                    </View>
+                <View style = {styles.viewStyle}>
+                    <Text style={styles.headerStyle}>Contact information</Text>
+                    <Text style={styles.textStyleCenter}>For contact or reporting bugs please send us an e-mail: </Text>
+                    <Text style={styles.textStyleCenterContact}>runRouter@runRouter.com</Text>
+                    <Text style={styles.textStyleCenter}>We will respond as soon as possible!</Text>
+                    <Text style={styles.quoteStyle}>Happy running!</Text>
                 </View>
+            </View>
        );
    }
 }
-
-/*
-<Text style={styles.headerStyle}>This is the J3 team</Text>
-<View style= {styles.viewStyle}>
-                    <Text style ={styles.quoteStyle}>Running solves problems</Text>
-            </View>*/
 
 const styles = {
     nameHeaderStyle: {
@@ -98,7 +99,6 @@ const styles = {
         justifyContent: 'center',
         alignSelf: 'center',
         width: '100%',
-
     },
     imageStyle: {
         width: '90%', 

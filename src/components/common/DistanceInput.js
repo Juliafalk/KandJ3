@@ -29,7 +29,6 @@ const styles = {
     inputContainer: {
         width: 80,
         backgroundColor: 'white',
-        opacity: 0.78,
         paddingTop: 8,
         paddingBottom: 8,
         paddingRight: 8,

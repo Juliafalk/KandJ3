@@ -117,7 +117,7 @@ class SummaryPage extends React.Component {
         return (
             <View style={summary} >
             <View style={{ marginLeft: 15, marginTop: 10 }}>
-            <Icon name='close' 
+            <Icon name='ios-arrow-back' 
             onPress={() => {Actions.Map()}} 
             style={{ fontSize: 50, color: 'white' }}
             />
@@ -154,7 +154,7 @@ class SummaryPage extends React.Component {
 
                     <LogCardItem >
                         <View style={iconSummary}>
-                            <Icon name="ios-walk-outline" style={{fontSize: 28 }}/>
+                            <Icon name="ios-walk-outline" style={{fontSize: 37 }}/>
                         </View>
                         <Text style={summaryText}>Route Distance: {routeDistance} km</Text>
                     </LogCardItem>
@@ -163,7 +163,7 @@ class SummaryPage extends React.Component {
                     
                     <LogCardItem>
                     <View style={iconSummary} >
-                        <Icon name="ios-trophy-outline" style={{fontSize: 24 }}/>   
+                        <Icon name="ios-trophy-outline" style={{fontSize: 26 }}/>   
                     </View>
                     <Text style={summaryText} >Your Distance: {distanceTravelled} km</Text>
                     </LogCardItem>
