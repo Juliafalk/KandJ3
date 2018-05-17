@@ -17,7 +17,7 @@ import Geocoder from 'react-native-geocoding';
 import firebase from 'firebase';
 import haversine from 'haversine';
 import { connect } from 'react-redux';
-import { runAgain, startButton, runAgainMode } from '../actions';
+import { runAgain, runAgainMode } from '../actions';
 import { Actions } from 'react-native-router-flux';
 import { DistanceInput } from './common';
 
@@ -87,7 +87,6 @@ class Map extends Component {
     this.resetStopwatch = this.resetStopwatch.bind(this);
   }
 
- 
   watchID: ?number = null; // from tutorial, red marked but it works! / JL (13/4) 
  //Do we need this? /JF 18/4 
   
@@ -201,10 +200,6 @@ class Map extends Component {
   //JL 17/4: disable and enable the footer buttons
   changeDistance(userInput) {
     if (userInput === '') {
-      if (!this.state.createdRoute) {
-        this.props.startButton(true);
-      }
-
       this.setState({
         createRouteDisabled: true,
         createdRoute: false
@@ -245,7 +240,7 @@ class Map extends Component {
     if (!this.state.startRunning) {
       return(
         <GooglePlacesAutocomplete
-        placeholder='Choose starting point...'
+        placeholder='Choose another starting point...'
         styles={{
           listView: {
             backgroundColor: 'white',
@@ -296,12 +291,8 @@ class Map extends Component {
   }
 
   //JL 17/4: shows different footers before and while running
-  startRunning(){
+  renderFooter(){
     //JL 18/4: deconstruction of styles and states
-
-    var startButtonStyleEnable=  {
-        marginTop: 10
-      }
     
     const {
       createRouteContainerStyle,
@@ -310,28 +301,29 @@ class Map extends Component {
       distanceContainer,
       textInputStyle,
       actualDistanceStyle,
-
       distanceTravelledStyle,
       timeContainer,
       pauseDoneContainer,
-      pauseDoneButton
+      pauseDoneButton,
+      startButtonStyle
     } = styles;
     const {
       wantedDistance,
       createRouteDisabled,
-      startButton,
       distanceTravelled,
       stopwatchStart,
       stopwatchReset,
+      startRunning,
       pauseRunning,
       totalDuration,
       createdRoute,
       actualDistance
     } = this.state;
+    const {
+      RUN_AGAIN_MODE
+    } = this.props;
 
-
-
-    if (this.state.startRunning == true){
+    if (startRunning){
       return(
         <View style={{backgroundColor: '#5c688c'}}>
           <View style={createRouteContainerStyle}>
@@ -378,53 +370,13 @@ class Map extends Component {
                 )
               }}>
                 <Icon type='FontAwesome' name='check' />
-                <Text style={{fontSize: 16}} >Done</Text>
+                <Text style={{fontSize: 16}}>Done</Text>
             </Button>
           </View>
       </View>
       );
     }
-    else if( (this.props.RUN_AGAIN_MODE == true && this.state.startRunning == false) || (this.state.createdRoute == true && this.state.startRunning == false)){
-      return(
-      <View>
-      <View style={createRouteContainerStyle}>
-        <View style={actualDistanceStyle}>
-          <Text style={{ fontSize: 12, color: 'white'}}>This Route:</Text>
-          <Text style={{ color: 'white'}}>{actualDistance.toFixed(2)} km</Text>
-        </View>
-        <View style={inputContainerStyle}>
-          <DistanceInput
-            keyboardType='number-pad'
-            placeholder='...'
-            value={wantedDistance}
-            onChangeText={userInput => 
-              {this.setState({
-              wantedDistance: userInput}),
-              this.changeDistance(userInput)}}
-          />
-        </View>
-        <Button
-          info
-          style={createRouteButtonStyle}
-          disabled ={createRouteDisabled}
-          onPress={() => {this.routeGenerator(wantedDistance)
-          this.setState({ createdRoute: true }), this.props.startButton(false), Keyboard.dismiss}}>
-            <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
-        </Button>
-      </View>
-      <Button
-          block
-          success
-          disabled={this.props.START_BUTTON}
-          style={startButtonStyleEnable}
-          onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0, wantedDistance: '' }), 
-          this.resetStopwatch(), this.toggleStopwatch()}}> 
-+            <Text style={{ fontSize: 20 }}>Start</Text>
-        </Button>
-        </View>
-      )
-    }
-    else if (this.state.createdRoute == false){
+    else {
       return(
         <View>
           <View style={createRouteContainerStyle}>
@@ -440,18 +392,27 @@ class Map extends Component {
                 onChangeText={userInput => 
                   {this.setState({
                   wantedDistance: userInput}),
-                  this.changeDistance(userInput)}}
-              />
+                  this.changeDistance(userInput)}}/>
             </View>
             <Button
               info
               style={createRouteButtonStyle}
               disabled ={createRouteDisabled}
               onPress={() => {this.routeGenerator(wantedDistance)
-              this.setState({ createdRoute: true }), this.props.startButton(false), this.props.runAgainMode(false), Keyboard.dismiss}}>
+              this.setState({ createdRoute: true }), this.props.runAgainMode(false), Keyboard.dismiss}}>
                 <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
+          { RUN_AGAIN_MODE || createdRoute ? 
+            <Button
+              block
+              success
+              style={startButtonStyle}
+              onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0, wantedDistance: '' }), 
+              this.resetStopwatch(), this.toggleStopwatch()}}> 
+    +           <Text style={{ fontSize: 20 }}>Start</Text>
+            </Button>
+          : null }
       </View>
       );
     }
@@ -484,7 +445,6 @@ class Map extends Component {
     const {
       wantedDistance,
       createRouteDisabled,
-      startButton,
       distanceTravelled,
       stopwatchStart,
       stopwatchReset,
@@ -541,10 +501,6 @@ class Map extends Component {
                 //Generate a new route when the route is 10% to short or to small
                 //Also when an error accures a new route is generated / JF 17/4
               onReady={(result) => {
-                //console.log(result.distance)
-                console.log('render')
-                console.log('distance: ',result.distance)
-                console.log(this.state.wantedDistance)
                 /*if (!this.props.RUN_AGAIN_MODE && result.distance < parseFloat(this.state.wantedDistance)*0.9){
                   console.log('too short')
                   this.routeGenerator(this.state.wantedDistance)
@@ -573,7 +529,7 @@ class Map extends Component {
             />
 
         </MapView>
-          {this.startRunning()}
+          {this.renderFooter()}
         </View>
       </KeyboardAwareScrollView>
     );
@@ -692,9 +648,8 @@ const options = {
 const mapStateToProps = state => {
   return {
       WAYPOINTS: state.runAgain.wayPoints,
-      START_BUTTON: state.runAgain.startButton,
       RUN_AGAIN_MODE: state.runAgain.runAgainMode
   };
 };
 
-export default connect(mapStateToProps, { runAgain, startButton, runAgainMode })(Map); 
+export default connect(mapStateToProps, { runAgain, runAgainMode })(Map); 

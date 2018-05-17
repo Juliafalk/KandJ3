@@ -4,7 +4,7 @@ import firebase from 'firebase';
 import { Icon, Button } from 'native-base';
 import { LogCard, LogCardItem } from './common';
 import { connect } from 'react-redux';
-import { runAgain, startButton } from '../actions';
+import { runAgain, runAgainMode} from '../actions';
 import { Actions } from 'react-native-router-flux';
 
 class FavoriteListItem extends Component {
@@ -17,7 +17,7 @@ class FavoriteListItem extends Component {
     }
     runAgain(route) {
         this.props.runAgain(route.WAYPOINTS);
-        this.props.startButton(false);
+        this.props.runAgainMode(true);
         Actions.Map();
     }
 
@@ -171,4 +171,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { runAgain, startButton })(FavoriteListItem); 
+export default connect(mapStateToProps, { runAgain, runAgainMode })(FavoriteListItem); 
