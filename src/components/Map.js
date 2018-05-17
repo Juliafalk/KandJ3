@@ -114,6 +114,7 @@ class Map extends Component {
         longitudeDelta: LONGITUDE_DELTA,
       }
       });
+      this.fitMapToCoords(position.coords.latitude, position.coords.longitude);
     },
     (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
@@ -277,6 +278,7 @@ class Map extends Component {
                     longitudeDelta: LONGITUDE_DELTA
                   }
                 });
+                this.fitMapToCoords(location.lat, location.lng);
               })
               .catch(error => console.warn(error))
           }}
@@ -293,6 +295,18 @@ class Map extends Component {
         null
       );
     }
+  }
+
+  fitMapToCoords(lat, lng){
+    const coords = [{latitude: lat, longitude: lng}];
+    this.mapView.fitToCoordinates(coords, {
+      edgePadding: {
+        right: (width / 15),
+        bottom: (height / 15),
+        left: (width / 15),
+        top: (height / 15),
+      }
+    });
   }
 
   //JL 17/4: shows different footers before and while running
@@ -522,6 +536,7 @@ class Map extends Component {
                 //else {
                   this.setState({ actualDistance: result.distance })
                   console.log('ok distance')
+                  console.log(result.coordinates)
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
