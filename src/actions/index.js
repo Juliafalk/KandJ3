@@ -4,7 +4,6 @@ import thunk from 'redux-thunk';
 
 import { 
     RUN_AGAIN,
-    START_BUTTON,
     RUN_AGAIN_MODE,
     ROUTES_FETCH_SUCCESS,
     FAVORITE_ROUTES_FETCH_SUCCESS,
@@ -21,13 +20,6 @@ export const runAgain = (wayPoints) => {
 export const runAgainMode = (boolean) => {
     return{ 
         type: RUN_AGAIN_MODE, 
-        payload: boolean
-    }; 
-};
-
-export const startButton = (boolean) => {
-    return{ 
-        type: START_BUTTON,
         payload: boolean
     }; 
 };
