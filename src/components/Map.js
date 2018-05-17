@@ -370,50 +370,11 @@ class Map extends Component {
                 )
               }}>
                 <Icon type='FontAwesome' name='check' />
-                <Text style={{fontSize: 16}} >Done</Text>
+                <Text style={{fontSize: 16}}>Done</Text>
             </Button>
           </View>
       </View>
       );
-    }
-    else if( RUN_AGAIN_MODE || createdRoute ){
-      return(
-      <View>
-      <View style={createRouteContainerStyle}>
-        <View style={actualDistanceStyle}>
-          <Text style={{ fontSize: 12, color: 'white' }}>This Route:</Text>
-          <Text style={{ color: 'white' }}>{actualDistance.toFixed(2)} km</Text>
-        </View>
-        <View style={inputContainerStyle}>
-          <DistanceInput
-            keyboardType='number-pad'
-            placeholder='...'
-            value={wantedDistance}
-            onChangeText={userInput => 
-              {this.setState({
-              wantedDistance: userInput}),
-              this.changeDistance(userInput)}}
-          />
-        </View>
-        <Button
-          info
-          style={createRouteButtonStyle}
-          disabled ={createRouteDisabled}
-          onPress={() => {this.routeGenerator(wantedDistance)
-          this.setState({ createdRoute: true }), Keyboard.dismiss}}>
-            <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
-        </Button>
-      </View>
-      <Button
-          block
-          success
-          style={startButtonStyle}
-          onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0, wantedDistance: '' }), 
-          this.resetStopwatch(), this.toggleStopwatch()}}> 
-+            <Text style={{ fontSize: 20 }}>Start</Text>
-        </Button>
-        </View>
-      )
     }
     else {
       return(
@@ -431,8 +392,7 @@ class Map extends Component {
                 onChangeText={userInput => 
                   {this.setState({
                   wantedDistance: userInput}),
-                  this.changeDistance(userInput)}}
-              />
+                  this.changeDistance(userInput)}}/>
             </View>
             <Button
               info
@@ -443,6 +403,16 @@ class Map extends Component {
                 <Text style={{ fontSize: 11 }}>{createdRoute ? 'Another Route' : 'Create Route'}</Text>
             </Button>
           </View>
+          { RUN_AGAIN_MODE || createdRoute ? 
+            <Button
+              block
+              success
+              style={startButtonStyle}
+              onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0, wantedDistance: '' }), 
+              this.resetStopwatch(), this.toggleStopwatch()}}> 
+    +           <Text style={{ fontSize: 20 }}>Start</Text>
+            </Button>
+          : null }
       </View>
       );
     }
