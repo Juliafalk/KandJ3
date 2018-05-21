@@ -87,10 +87,15 @@ class Map extends Component {
     this.resetStopwatch = this.resetStopwatch.bind(this);
   }
 
+
+
   watchID: ?number = null; // from tutorial, red marked but it works! / JL (13/4) 
  //Do we need this? /JF 18/4 
   
   componentDidMount() {
+    if(firebase.auth().currentUser == null){
+      this.resetMap()
+    }
     navigator.geolocation.getCurrentPosition((position) => {
       // Here set all the positions, given by the devices current position. 
      this.setState({ 
@@ -109,6 +114,7 @@ class Map extends Component {
         longitudeDelta: LONGITUDE_DELTA,
       }
       });
+      this.fitMapToCoords(position.coords.latitude, position.coords.longitude);
     },
     (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
@@ -144,7 +150,7 @@ class Map extends Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID)
-  }
+  };
 
   /*JL 11/4: this is a rather complicated function but I will try to explain it in a simple way
   we create a center point of a circle with a radius that is dependent on the length of the route
@@ -154,6 +160,7 @@ class Map extends Component {
   we then set this.state.wayPoints to waypoints and when rendered, the directionService will make a route 
   through these points*/
   routeGenerator(length) {
+
     const waypoints = [];
  
     lengthInMeters = length*1000;
@@ -195,6 +202,7 @@ class Map extends Component {
 
     //sets the redux state
     this.props.runAgain(waypoints);
+   
   }
 
   //JL 17/4: disable and enable the footer buttons
@@ -270,6 +278,7 @@ class Map extends Component {
                     longitudeDelta: LONGITUDE_DELTA
                   }
                 });
+                this.fitMapToCoords(location.lat, location.lng);
               })
               .catch(error => console.warn(error))
           }}
@@ -278,8 +287,6 @@ class Map extends Component {
             key: GOOGLE_MAPS_APIKEY,
             language: 'en', // language of the results
           }}
-          renderLeftButton={() => <Icon type='EvilIcons' name='location' 
-            style={{marginTop: 8, marginLeft: 3, color: 'white'}}/>}
         />
       );
     }
@@ -288,6 +295,18 @@ class Map extends Component {
         null
       );
     }
+  }
+
+  fitMapToCoords(lat, lng){
+    const coords = [{latitude: lat, longitude: lng}];
+    this.mapView.fitToCoordinates(coords, {
+      edgePadding: {
+        right: (width / 15),
+        bottom: (height / 15),
+        left: (width / 15),
+        top: (height / 15),
+      }
+    });
   }
 
   //JL 17/4: shows different footers before and while running
@@ -322,6 +341,8 @@ class Map extends Component {
     const {
       RUN_AGAIN_MODE
     } = this.props;
+
+ 
 
     if (startRunning){
       return(
@@ -395,7 +416,6 @@ class Map extends Component {
                   this.changeDistance(userInput)}}/>
             </View>
             <Button
-              info
               style={createRouteButtonStyle}
               disabled ={createRouteDisabled}
               onPress={() => {this.routeGenerator(wantedDistance)
@@ -411,6 +431,7 @@ class Map extends Component {
               onPress={() => {this.setState({ startRunning: true, distanceTravelled: 0, wantedDistance: '' }), 
               this.resetStopwatch(), this.toggleStopwatch()}}> 
     +           <Text style={{ fontSize: 20 }}>Start</Text>
+           
             </Button>
           : null }
       </View>
@@ -434,6 +455,7 @@ class Map extends Component {
 
   //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
   render() {
+
     const {
       distanceContainer,
       mapPageContainer,
@@ -456,7 +478,9 @@ class Map extends Component {
       WAYPOINTS,
     } = this.props;
 
+    if (firebase.auth().currentUser){
     return (
+     
       <KeyboardAwareScrollView	        
              resetScrollToCoords={{ x: 0, y: 0 }}	             
              contentContainerStyle={styles.scrollViewContainer}	           
@@ -512,6 +536,7 @@ class Map extends Component {
                 //else {
                   this.setState({ actualDistance: result.distance })
                   console.log('ok distance')
+                  console.log(result.coordinates)
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
@@ -533,6 +558,10 @@ class Map extends Component {
         </View>
       </KeyboardAwareScrollView>
     );
+  }
+  else {
+    return null;
+  }
   }
 }
 
@@ -646,10 +675,10 @@ const options = {
 };
 
 const mapStateToProps = state => {
-  return {
-      WAYPOINTS: state.runAgain.wayPoints,
-      RUN_AGAIN_MODE: state.runAgain.runAgainMode
-  };
+    return {
+        WAYPOINTS: state.runAgain.wayPoints,
+        RUN_AGAIN_MODE: state.runAgain.runAgainMode
+    };
 };
 
 export default connect(mapStateToProps, { runAgain, runAgainMode })(Map); 

@@ -51,7 +51,7 @@ class App extends React.Component {
           //When user sign in or out, the function will be called
           //Sign in, user is user, sign out user is NULL or undefined
           //Event handler for either sign in or sign out. 
-          firebase.auth().onAuthStateChanged((user) => {
+            firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 this.setState({ loggedIn: true });
             } else {
@@ -136,5 +136,7 @@ otherStyles = StyleSheet.create({
         marginTop: '35%' 
     }
 })
+
+
 
 export default App;

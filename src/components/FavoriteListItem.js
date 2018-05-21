@@ -76,7 +76,7 @@ class FavoriteListItem extends Component {
                             </LogCardItem>
                             <LogCardItem >
                                 <View style={viewIconStyle}>
-                                    <Icon name="ios-walk-outline" style={{fontSize: 24 }}/>
+                                    <Icon name="ios-walk-outline" style={{fontSize: 29 }}/>
                                 </View>
                                 <Text style={textStyle}>Route Distance: {route.actualDistance.toFixed(2)} km</Text>
                             </LogCardItem>

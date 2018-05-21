@@ -31,9 +31,9 @@ const RouterComponent = () => {
                 <Scene hideNavBar={true} key="createAccount" component={CreateAccount}/>
                 <Scene hideNavBar={true} key="sideMenu" drawer={true} drawerIcon={<Icon name="ios-menu" style={{color: "white"}}/>}contentComponent={CustomDrawerContentComponent}>
                     <Scene key="Map" title="Map" component={Map}/>
-                    <Scene key="Log" title="Log" component={LogPage}/>
+                    <Scene key="Log" title="My log" component={LogPage}/>
                     <Scene key="Favorites" title="Favorites" component={FavoritePage}/>
-                    <Scene key="Info" title="Info" component={InfoScreen}/>
+                    <Scene key="Info" title="Information" component={InfoScreen}/>
 
                 </Scene>
                 <Scene hideNavBar={true} key="summary" component={SummaryPage}/>

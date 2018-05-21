@@ -13,7 +13,7 @@ import { Actions } from 'react-native-router-flux';
 
 class CreateAccount extends React.Component {
 
-    state = { email: '', password: '', repPassword: '', error: '', name: '', age: '', loading: false };
+    state = { email: '', password: '', repPassword: '', error: '', name: '',  loading: false };
 
     componentWillUnmount() {
         
@@ -37,12 +37,13 @@ class CreateAccount extends React.Component {
 
     onCreateAccountSuccess() {
         const user = firebase.auth().currentUser;
-        
+        if(user){
         user.updateProfile({
             displayName: this.state.name
         }).then(function() {
             var displayName = user.displayName;
         })
+        }
   
         console.log('created an account?')
          this.setState({
@@ -50,7 +51,6 @@ class CreateAccount extends React.Component {
              password: '', 
              repPassword: '',
              name: '',
-             age: '',
              loading: false, 
              error: ''
        });
@@ -130,7 +130,7 @@ class CreateAccount extends React.Component {
                             </Text>
                             <MyCardSection>
                                 <MyInput
-                                    placeholder="name"
+                                    placeholder="username"
                                     value={this.state.name}
                                     onChangeText={name => this.setState({ name, error: '' })}
                                     iconType={"SimpleLineIcons"} 
