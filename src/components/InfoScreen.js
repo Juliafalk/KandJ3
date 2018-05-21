@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, Image } from 'react-native';
+import { LogCard, LogCardItem } from './common';
 import { Icon } from 'native-base';
 import firebase from 'firebase';
 
@@ -14,6 +15,13 @@ class InfoScreen extends Component {
     }
 
    render() {
+
+        const {
+            viewStyle, 
+            labelStyle,
+            lineStyle, 
+            textStyle,
+        } = styles;
        
         const user = firebase.auth().currentUser;
 
@@ -24,60 +32,118 @@ class InfoScreen extends Component {
        return (
             <View style={styles.viewBackground}>
                 <View style = {styles.viewStyle}>    
-                    <Text style={styles.nameHeaderStyle}>Hey {username}</Text>
+                    <Text style={styles.nameHeaderStyle}>Hi, {username}</Text>
                 </View>
+                <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                <LogCard>
+                <View style={{
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                        }}>
+                    <LogCardItem>
+                        <Text style={labelStyle}>About runRouter</Text>
+                    </LogCardItem>
+                </View>
+                    <View style={lineStyle} />
+                    <View style={{
+                        flexDirection: 'row'
+                        }}>
+                        <View style={{
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                            width: '90%'
+                        }}>
+                            <LogCardItem>
+                                <Text style={textStyle}>Welcome to runRouter, an app developed by team J3 between March and June 2018.
+                                </Text>
+                            </LogCardItem>
+                            <LogCardItem>
+                                <Text style={textStyle}>runRouter gives you the opportunity to customize your routes and also keep track of time and distance of the run.</Text>
+                            </LogCardItem>
+                        </View>
+                    </View>
+                </LogCard> 
+                
 
-                <View style = {styles.viewCardStyle}>    
-                    <Text style={styles.textStyle}>
-                        Woopa, we are the J3 team. 
-                        Three dedicated students, studying the third year in Master Programme in Sociotechnical Systems Engineering.
-                        Outside the studies, we are three runnaholics, therefore this app is a big advantage for us. 
-                        We hope you will enjoy our app as much as we do!
-                    </Text>
-                </View>
-           
-                <View style = {styles.divideSection}>
-                    <Image style={styles.imageStyle} 
-                    source={require('./images/J3.jpg')} /*Byter till bättre bild imorgon*//>
-                </View>
-                        
-                <View style = {styles.viewStyle}>
-                    <Text style={styles.headerStyle}>Contact information</Text>
-                    <Text style={styles.textStyleCenter}>For contact or reporting bugs please send us an e-mail: </Text>
-                    <Text style={styles.textStyleCenterContact}>runRouter@runRouter.com</Text>
-                    <Text style={styles.textStyleCenter}>We will respond as soon as possible!</Text>
-                    <Text style={styles.quoteStyle}>Happy running!</Text>
-                </View>
+                <LogCard>
+                    <View style={{
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                        }}>
+                        <LogCardItem>
+                            <Text style={labelStyle}>Contact us</Text>
+                        </LogCardItem>
+                    </View>
+                    <View style={lineStyle} />
+                    <View style={{
+                        flexDirection: 'row'
+                        }}>
+                        <View style={{
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                            width: '90%'
+                        }}>
+                            <LogCardItem >
+                                <View style={styles.viewIconStyle}>
+                                        <Icon name="ios-mail-outline"style={{fontSize: 22 }}/>
+                                </View>
+                            
+                                <Text style={styles.textStyleCenterContact}>runRouter@runRouter.com</Text>
+                            </LogCardItem>
+                            <LogCardItem >
+                                <Text style={textStyle}>We will respond as soon as possible!</Text>
+                            </LogCardItem>
+                        </View>
+                    </View>
+                </LogCard> 
             </View>
+        </View>
        );
    }
 }
 
 const styles = {
+    viewIconStyle: { 
+        width: '10%',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    labelStyle: {
+        fontSize: 17,
+        paddingLeft: 1, 
+        fontFamily: 'GillSans',
+        color: 'black',
+        
+    },
+    lineStyle: {
+        backgroundColor: 'black',
+        height: 0.5, 
+        width: '100%',
+        marginBottom: 8,
+        marginTop: 4,
+    },
+    textStyle:{
+        marginTop: 5,
+        fontSize: 15,
+        fontFamily: 'GillSans-Light',
+        paddingLeft: 10
+    },
+
     nameHeaderStyle: {
         fontSize: 30,
         fontFamily: 'GillSans',
         alignSelf: 'center',
         color: '#fff'
     },
-    headerStyle: {
-        fontFamily: 'GillSans',
-        fontSize: 20,
-        color: '#fff',
-        alignSelf: 'center',
-        paddingBottom: 2,
-    },
     textStyle: {
         fontFamily: 'GillSans-Light',
         fontSize: 15,
         alignSelf: 'center',
         alignItems: 'center',
-        //color: '#fff'
-    },
-    textStyleCenter: {
-        fontFamily: 'GillSans-Light',
-        alignSelf: 'center',
-        fontSize: 15
     },
     textStyleCenterContact: {
         fontFamily: 'GillSans-Light',
@@ -95,29 +161,6 @@ const styles = {
         alignSelf: 'center',
         width: '100%'
     },
-    viewCardStyle: {
-        justifyContent: 'center',
-        alignSelf: 'center',
-        width: '100%',
-    },
-    imageStyle: {
-        width: '90%', 
-        height: '90%',
-        borderRadius: 10,
-        opacity: 0.7,
-    },
-    divideSection: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '40%'
-    },
-    quoteStyle: {
-        fontSize: 40,
-        fontFamily: 'GillSans',
-        alignSelf: 'center',
-        paddingTop: 30,
-        color: '#fff'
-    }
 }
 
 export default InfoScreen;
