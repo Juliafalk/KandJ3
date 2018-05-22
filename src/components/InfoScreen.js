@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, ScrollView } from 'react-native';
 import { LogCard, LogCardItem } from './common';
 import { Icon } from 'native-base';
 import firebase from 'firebase';
@@ -31,6 +31,7 @@ class InfoScreen extends Component {
        
        return (
             <View style={styles.viewBackground}>
+            <ScrollView>
                 <View style = {styles.viewStyle}>    
                     <Text style={styles.nameHeaderStyle}>Hi, {username}</Text>
                 </View>
@@ -54,7 +55,7 @@ class InfoScreen extends Component {
                         <View style={{
                             alignItems: 'flex-start',
                             justifyContent: 'flex-start',
-                            width: '90%'
+                            width: '95%'
                         }}>
                             <LogCardItem>
                                 <Text style={textStyle}>Welcome to runRouter, an app developed by team J3 between March and June 2018.
@@ -67,6 +68,38 @@ class InfoScreen extends Component {
                     </View>
                 </LogCard> 
                 
+                <LogCard>
+                <View style={{
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                        }}>
+                    <LogCardItem>
+                        <Text style={labelStyle}>About J3</Text>
+                    </LogCardItem>
+                </View>
+                    <View style={lineStyle} />
+                    <View style={{
+                        flexDirection: 'row'
+                        }}>
+                        <View style={{
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                            width: '95%'
+                        }}>
+                            <LogCardItem>
+                                <Text style={textStyle}>
+                                We are three dedicated students, studying our third year of the Master programme in Sociotechnical Systems Engineering.
+                                </Text>
+                            </LogCardItem>
+                            <LogCardItem>
+                                <Text style={textStyle}>
+                                Outside the studies, we are three runnaholics, which was how it all started. 
+                                We hope you will enjoy runRouter as much as we do!
+                                </Text>
+                            </LogCardItem>
+                        </View>
+                    </View>
+                </LogCard> 
 
                 <LogCard>
                     <View style={{
@@ -84,7 +117,7 @@ class InfoScreen extends Component {
                         <View style={{
                             alignItems: 'flex-start',
                             justifyContent: 'flex-start',
-                            width: '90%'
+                            width: '95%'
                         }}>
                             <LogCardItem >
                                 <View style={styles.viewIconStyle}>
@@ -100,6 +133,7 @@ class InfoScreen extends Component {
                     </View>
                 </LogCard> 
             </View>
+            </ScrollView>
         </View>
        );
    }
@@ -123,7 +157,7 @@ const styles = {
         backgroundColor: 'black',
         height: 0.5, 
         width: '100%',
-        marginBottom: 8,
+        marginBottom: 7,
         marginTop: 4,
     },
     textStyle:{
@@ -153,7 +187,7 @@ const styles = {
     viewBackground: {
         backgroundColor: '#5c688c',
         height: '100%',
-        padding: 20
+        padding: 2
     },
     viewStyle: {
         padding: 5,
