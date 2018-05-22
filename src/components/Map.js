@@ -114,7 +114,7 @@ class Map extends Component {
         longitudeDelta: LONGITUDE_DELTA,
       }
       });
-      this.fitMapToCoords(position.coords.latitude, position.coords.longitude);
+      //this.fitMapToCoords(position.coords.latitude, position.coords.longitude);
     },
     (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
@@ -278,7 +278,9 @@ class Map extends Component {
                     longitudeDelta: LONGITUDE_DELTA
                   }
                 });
-                this.fitMapToCoords(location.lat, location.lng);
+                if (!this.props.RUN_AGAIN_MODE){
+                  this.fitMapToCoords(location.lat, location.lng);
+                }
               })
               .catch(error => console.warn(error))
           }}
@@ -298,6 +300,7 @@ class Map extends Component {
   }
 
   fitMapToCoords(lat, lng){
+    console.log('hej')
     const coords = [{latitude: lat, longitude: lng}];
     this.mapView.fitToCoordinates(coords, {
       edgePadding: {
