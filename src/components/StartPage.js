@@ -18,6 +18,7 @@ export class StartPage extends React.Component {
     render() {
         const { 
             headerText,
+            subHeaderText,
             loginForm,
             createAccountButton,
             createAccountText
@@ -29,6 +30,9 @@ export class StartPage extends React.Component {
                     <Container style={loginForm}>
                         <MyCardSection>
                             <Text style={headerText}>runRouter</Text>
+                        </MyCardSection>
+                        <MyCardSection>
+                            <Text style={subHeaderText}>By J3</Text>
                         </MyCardSection>
                             
                         <LoginPage />
@@ -53,7 +57,13 @@ const styles = {
     headerText: {
         fontSize: 50, 
         fontWeight: 'bold', 
-        marginBottom: 60,
+        color: 'white'
+    },
+    subHeaderText: {
+        fontSize: 25,
+        marginTop: -10,
+        marginBottom: 40,
+        fontFamily: 'GillSans-Light',
         color: 'white'
     },
     loginForm: {
