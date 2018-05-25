@@ -1,6 +1,4 @@
-/*This file should include the components for an user to create an account.
-I.e. input form, back-button etc. So far it only includes back-button.
-and the GoBack function / JF (11/4) */ 
+//This file includes the components for an user to create an account
 
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
@@ -15,22 +13,16 @@ class CreateAccount extends React.Component {
 
     state = { email: '', password: '', repPassword: '', error: '', name: '',  loading: false };
 
-    componentWillUnmount() {
-        
-    }
     onButtonPress() {
         const { email, password } = this.state;
 
         this.setState({ error: '', loading: true,  });
         if (this.state.password == this.state.repPassword){
-            console.log('same pass')
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then(this.onCreateAccountSuccess.bind(this))
-                     //need to bind, passing of to promise, dont know the context = need to bind. 
                 .catch(this.onCreateAccountFailed.bind(this))
         }
         else{
-            console.log('not same pass')
             this.pwdDiff();
         }
     }
@@ -38,14 +30,12 @@ class CreateAccount extends React.Component {
     onCreateAccountSuccess() {
         const user = firebase.auth().currentUser;
         if(user){
-        user.updateProfile({
-            displayName: this.state.name
-        }).then(function() {
-            var displayName = user.displayName;
-        })
+            user.updateProfile({
+                displayName: this.state.name
+            }).then(function() {
+                var displayName = user.displayName;
+            })
         }
-  
-        console.log('created an account?')
          this.setState({
              email: '',
              password: '', 
@@ -59,9 +49,6 @@ class CreateAccount extends React.Component {
     }
 
     onCreateAccountFailed(error) {
-
-        console.log('failed to create account')
-
        if ( error.code == 'auth/invalid-email' && this.state.password.length < 6) {
             this.setState({
                 error: 'Invalid email and password',
@@ -74,8 +61,6 @@ class CreateAccount extends React.Component {
                 loading: false
             });
         }
-        
-       
         else{
             this.setState({
                 error: 'Invalid email',
@@ -115,6 +100,17 @@ class CreateAccount extends React.Component {
     }
 
     render () {
+
+        const {
+            iconStyle,
+            errorTextStyle,
+            createAccountView,
+            createAccountButton,
+            createAccountText,
+            inputContainer,
+            goBackButton,
+            goBackButtonText
+        } = styles;
         return ( 
             <View>
             <KeyboardAwareScrollView
@@ -123,9 +119,9 @@ class CreateAccount extends React.Component {
                 >
                 <Wallpaper>
                 <View>
-                    <View style={styles.inputContainer}>
-                        <Icon type="SimpleLineIcons" name="user-follow" style={styles.iconStyle} />
-                            <Text style={styles.errorTextStyle}>
+                    <View style={inputContainer}>
+                        <Icon type="SimpleLineIcons" name="user-follow" style={iconStyle} />
+                            <Text style={errorTextStyle}>
                                 {this.state.error}
                             </Text>
                             <MyCardSection>
@@ -178,7 +174,7 @@ class CreateAccount extends React.Component {
                         </View>
                             
                         <MyCardSection>
-                            <Button block style={styles.goBackButton} onPress={() => Actions.login()}>
+                            <Button block style={goBackButton} onPress={() => Actions.login()}>
                                 <Icon type="Ionicons" name="ios-arrow-back" style={{color:'black', fontSize: 15}}/> 
                                 <Text style={styles.goBackButtonText}>Go Back</Text>
                             </Button>
@@ -237,8 +233,6 @@ const styles = {
     goBackButtonText: {
         fontFamily: 'GillSans',
         fontSize: 18,
-        //To center the button text
-        //Rember to change the margin if the icon size is changed. 
         marginRight: 15
     }
 }
