@@ -17,6 +17,8 @@ This iOS application has been developed between March and May 2018 by three engi
 
 ## System overview
 
+The necessary code is located in the **src** folder, which contains the folders **actions, components, reducers** and the files **App.js** and **Router.js**. **App.js** is the main file that returns **Router.js**, which contains all of the application's different pages. The pages are built with a lot of different components that are located in the folder **components**. Redux has been used to be able to have a scalable structure for the application. For this, the application contains a few different actions and reducers which are located in the folders with the corresponding names. Both folders contains an **index.js** file to ease the importation of the reducers and actions into the files where they are necessary.
+
 ## How to start the simulation: 
 
 Firstly, it is only possible to simulate the application on a MacOS computer. This cause Xcode is required for simulation. Xcode is a software developed by Apple and works both as code editor and as a way for simulating for a certain iOS device. 
