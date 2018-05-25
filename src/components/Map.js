@@ -92,7 +92,7 @@ class Map extends Component {
   watchID: ?number = null; // from tutorial, red marked but it works! / JL (13/4) 
  //Do we need this? /JF 18/4 
   
-  componentDidMount() {
+  componentWillMount() {
     if(firebase.auth().currentUser == null){
       this.resetMap()
     }
@@ -299,14 +299,19 @@ class Map extends Component {
 
   fitMapToCoords(lat, lng){
     const coords = [{latitude: lat, longitude: lng}];
+    /*if(this.mapView){
+      console.log(coords, 'coords')
+      console.log(width, height, 'width and height')
+      console.log(this.mapView)*/
     this.mapView.fitToCoordinates(coords, {
       edgePadding: {
         right: (width / 15),
         bottom: (height / 15),
         left: (width / 15),
-        top: (height / 15),
+        top: (height / 15 ),
       }
     });
+    //}
   }
 
   //JL 17/4: shows different footers before and while running

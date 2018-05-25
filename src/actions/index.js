@@ -26,7 +26,6 @@ export const runAgainMode = (boolean) => {
 
 export const routesFetch = () => {
     const {currentUser} = firebase.auth();
-
         return(dispatch) => {
             if (currentUser != null){
             firebase.database().ref(`/users/${currentUser.uid}/routes`)
