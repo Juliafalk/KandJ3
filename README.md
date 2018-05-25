@@ -4,6 +4,17 @@
 
 This iOS application has been developed between March and May 2018 by three engineering students at Uppsala University during the course *Independent Project in Sociotechnical Systems Engineering - IT Systems*. The three students formed team J3 and the process resulted in runRouter, an application which gives the user the possibility of creating a route with a wanted distance. runRouter will save information about the routes along with information about the user's run and give the user the option to run that specific route again in the future. runRouter is based on inspiration from other exercise application, but offers an extension of functionality with its ability to let the user specify the wanted distance beforehand, instead of only measuring it during the user's run.
 
+## Development tools
+
+*The application is developed with the help of following tools and software*
+
+- ReactJS
+- React Native
+- Redux
+- Firebase
+- Google Maps API
+- NativeBase.io
+
 ## System overview
 
 ## How to start the simulation: 
