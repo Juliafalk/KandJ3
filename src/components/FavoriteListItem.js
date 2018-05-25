@@ -120,7 +120,7 @@ const styles = {
         backgroundColor: 'black',
         height: 0.5, 
         width: '100%',
-        marginBottom: 8,
+        marginBottom: 7,
         marginTop: 3,
     },
     textStyle:{
