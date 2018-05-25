@@ -12,14 +12,15 @@ Thereafter, navigate to the map/file/place where you want the project to be stor
 
 1. *Clone the project*
 
-git clone https://github.com/Juliafalk/KandJ3.git
+```git clone https://github.com/Juliafalk/KandJ3.git```
 
-2. *Install the necessary package/extensions/APIs for the project*
+2. *Install the necessary package/extensions/APIs for the project*. *Make sure that you are in the correct folder i.e. the KandJ3 folder*.
 
-npm install
+```npm install```
 
-3. *Start to simulate*
-react-native run-ios
+3. *Start the simulations .Make sure that you are in the correct folder i.e. the KandJ3 folder*
+
+```react-native run-ios```
 
 Then, wait a couple of minutes for the simulator to starts, first time it can take around five minutes. 
 
