@@ -1,5 +1,9 @@
 # KandJ3
 
+## Background
+
+## System overview
+
 ## How to start the simulation: 
 
 Firstly, it is only possible to simulate the application on a MacOS computer. This cause Xcode is required for simulation. Xcode is a software developed by Apple and works both as code editor and as a way for simulating for a certain iOS device. 
