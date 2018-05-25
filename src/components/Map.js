@@ -1,3 +1,6 @@
+/*This file includes the map with functions to generate the routes,
+choose another starting location, tracking the user's run, etc.*/
+
 import React, { Component } from 'react';
 import { 
   Alert,
@@ -25,13 +28,9 @@ const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;
 const LONGITUDE = 0;
-const LATITUDE_DELTA = 0.00922; //JL 13/4: 'the angle in which you're viewing', a universal value
+const LATITUDE_DELTA = 0.00922; //a universal value for the default zoom of the map
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO*0.1;
-const DISTANCE_TRAVELLED = 0; //This is to calculate how long distance that has been travelled / JF (18/4)
-//const favorite = false;
-//JL 11/4: the points the route should go through (including start and end point)
-
-//JL 18/4: time spent runnning
+const DISTANCE_TRAVELLED = 0;
 const TOTAL_DURATION = 0;
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8Iv39d5bK-G9xmvsbOMRHBv7QFa8710g';
@@ -48,18 +47,14 @@ class Map extends Component {
     super(props);
 
     this.state = { 
-      //intialPosition - to generate routes, it is the start position / JF (16/4)
       initialPosition: {
         latitude: LATITUDE,
         longitude: LONGITUDE
       },
-      //initialPositionMarker - to place the marker at the initialPosition, 
-      //ev. could be same as initialPosition / JF (16/4)
       initialPositionMarker: {
         latitude: LATITUDE,
         longitude: LONGITUDE
       },
-      //currentPosition - to update the users current position / JF (16/4)
       currentPosition: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -81,23 +76,19 @@ class Map extends Component {
       pauseRunning: false,
       createdRoute: false
     }
-
     this.mapView = null;  
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
   }
 
-
-
-  watchID: ?number = null; // from tutorial, red marked but it works! / JL (13/4) 
- //Do we need this? /JF 18/4 
+  watchID: ?number = null;
   
   componentDidMount() {
     if(firebase.auth().currentUser == null){
       this.resetMap()
     }
     navigator.geolocation.getCurrentPosition((position) => {
-      // Here set all the positions, given by the devices current position. 
+      //Uses the user's current position
      this.setState({ 
       initialPosition: {
         latitude: position.coords.latitude,
@@ -152,44 +143,40 @@ class Map extends Component {
     navigator.geolocation.clearWatch(this.watchID)
   };
 
-  /*JL 11/4: this is a rather complicated function but I will try to explain it in a simple way
-  we create a center point of a circle with a radius that is dependent on the length of the route
-  from the center point we create [circlePoints] number of waypoints in a perfect circle around the center
-  we add the startpoint [this.state.initialPosition], all the generated waypoint and the endpoint [this.state.initialPosition] to
-  the array waypoints
-  we then set this.state.wayPoints to waypoints and when rendered, the directionService will make a route 
-  through these points*/
+  /*THE ROUTE ALGORITHM
+  We create an imaginary circle with the circumference equal to the specified distance
+  We add [circlePoints] number of waypoints in a perfect circle on the circumference
+  The first and final waypoint is the startpoint [this.state.initialPosition]
+  We then set the redux state to the generated waypoints and when this class is rendered, the directionService will make a route 
+  through these waypoints*/
   routeGenerator(length) {
 
     const waypoints = [];
  
     lengthInMeters = length*1000;
-    lengthInMeters = lengthInMeters*0.7; //only takes 80% of the input to compensate, since the generated route is almost 'always' too long
+    lengthInMeters = lengthInMeters*0.7; //uses 70% of the circumference of the input to compensate for roads not following the outline of the circle
     waypoints[0] = this.state.initialPosition;
     var circlePoints = 4;
     const radius = lengthInMeters/2/Math.PI;
-    const deg = [];
-    const direction = Math.random()*2*Math.PI;  //in radians
-    //Locate the point that is radius meters away from the initialPosition in the direction chosen.
-    //length assumed in meters, and then deltas in degrees.
-    var dx = radius*Math.cos(direction); //convert the direction from radians to degrees
+    const degrees = [];
+    const direction = Math.random()*2*Math.PI;  //Random starting direction in radians
+    //Locate the circle center point that is radius meters away from the initialPosition in the direction chosen
+    var dx = radius*Math.cos(direction); 
     var dy = radius*Math.sin(direction);
-    var delta_lat = dy/110540; //not sure about the numbers 110540 and 111320, but hey ho it works!
+    var delta_lat = dy/110540; //converts the distance to move from meters to coordinates
     var delta_lng = dx/(111320*Math.cos(this.state.initialPosition.latitude*Math.PI/180));
     const center = {
       latitude: this.state.initialPosition.latitude+delta_lat,
       longitude: this.state.initialPosition.longitude+delta_lng
     }
 
-    //Find circlePoints other points to use
-    //First, call the initial direction direction+180, since we are looking in the opposite direction.
-    deg[0] = direction + Math.PI;
+    //Place the waypoints in a perfect circle
+    degrees[0] = direction + Math.PI;
     const sign = -1; //Clockwise
-
     for (const i=1;i<circlePoints+1;i++) {
-        deg[i] = deg[i-1] + sign*2*Math.PI/(circlePoints+1);
-        dx = radius*Math.cos(deg[i]);
-        dy = radius*Math.sin(deg[i]);
+        degrees[i] = degrees[i-1] + sign*2*Math.PI/(circlePoints+1);
+        dx = radius*Math.cos(degrees[i]);
+        dy = radius*Math.sin(degrees[i]);
         delta_lat = dy/110540;
         delta_lng = dx/(111320*Math.cos(center.latitude*Math.PI/180));
         const nextCoord = {
@@ -202,10 +189,9 @@ class Map extends Component {
 
     //sets the redux state
     this.props.runAgain(waypoints);
-   
   }
 
-  //JL 17/4: disable and enable the footer buttons
+  //Change states when user is typing
   changeDistance(userInput) {
     if (userInput === '') {
       this.setState({
@@ -220,8 +206,7 @@ class Map extends Component {
     }
   }
 
-  //JL 14/5: kolla här: totalduration skrivs med både gemener och versaler...konstigt
-  //JG 18/4 will send information about the route to the database
+  //When the user is done running a route the information about the route and the run is stored in the database
   toDatabase() {
     var date= new Date().toDateString()
     const { totalDuration, actualDistance, favorite } = this.state;
@@ -243,7 +228,7 @@ class Map extends Component {
     this.setState({ actualDistance: '' })
   }
 
-  //JL 25/4: allows user to choose starting point
+  //Allows the user to choose a starting point
   chooseStartpoint(){
     if (!this.state.startRunning) {
       return(
@@ -255,7 +240,7 @@ class Map extends Component {
             opacity: 0.8,
           },
           textInput: {color: 'rgb(65,127,225)',  fontSize: 14},
-          textInputContainer: {backgroundColor: '#5c688c', /*opacity: 0.8*/} 
+          textInputContainer: {backgroundColor: '#5c688c'} 
           }}
           returnKeyType={'search'}
           onPress={(data = null) => {
@@ -287,7 +272,7 @@ class Map extends Component {
           query={{
             // available options: https://developers.google.com/places/web-service/autocomplete
             key: GOOGLE_MAPS_APIKEY,
-            language: 'en', // language of the results
+            language: 'en',
           }}
         />
       );
@@ -300,7 +285,6 @@ class Map extends Component {
   }
 
   fitMapToCoords(lat, lng){
-    console.log('hej')
     const coords = [{latitude: lat, longitude: lng}];
     this.mapView.fitToCoordinates(coords, {
       edgePadding: {
@@ -312,10 +296,8 @@ class Map extends Component {
     });
   }
 
-  //JL 17/4: shows different footers before and while running
+  //Shows different footers before running and while running
   renderFooter(){
-    //JL 18/4: deconstruction of styles and states
-    
     const {
       createRouteContainerStyle,
       createRouteButtonStyle,
@@ -344,8 +326,6 @@ class Map extends Component {
     const {
       RUN_AGAIN_MODE
     } = this.props;
-
- 
 
     if (startRunning){
       return(
@@ -387,7 +367,8 @@ class Map extends Component {
                   '', 
                   [
                     {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'Yes', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }), this.toDatabase(), this.resetMap()}
+                    {text: 'Yes', onPress: () => {Actions.summary(), this.setState({ totalDuration: TOTAL_DURATION }),
+                      this.toDatabase(), this.resetMap()}
                     },
                   ],
                   { cancelable: false }
@@ -442,8 +423,7 @@ class Map extends Component {
     }
   }
 
-
-  //JL 17/4: these three functions handle the stopwatch used to track the user's runtime
+  //These three functions handle the stopwatch used to track the user's runtime
   toggleStopwatch() {
     this.setState({stopwatchStart: !this.state.stopwatchStart, stopwatchReset: false});
   }
@@ -454,9 +434,8 @@ class Map extends Component {
     this.currentTime = time;
     TOTAL_DURATION = time;
   };
-  //****//
 
-  //JL 11/4: the render function adds markers at all waypoints and draws the route inbetween them
+  //MapView draws the route between all waypoints
   render() {
 
     const {
@@ -502,12 +481,10 @@ class Map extends Component {
           style={mapStyle}
           ref={c => this.mapView = c}
          >
-
           <View
             style={{ height: '27%' }}>
             {this.chooseStartpoint()}
           </View>
-          
           <MapView.Marker 
             coordinate={this.state.initialPositionMarker} 
           />
@@ -521,25 +498,20 @@ class Map extends Component {
               strokeColor="hotpink"
               
               onStart={(params) => {
-
                 //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
               }}
 
-                //Generate a new route when the route is 10% to short or to small
-                //Also when an error accures a new route is generated / JF 17/4
+                //Generates a new route when the route is more than 10% too short or too long
+                //Also when an error accures a new route is generated
               onReady={(result) => {
                 /*if (!this.props.RUN_AGAIN_MODE && result.distance < parseFloat(this.state.wantedDistance)*0.9){
-                  console.log('too short')
                   this.routeGenerator(this.state.wantedDistance)
                 }
                 else if (!this.props.RUN_AGAIN_MODE && result.distance > parseFloat(this.state.wantedDistance)*1.1) {
-                  //console.log('too long')
                   this.routeGenerator(this.state.wantedDistance)
                 }*/
                 //else {
                   this.setState({ actualDistance: result.distance })
-                  console.log('ok distance')
-                  console.log(result.coordinates)
                   this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: (width / 15),
@@ -555,7 +527,6 @@ class Map extends Component {
                  this.routeGenerator(this.state.wantedDistance)
               }}
             />
-
         </MapView>
           {this.renderFooter()}
         </View>
@@ -568,17 +539,7 @@ class Map extends Component {
   }
 }
 
-//to add markers at the coords for the waypoints insert this at row ish 113
-//inbetween the <MapView/> and <MapViewDirections/>
-/*
-  {WAYPOINTS.map((coordinate, index) =>
-    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
-  )}
-*/
-
 //****STYLING*****//
-//Obs, styling for clock is in the bottom under const options / JF (18/4)
-//Obs2, styling for summarypages is under the class TheSummary
 const styles = {
   mapPageContainer: {
     height: '100%',
@@ -664,7 +625,8 @@ const styles = {
     justifyContent: 'center',	           
   }	
 }
-//This is styling for the timer / JF (18/4)
+
+//Styling for the stopwatch
 const options = {
   container: {
     padding: 5,

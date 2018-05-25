@@ -1,3 +1,7 @@
+/*This reducer is used in src/components/LogPage.js to fetch the user's routes
+from the database, the list is also reversed to display the runs with 
+the latest one on top of the rendered list*/
+
 import { 
     ROUTES_FETCH_SUCCESS
 } from '../actions/types';
@@ -22,7 +26,7 @@ export default (state = INITIAL_STATE, action) => {
                 newObject[keys[i]]=value;
                 
             }
-            
+
             return newObject;
         default:
             return state;

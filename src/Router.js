@@ -1,3 +1,8 @@
+/*This file handles the different views that the user 
+can navigate between. Using react native router flux 
+makes it really easy to navigate between the different pages.
+*/
+
 import React from 'react';
 import { Scene, Router } from 'react-native-router-flux';
 import { Icon } from 'native-base';
@@ -25,7 +30,6 @@ const RouterComponent = () => {
     return( 
         <Router>
             <Scene key = "root" {...sceneConfig}>
-                
                 <Scene initial={true} hideNavBar={true} key="waitPage" component={WaitingPage}/>
                 <Scene hideNavBar={true} key="login" component={StartPage}/>
                 <Scene hideNavBar={true} key="createAccount" component={CreateAccount}/>
@@ -34,7 +38,6 @@ const RouterComponent = () => {
                     <Scene key="Log" title="My Log" component={LogPage}/>
                     <Scene key="Favorites" title="Favorites" component={FavoritePage}/>
                     <Scene key="Info" title="Information" component={InfoScreen}/>
-
                 </Scene>
                 <Scene hideNavBar={true} key="summary" component={SummaryPage}/>
             </Scene>

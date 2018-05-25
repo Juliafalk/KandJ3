@@ -1,3 +1,7 @@
+/*This reducer is used in src/components/FavoritePage.js to fetch the user's routes
+from the database that are marked as favorites, the list is also reversed
+to display the runs with the latest one on top of the rendered list*/
+
 import { FAVORITE_ROUTES_FETCH_SUCCESS } from '../actions/types';
 
 const INITIAL_STATE = {};
