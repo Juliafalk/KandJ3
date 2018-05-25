@@ -1,15 +1,14 @@
-/*This it the file that calls the StartPage. 
-Later in the progress an if-state could be usefull here, to decide
-if startpage or map should be shown direct (like if the user already is signed in)
-/ JF (11/4)
-*/
+/*The core of the application. Checks if the user is logged in and
+shows either LoginPage.js or Map.js at first. It then shows the 
+specified page when the user is navigating using Router.js*/
+
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import firebase from 'firebase';
-import { DrawerNavigator, DrawerItems } from 'react-navigation';
+import { DrawerItems } from 'react-navigation';
 import {  
     Container, 
     Content, 
@@ -17,7 +16,6 @@ import {
     Body, 
     Footer, 
     Button, 
-    Icon,
     FooterTab
 } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -47,10 +45,7 @@ class App extends React.Component {
             messagingSenderId: "529796294332"
           });
         
-          //Event handler that accpet a function
-          //When user sign in or out, the function will be called
-          //Sign in, user is user, sign out user is NULL or undefined
-          //Event handler for either sign in or sign out. 
+            //Checks if the user is already logged in 
             firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 this.setState({ loggedIn: true });
@@ -62,7 +57,6 @@ class App extends React.Component {
 
     loggedIn() {
         if (this.state.loggedIn){
-            //Just to navigate to Summary while working on that page
             Actions.Map();
         }
         else if(this.state.loggedIn === false){
@@ -81,7 +75,7 @@ class App extends React.Component {
     }
 }
 
-//JL 9/5: används i router till drawer scene
+//Side menu - this is called from Router.js
 export const CustomDrawerContentComponent = (props) => (
     <Container >
         <Header style={{ height: 200 }}>
@@ -100,9 +94,9 @@ export const CustomDrawerContentComponent = (props) => (
         </Content>
         <Footer style={{ backgroundColor: '#7785ad' }}>
             <FooterTab>
-            <Button onPress={() => Logout()}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white'}}>  Log Out  </Text>
-            </Button>
+                <Button onPress={() => Logout()}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white'}}>  Log Out  </Text>
+                </Button>
             </FooterTab>
         </Footer>
     </Container>
@@ -136,7 +130,5 @@ otherStyles = StyleSheet.create({
         marginTop: '35%' 
     }
 })
-
-
 
 export default App;

@@ -1,3 +1,5 @@
+//The different types of actions
+
 export const ROUTES_FETCH_SUCCESS = 'routes_fetch_success';
 export const RUN_AGAIN = 'run_again';
 export const RUN_AGAIN_MODE = 'run_again_mode';

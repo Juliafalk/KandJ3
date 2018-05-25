@@ -1,3 +1,8 @@
+/*This file handles all of the different actions and 
+specifies the type and payload of a certain action that
+is then handled by the corresponding reducer, which makes the
+changes to the Redux states*/
+
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 import thunk from 'redux-thunk';
