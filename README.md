@@ -45,4 +45,12 @@ Then, wait a couple of minutes for the simulator to starts, first time it can ta
 
 When the simulator has started correctly, all is done and you are ready to explore the application, hope you enjoy it as much as we do!
 
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+[<img src="https://avatars3.githubusercontent.com/u/34298655?s=460&v=4" width="100px;"/><br /><sub><b>Julia Gardholm</b></sub>](https://github.com/gardholm) | [<img src="https://avatars3.githubusercontent.com/u/34298599?s=400&u=1520b5e4082aafa5564697de5ae9245ca540691a&v=4" width="100px;"/><br /><sub><b>Jenny Lindgren](https://github.com/jennyliindgren)</b></sub> | [<img src="https://avatars2.githubusercontent.com/u/34298514?s=460&v=4" width="100px;"/><br /><sub><b>Julia Falk</b></sub>](https://github.com/Juliafalk) |
+| :---: | :---: | :---: |
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
