@@ -1,12 +1,14 @@
+//This file includes the screen where all ListItem will be displayed
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, ListView, ScrollView, Text, ActivityIndicator} from 'react-native';
-import { Icon, Button } from 'native-base';
+import { View, ListView, ScrollView, ActivityIndicator} from 'react-native';
+import { Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { routesFetch } from '../actions';
 import ListItem from './ListItem';
 
 class LogPage extends React.Component { 
+
     static navigationOptions = {
         drawerIcon: (
             <Icon name='ios-list-box-outline' style={{ color: 'white'}}/>
@@ -27,6 +29,7 @@ class LogPage extends React.Component {
     renderRow(route){
             return <ListItem route={route} />;
     }
+
     createDataSource({ routes }) {
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
@@ -35,10 +38,15 @@ class LogPage extends React.Component {
 }
 
     renderSpinner() {
+
+        const {
+            spinnerStyle
+        } = styles;
+
         if (this.state.loading) {
             return (
-            <View style={styles.spinnerStyle} >
-            <ActivityIndicator size="large"  />
+            <View style={spinnerStyle} >
+                <ActivityIndicator size="large"  />
             </View>
             );
         }
@@ -52,7 +60,7 @@ class LogPage extends React.Component {
                     <ScrollView>
                     <View>
                         <View >
-                        {this.renderSpinner()}
+                            {this.renderSpinner()}
                         </View>
                         <ListView
                         enableEmptySections
@@ -66,17 +74,6 @@ class LogPage extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    const routes = _.map(state.routes, (val, uid) => {
-        return {
-            ...val, uid
-        };
-    });
-    //console.log(routes) returns first empty array, then a filled array?
-
-    return { routes };
-};
-
 const styles = {
     viewStyle: {
         backgroundColor: '#5c688c',
@@ -89,6 +86,17 @@ const styles = {
         marginTop: '60%'
     }
 }
+
+
+const mapStateToProps = state => {
+    const routes = _.map(state.routes, (val, uid) => {
+        return {
+            ...val, uid
+        };
+    });
+    return { routes };
+};
+
 
 export default connect(mapStateToProps, { routesFetch })(LogPage); 
     

@@ -1,18 +1,14 @@
-/*This page is the startpage that the user will see if the user is not logged in.
-Also it is good for us to be able to work on diffrent files like Login, CreateAccount and SeeMap.
-/ JF (11/4)
-*/
+//This page is the startpage that the user will see if the user is not logged in.
+//The LoginPage in displayed on the startPage. 
+
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Container, Content, Button } from 'native-base';
+import { View, Text, } from 'react-native';
+import { Container, Button } from 'native-base';
 import { MyCardSection } from './common';
-//JL: should add an index file to reduce imports below
 import LoginPage from './LoginPage';
 import Wallpaper from './Wallpaper';
 import { Actions } from 'react-native-router-flux';
 
-//This is the first page / JF (11/4)
-//Map button will not be visible later. 
 export class StartPage extends React.Component {
 
     render() {
@@ -73,12 +69,5 @@ const styles = {
     },
 };
 
-otherStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-})
 
 export default StartPage;

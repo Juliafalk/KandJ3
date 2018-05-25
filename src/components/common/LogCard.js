@@ -1,13 +1,11 @@
-//För att kunna skapa olika Card att placera komponeter i.
+///Styling for the LogCard that is used in several files. 
 import React from 'react';
 import { View } from 'react-native';
 
-//Could use the textStyle around the {props.children}, however
-//this does not work with CardSection.js something abouth height and widht
 const LogCard = (props) => {
     return (
         <View style={styles.containerStyle}>
-        {props.children}
+            {props.children}
         </View>
     );
 };

@@ -1,9 +1,15 @@
 
+//This file includes what is used for the distance input filed at the map-page
 import React from 'react';
 import { Text, TextInput, View } from 'react-native';
 
 export const DistanceInput = ({ value, placeholder, onChangeText }) => {
-    const { inputField, textStyle, inputContainer, viewStyle } = styles; 
+    const { 
+        inputField, 
+        textStyle, 
+        inputContainer, 
+        viewStyle 
+    } = styles; 
     return (
         <View style={viewStyle}>
             <View style={inputContainer}>
@@ -51,20 +57,3 @@ const styles = {
         flex: 1
     }
 };
-
-
-
-
-/*
-<TextInput
-                keyboardType='number-pad'
-                placeholder='..km'
-                style={textInputStyle}
-                maxLength={2}
-                value={wantedDistance}
-                onChangeText={userInput => 
-                  {this.setState({
-                  wantedDistance: userInput}),
-                  this.changeDistance(userInput)}}
-              />
-              */

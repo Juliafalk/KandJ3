@@ -1,10 +1,17 @@
-
+//The input field that is used both in CreateAccount and in LoginPage
 import React from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { Icon } from 'native-base';
 
-const MyInput = ({secureTextEntry, placeholder, value, onChangeText, iconType, iconName  }) => {
-    const { inputField, iconStyle, inputContainer, viewStyle } = styles; 
+const MyInput = ({ secureTextEntry, placeholder, value, onChangeText, iconType, iconName  }) => {
+    
+    const { 
+        inputField, 
+        iconStyle, 
+        inputContainer, 
+        viewStyle } 
+    = styles; 
+    
     return (
         <View style={viewStyle}>
             <View style={inputContainer}>
@@ -13,7 +20,7 @@ const MyInput = ({secureTextEntry, placeholder, value, onChangeText, iconType, i
                 <TextInput
                     secureTextEntry={secureTextEntry} //for passwords it should only show * in the input area
                     placeholder={placeholder}
-                    autoCorrect={false} //we don't want to autocorrect the emails
+                    autoCorrect={false} //Don't want to autocorrect the emails
                     style={inputField}
                     value={value}
                     onChangeText={onChangeText}

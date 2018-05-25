@@ -1,4 +1,4 @@
-//En spinner, om vi vill ha som i exempel projekt
+//A spinner that is used when a user logs in to the application
 import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
@@ -10,7 +10,6 @@ const MySpinner = ({size }) => {
     );
 };
 
-//to make sure that the AcitivtyIndicator is centerd on screen
 const styles = {
     spinnerStyle: {
         flex: 1, 

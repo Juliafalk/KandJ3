@@ -1,6 +1,6 @@
-import React from 'react';
+//This file includes the waiting page before tha users is navigated to log in page or map page
+import React, { Component } from 'react';
 import { Text, ImageBackground } from 'react-native';
-import firebase from 'firebase';
 import { Icon } from 'native-base';
 
 
@@ -8,13 +8,14 @@ class WaitingPage extends React.Component {
    
     render() {
         const {
+            imageStyle,
             textStyle,
             iconStyle
         } = styles;
 
         return(
             <ImageBackground 
-                style={{width: '100%', height: '100%', justifyContent: 'center'}}
+                style={imageStyle}
                 source={{ url: 'https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg'}}>
                 <Text style={textStyle}>Let's run!</Text>
                 <Icon type="MaterialIcons" name="directions-run" style={iconStyle} />
@@ -23,6 +24,11 @@ class WaitingPage extends React.Component {
 }
 
 const styles = {
+    imageStyle: {
+        width: '100%', 
+        height: '100%', 
+        justifyContent: 'center'
+    },
     textStyle: {
         fontFamily: 'GillSans',
         color: '#fff',

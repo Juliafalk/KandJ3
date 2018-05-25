@@ -1,4 +1,4 @@
-//CardSection för att kunna dela upp i olika sektioner. 
+//MyCardSection is similiar to LogCardItem, which makes it possible to split something to several sections. 
 import React from 'react';
 import { View } from 'react-native';
 

@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+//This file includes the wallpaper that is used in in LoginPage, CreateAccount and on the sidemenu. 
+import React, { Component } from 'react';
 import { StyleSheet, ImageBackground } from 'react-native';
 
 export default class Wallpaper extends Component {
