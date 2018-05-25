@@ -10,15 +10,15 @@ Also, to be able to simulate the application it requires that you have a softwar
 
 Thereafter, navigate to the map/file/place where you want the project to be stored . When these step is done, the project can be clone or downloaded. Run the following commands in the terminal window. 
 
-*Clone the project*
+1. *Clone the project*
 
 git clone https://github.com/Juliafalk/KandJ3.git
 
-*Install the necessary package/extensions/APIs for the project*
+2. *Install the necessary package/extensions/APIs for the project*
 
 npm install
 
-*Start to simulate*
+3. *Start to simulate*
 react-native run-ios
 
 Then, wait a couple of minutes for the simulator to starts, first time it can take around five minutes. 
