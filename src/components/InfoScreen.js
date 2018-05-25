@@ -1,5 +1,6 @@
+//This files includes the code for information aboute the application, contact information and about the development team J3
 import React, { Component } from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { LogCard, LogCardItem } from './common';
 import { Icon } from 'native-base';
 import firebase from 'firebase';
@@ -17,10 +18,15 @@ class InfoScreen extends Component {
    render() {
 
         const {
+            viewBackground,
             viewStyle, 
+            nameHeaderStyle,
             labelStyle,
             lineStyle, 
             textStyle,
+            viewLogCard,
+            viewFlexStart,
+            viewCenter
         } = styles;
        
         const user = firebase.auth().currentUser;
@@ -30,20 +36,14 @@ class InfoScreen extends Component {
         }
        
        return (
-            <View style={styles.viewBackground}>
+            <View style={viewBackground}>
             <ScrollView>
-                <View style = {styles.viewStyle}>    
-                    <Text style={styles.nameHeaderStyle}>Hi, {username}</Text>
+                <View style = {viewStyle}>    
+                    <Text style={nameHeaderStyle}>Hi, {username}</Text>
                 </View>
-                <View style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
+                <View style={viewCenter}>
                 <LogCard>
-                <View style={{
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-start',
-                        }}>
+                <View style={viewFlexStart}>
                     <LogCardItem>
                         <Text style={labelStyle}>About runRouter</Text>
                     </LogCardItem>
@@ -52,11 +52,7 @@ class InfoScreen extends Component {
                     <View style={{
                         flexDirection: 'row'
                         }}>
-                        <View style={{
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-start',
-                            width: '95%'
-                        }}>
+                        <View style={viewLogCard}>
                             <LogCardItem>
                                 <Text style={textStyle}>Welcome to runRouter, an app developed by team J3 between March and June 2018.
                                 </Text>
@@ -69,10 +65,7 @@ class InfoScreen extends Component {
                 </LogCard> 
                 
                 <LogCard>
-                <View style={{
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-start',
-                        }}>
+                <View style={viewFlexStart}>
                     <LogCardItem>
                         <Text style={labelStyle}>About J3</Text>
                     </LogCardItem>
@@ -81,11 +74,7 @@ class InfoScreen extends Component {
                     <View style={{
                         flexDirection: 'row'
                         }}>
-                        <View style={{
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-start',
-                            width: '95%'
-                        }}>
+                        <View style={viewLogCard}>
                             <LogCardItem>
                                 <Text style={textStyle}>
                                 We are three dedicated students, studying our third year of the Master programme in Sociotechnical Systems Engineering.
@@ -102,10 +91,7 @@ class InfoScreen extends Component {
                 </LogCard> 
 
                 <LogCard>
-                    <View style={{
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-start',
-                        }}>
+                    <View style={viewFlexStart}>
                         <LogCardItem>
                             <Text style={labelStyle}>Contact us</Text>
                         </LogCardItem>
@@ -114,11 +100,7 @@ class InfoScreen extends Component {
                     <View style={{
                         flexDirection: 'row'
                         }}>
-                        <View style={{
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-start',
-                            width: '95%'
-                        }}>
+                        <View style={viewLogCard}>
                             <LogCardItem >
                                 <View style={styles.viewIconStyle}>
                                         <Icon name="ios-mail-outline"style={{fontSize: 22 }}/>
@@ -195,6 +177,19 @@ const styles = {
         alignSelf: 'center',
         width: '100%'
     },
+    viewLogCard: {
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        width: '95%'
+    },
+    viewFlexStart: {
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+    },
+    viewCenter: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
 }
 
 export default InfoScreen;

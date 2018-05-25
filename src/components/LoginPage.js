@@ -1,6 +1,4 @@
-/*This page should include LoginForm, i.e. it is for the user to login. 
-The Loginpage is placed on an card in App.js
-The user can use/ JF (12/4) */
+//This file includes the LoginForm, and all the necessary functions that is required for the user to sign in.
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import firebase from 'firebase';
@@ -17,7 +15,7 @@ class LoginPage extends Component {
         this.setState({ error: '', loading: true });
          
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(this.onLoginSuccess.bind(this)) //need to bind, passing of to promise, dont know the context = need to bind. 
+            .then(this.onLoginSuccess.bind(this))  
             .catch(this.onLoginFailed.bind(this));
     }
 
@@ -33,13 +31,18 @@ class LoginPage extends Component {
             email: '',
             password: '', 
             loading: false, 
-            error: '' //overkill, is not needed.. 
+            error: '' 
         });
 
         Actions.Map();
     }
 
     renderButton() {
+
+        const { 
+            loginButton,
+            loginButtonText
+        } = styles; 
         if (this.state.loading) {
             return <MySpinner size="small" />
         }
@@ -48,19 +51,24 @@ class LoginPage extends Component {
             <View>
                 <Button
                     block
-                    style={styles.loginButton}
+                    style={loginButton}
                     onPress={this.onButtonPress.bind(this)}> 
                     <Text
-                    style={styles.loginButtonText}>Login</Text>  
+                    style={loginButtonText}>Login</Text>  
                 </Button>
             </View>
         );
     }
 
     render() {
+
+        const {
+            errorTextStyle
+        } = styles;
+
         return (
             <View>
-                <Text style={styles.errorTextStyle}>
+                <Text style={errorTextStyle}>
                     {this.state.error}
                 </Text>
 
@@ -116,6 +124,4 @@ const styles = {
     }
 }
 
-//Error message will only be seen if something goes wrong
-//This cause it will only be updated it the user does something wrong.. 
 export default LoginPage; 

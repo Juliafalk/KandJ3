@@ -1,3 +1,5 @@
+//This file includes the information and functionalites that is displayed on every FavoriteListItem
+//I.e. the card that is displaying the route information for every favorite route, run again functionality and remove from favorite button
 import React, { Component } from 'react';
 import { Text, View, Animated} from 'react-native';
 import firebase from 'firebase'; 
@@ -63,11 +65,7 @@ class FavoriteListItem extends Component {
                     <View style={{
                         flexDirection: 'row'
                         }}>
-                        <View style={{
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-start',
-                            width: '65%'
-                        }}>
+                        <View style={viewStyle}>
                             <LogCardItem>
                                 <View style={viewIconStyle}>
                                     <Icon name='ios-stopwatch-outline'style={{fontSize: 22 }}/>
@@ -109,6 +107,11 @@ class FavoriteListItem extends Component {
 }
 
 const styles = {
+    viewStyle: {
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        width: '65%'
+    },
     labelStyle: {
         fontSize: 17,
         paddingLeft: 1, 

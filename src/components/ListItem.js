@@ -1,3 +1,5 @@
+//This file includes the information and functionalites that is displayed on every ListItem
+//I.e. the card that is displaying the route information for every route, run again functionality and add to favorite.
 import React, { Component } from 'react';
 import { Animated, Text, View, Alert } from 'react-native'; 
 import firebase from 'firebase'; 
@@ -16,7 +18,7 @@ class ListItem extends Component {
     componentDidUpdate () {
         this.state.animatedRemove.setValue(1)
     }
-    //JL 2/5: vill här ändra sida till kartan och skicka med waypoints
+   
     runAgain(route) {
         this.props.runAgain(route.WAYPOINTS);
         this.props.runAgainMode(true);
@@ -24,7 +26,6 @@ class ListItem extends Component {
     }
 
     addRemoveFavorite(route) {
-
         Pressedfavorite = true;
         const { currentUser } = firebase.auth();
         const UID = route.uid;
@@ -55,9 +56,8 @@ class ListItem extends Component {
         var iconName;
         const { route } = this.props;
         const { animatedRemove } = this.state;
-
         
-         
+        //Changing the style on the heart depending on if the route is favorite or not. 
         if(route.favorite == true ) {
             favoriteText = "Favorite",
             iconName = "favorite",
@@ -103,6 +103,7 @@ class ListItem extends Component {
                                 'Delete route?',
                                 'It cannot be restored later!', 
                                 [
+                                    //console.log() is requried to make the function work. 
                                   {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                                   {text: 'Yes', onPress: () => {this.deleteRoute(route)}
                                   },
@@ -115,11 +116,7 @@ class ListItem extends Component {
                     <View style={{
                         flexDirection: 'row'
                         }}>
-                        <View style={{
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-start',
-                            width: '65%'
-                            }}>
+                        <View style={viewStyle}>
                             <LogCardItem>
                                 <View style={viewIconStyle}>
                                     <Icon name='ios-stopwatch-outline' style={{fontSize: 22 }}/>
@@ -160,6 +157,11 @@ class ListItem extends Component {
 }
 
 const styles = {
+    viewStyle: {
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        width: '65%'
+    },
     labelStyle: {
         fontSize: 17,
         paddingLeft: 1, 

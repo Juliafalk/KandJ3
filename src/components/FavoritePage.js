@@ -1,3 +1,4 @@
+//This file includes the page where all FavoriteListItem will be displayed
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { View, ListView, ScrollView, Text, ActivityIndicator} from 'react-native';
@@ -12,7 +13,6 @@ class FavoritePage extends React.Component {
             <Icon name='ios-heart-outline' style={{ color: 'white', fontSize: 29 }}/>
         )
     }
-
     state = {loading: true }
 
     componentWillMount() {
@@ -22,17 +22,14 @@ class FavoritePage extends React.Component {
 
     componentWillReceiveProps(nextProps){
         this.setState({loading: false})
-        this.createDataSource(nextProps);
-        
+        this.createDataSource(nextProps);    
     }
-
 
     createDataSource({ favRoutes }) {
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
-        this.dataSource = ds.cloneWithRows(favRoutes)
-        
+        this.dataSource = ds.cloneWithRows(favRoutes)   
     }
 
     renderRow(route){
@@ -52,8 +49,8 @@ class FavoritePage extends React.Component {
     render() {
         const { viewStyle } = styles;
         return (
-                <View style={viewStyle}>
-                    <ScrollView>
+            <View style={viewStyle}>
+                <ScrollView>
                     <View>
                         <View >
                             {this.renderSpinner()}
@@ -64,19 +61,11 @@ class FavoritePage extends React.Component {
                         renderRow={this.renderRow}
                         />
                     </View>
-                    </ScrollView>
-                </View>
+                </ScrollView>
+            </View>
         )
     }
 }
-
-const mapStateToProps = state => {
-    const favRoutes = _.map(state.favRoutes, (val, uid) => {
-        return {...val, uid};
-    });
-
-    return { favRoutes };
-};
 
 const styles = {
     viewStyle: {
@@ -90,5 +79,15 @@ const styles = {
         marginTop: '60%'
     }
 }
+
+const mapStateToProps = state => {
+    const favRoutes = _.map(state.favRoutes, (val, uid) => {
+        return {...val, uid};
+    });
+
+    return { favRoutes };
+};
+
+
 export default connect(mapStateToProps, { favoriteFetch })(FavoritePage); 
 
