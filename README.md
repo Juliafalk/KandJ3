@@ -4,6 +4,10 @@
 
 This iOS application has been developed between March and May 2018 by three engineering students at Uppsala University during the course *Independent Project in Sociotechnical Systems Engineering - IT Systems*. The three students formed team J3 and the process resulted in runRouter, an application which gives the user the possibility of creating a route with a wanted distance. runRouter will save information about the routes along with information about the user's run and give the user the option to run that specific route again in the future. runRouter is based on inspiration from other exercise application, but offers an extension of functionality with its ability to let the user specify the wanted distance beforehand, instead of only measuring it during the user's run.
 
+### Why is the name LastTry?
+
+Sometimes things do not turn out as you wished, that was the case in the beginning of this project. After a lot of problems in the beginning, with re-start of project, it literally felt like this was the last try. So, when one of the members of the team once again had to do a new project, it decided that this was literally the last try and named the test project to LastTry. Luckily or unluckily, everything worked well that time, and to avoid any more restarting, the name had to be LastTry. We are sorry for the inconsistent choice of name, and hope this does not means problem for anyone. 
+
 ## Development tools
 
 *The application is developed with the help of following tools and software*
