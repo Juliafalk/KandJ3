@@ -226,6 +226,9 @@ class Map extends Component {
   resetMap(){
     this.props.runAgain('');
     this.setState({ actualDistance: '' })
+    if (this.props.RUN_AGAIN_MODE){
+      this.props.runAgainMode(false);
+    }
   }
 
   //Allows the user to choose a starting point
