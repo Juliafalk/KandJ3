@@ -1,6 +1,6 @@
 # runRouter [repo KandJ3]
 
-### A video about this repository
+## A video about this repository
 [![Video of the project](https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F704115945_1280x720.webp&src1=https%3A%2F%2Ff.vimeocdn.com%2Fimages_v6%2Fshare%2Fplay_icon_overlay.png)](https://vimeo.com/272539603)
 
 ## Background
@@ -34,7 +34,7 @@ If you have a MacOS computer, the first step is to install Xcode, which is found
 
 Also, to be able to simulate the application, it requires you to have a software that makes it possible to run npm install, for example [NodeJS](https://nodejs.org/en/).
 
-# Run the following commands in the terminal window. 
+### Run the following commands in the terminal window. 
 
 1. *Navigate to the folder where you want to store the project*
 
