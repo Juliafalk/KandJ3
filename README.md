@@ -1,6 +1,6 @@
 # KandJ3
 
-### Click on the picture to see a video about this repository:
+### A video about this repository
 [![Video of the project](https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F704115945_1280x720.webp&src1=https%3A%2F%2Ff.vimeocdn.com%2Fimages_v6%2Fshare%2Fplay_icon_overlay.png)](https://vimeo.com/272539603)
 
 ## Background
