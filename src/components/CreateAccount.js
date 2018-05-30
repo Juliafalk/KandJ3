@@ -11,7 +11,7 @@ import { Actions } from 'react-native-router-flux';
 
 class CreateAccount extends React.Component {
 
-    state = { email: '', password: '', repPassword: '', error: '', name: '',  loading: false };
+    state = { email: 'run@gmail.com', password: 'password', repPassword: '', error: '', name: 'Runner',  loading: false };
 
     onButtonPress() {
         const { email, password } = this.state;

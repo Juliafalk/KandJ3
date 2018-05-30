@@ -1,4 +1,4 @@
-//This file includes the page where all FavoriteListItem will be displayed
+//This file includes the screen where all FavoriteListItem will be displayed
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { View, ListView, ScrollView, Text, ActivityIndicator} from 'react-native';

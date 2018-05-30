@@ -51,6 +51,7 @@
 		D8ED66E832E74EFAA0E0BE32 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B6A45D0A66742C783B0D8E5 /* Entypo.ttf */; };
 		E2596B2723234934B83B5129 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED513FCD41AD41EF8D84273A /* rubicon-icon-font.ttf */; };
 		F1059EA47F7447EDACE6B8BD /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7454AA5CC6DE4B869BFCFCAF /* FontAwesome.ttf */; };
+		FB34E94920BC4598003B2C19 /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB34E94820BC4598003B2C19 /* Images-2.xcassets */; };
 		FB784BB4207CC08300EF32CF /* AIRGoogleMapUrlTile.m in Sources */ = {isa = PBXBuildFile; fileRef = FB784B8F207CC08200EF32CF /* AIRGoogleMapUrlTile.m */; };
 		FB784BB5207CC08300EF32CF /* AIRGoogleMapPolygonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB784B92207CC08200EF32CF /* AIRGoogleMapPolygonManager.m */; };
 		FB784BB6207CC08300EF32CF /* AIRGoogleMapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = FB784B95207CC08200EF32CF /* AIRGoogleMapMarker.m */; };
@@ -401,6 +402,7 @@
 		ED513FCD41AD41EF8D84273A /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		EEE49F1A7570601DE7AD10DE /* Pods-LastTry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LastTry.release.xcconfig"; path = "Pods/Target Support Files/Pods-LastTry/Pods-LastTry.release.xcconfig"; sourceTree = "<group>"; };
 		FA12CF4DEDEF4EFE9E73D246 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		FB34E94820BC4598003B2C19 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "LastTry/Images-2.xcassets"; sourceTree = "<group>"; };
 		FB784B8E207CC08200EF32CF /* AIRGoogleMapPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolyline.h; sourceTree = "<group>"; };
 		FB784B8F207CC08200EF32CF /* AIRGoogleMapUrlTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapUrlTile.m; sourceTree = "<group>"; };
 		FB784B90207CC08200EF32CF /* AIRGoogleMapMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapMarkerManager.h; sourceTree = "<group>"; };
@@ -589,6 +591,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				FB34E94820BC4598003B2C19 /* Images-2.xcassets */,
 			);
 			name = LastTry;
 			sourceTree = "<group>";
@@ -1273,6 +1276,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				D8ED66E832E74EFAA0E0BE32 /* Entypo.ttf in Resources */,
+				FB34E94920BC4598003B2C19 /* Images-2.xcassets in Resources */,
 				8ABB4E75985B49628131B0ED /* EvilIcons.ttf in Resources */,
 				F1059EA47F7447EDACE6B8BD /* FontAwesome.ttf in Resources */,
 				47FF0D79A06043A99A9FF722 /* Foundation.ttf in Resources */,
@@ -1513,6 +1517,7 @@
 			baseConfigurationReference = E78D46DE7F5B0307A42A31B1 /* Pods-LastTry.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1543,6 +1548,7 @@
 			baseConfigurationReference = EEE49F1A7570601DE7AD10DE /* Pods-LastTry.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
