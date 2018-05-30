@@ -34,7 +34,7 @@ If you have a MacOS computer, the first step is to install Xcode, which is found
 
 Also, to be able to simulate the application, it requires you to have a software that makes it possible to run npm install, for example [NodeJS](https://nodejs.org/en/).
 
-Run the following commands in the terminal window. 
+# Run the following commands in the terminal window. 
 
 1. *Navigate to the folder where you want to store the project*
 
