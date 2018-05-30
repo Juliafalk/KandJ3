@@ -9,7 +9,7 @@ This iOS application has been developed between March and May 2018 by three engi
 
 ### Why are the project files named LastTry?
 
-Sometimes things do not turn out as you wished, that was the case in the beginning of this project. After a lot of problems in the beginning, with re-start of project, it literally felt like this was the last try. So, when one of the members of the team once again had to do a new project, it decided that this was literally the last try and named the test project to LastTry. Luckily or unluckily, everything worked well that time, and to avoid any more restarting, the name had to be LastTry. We are sorry for the inconsistent choice of name, and hope this does not means problem for anyone. 
+Sometimes things do not turn out as you wished, that was the case in the beginning of this project. After a lot of problems in the beginning, with a lot of re-starting of the project, it literally felt like this was the last try. So, when one of the members of the team once again had to create a new project, the project name fell on LastTry. Luckily or unluckily, everything worked out well this time and to avoid any more restarting, the name remained LastTry.
 
 ## Development tools
 
