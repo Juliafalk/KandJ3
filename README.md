@@ -1,4 +1,4 @@
-# runRouter [J3]
+# runRouter [repo KandJ3]
 
 ### A video about this repository
 [![Video of the project](https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F704115945_1280x720.webp&src1=https%3A%2F%2Ff.vimeocdn.com%2Fimages_v6%2Fshare%2Fplay_icon_overlay.png)](https://vimeo.com/272539603)
@@ -52,7 +52,7 @@ Then, wait a couple of minutes for the simulator to starts, first time it can ta
 
 When the simulator has started correctly, all is done and you are ready to explore the application, hope you enjoy it as much as we do!
 
-## Contributors
+## The Development Team: J3
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
